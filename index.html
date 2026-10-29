@@ -1,0 +1,1466 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src * data: blob:; media-src * data: blob:; frame-src https://www.youtube.com https://www.youtube-nocookie.com; connect-src https://*.supabase.co wss://*.supabase.co; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta name="referrer" content="no-referrer">
+<script>if (window.top !== window.self) document.documentElement.style.display = 'none';</script>
+<title>Ma Boutique</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<style>
+/* ======= SOFT PALETTE ======= */
+:root {
+  --bg: #f2f6f4;
+  --bg2: #e6eeea;
+  --bg3: #dae6e0;
+  --card: #ffffff;
+  --card2: #f8fbf9;
+  --border: #d3e0d9;
+  --border2: #bfd0c6;
+  --text: #1f2d27;
+  --text2: #4f635a;
+  --muted: #8a9d94;
+  --gold: #1f7a5c;
+  --gold2: #2a9d78;
+  --gold-light: #7fd6b5;
+  --accent: #e4572e;
+  --green: #3a9060;
+  --green-light: #e8f5ee;
+  --red: #c04040;
+  --red-light: #fdeaea;
+  --blue: #3060a0;
+  --blue-light: #e8f0fa;
+  --orange-light: #e3f4ec;
+  --shadow: 0 2px 12px rgba(0,0,0,0.07);
+  --shadow2: 0 8px 32px rgba(0,0,0,0.10);
+  --radius: 14px;
+  --radius-sm: 8px;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;}
+h1,h2,h3{font-family:'Playfair Display',serif;}
+input,select,textarea,button{font-family:'Nunito',sans-serif;}
+
+/* ====== VIEWS ====== */
+.view{display:none;}
+.view.active{display:block;}
+
+/* ====== PROMO BANNER ====== */
+#promo-banner,.promo-banner{
+  background:linear-gradient(90deg,#14513c,var(--accent),#14513c);
+  background-size:300% 100%;
+  animation:slide-bg 4s linear infinite;
+  text-align:center;padding:11px 20px;font-size:14px;font-weight:700;
+  color:#fff;letter-spacing:.5px;
+}
+#promo-banner.hidden,.promo-banner.hidden{display:none;}
+@keyframes slide-bg{0%{background-position:0%}100%{background-position:300%}}
+
+/* ====== SHOP HEADER ====== */
+.shop-header{
+  background:var(--card);border-bottom:1px solid var(--border);
+  padding:14px 28px;display:flex;align-items:center;gap:16px;
+  position:sticky;top:0;z-index:100;box-shadow:var(--shadow);
+}
+.shop-logo{font-family:'Playfair Display',serif;font-size:22px;color:var(--gold);letter-spacing:.5px;flex-shrink:0;}
+.header-search{flex:1;max-width:400px;position:relative;}
+.header-search input{width:100%;padding:9px 16px 9px 38px;background:var(--bg2);border:1.5px solid var(--border);border-radius:50px;color:var(--text);font-size:14px;outline:none;transition:.2s;}
+.header-search input:focus{border-color:var(--gold2);background:#fff;}
+.header-search .ico{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:15px;}
+.header-right{margin-left:auto;display:flex;gap:10px;align-items:center;}
+.header-btn{background:var(--bg2);border:1.5px solid var(--border);color:var(--text2);padding:8px 16px;border-radius:50px;cursor:pointer;font-size:13px;font-weight:600;transition:.2s;}
+.header-btn:hover{border-color:var(--gold2);color:var(--gold);}
+
+/* ====== SHOP HERO ====== */
+.shop-hero{padding:50px 28px 10px;text-align:center;}
+.shop-hero h1{font-size:clamp(28px,4vw,44px);color:var(--text);margin-bottom:8px;}
+.shop-hero p{color:var(--text2);font-size:16px;}
+
+/* ====== PRODUCTS GRID ====== */
+.products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:22px;padding:24px 28px;max-width:1200px;margin:0 auto;}
+.product-card{
+  background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);
+  overflow:hidden;transition:.25s;cursor:pointer;position:relative;
+}
+.product-card:hover{transform:translateY(-3px);border-color:var(--gold2);box-shadow:var(--shadow2);}
+.product-card img{width:100%;height:230px;object-fit:cover;}
+.product-card .badge{position:absolute;top:12px;left:12px;background:var(--accent);color:#fff;padding:4px 12px;border-radius:50px;font-size:11px;font-weight:700;letter-spacing:.5px;}
+.product-info{padding:18px;}
+.product-info h3{font-size:17px;color:var(--text);font-family:'Nunito',sans-serif;font-weight:700;}
+.product-info p{color:var(--text2);font-size:13px;margin-top:5px;line-height:1.6;}
+.product-price{display:flex;align-items:center;gap:10px;margin-top:12px;}
+.price-main{font-size:20px;font-weight:800;color:var(--gold);}
+.price-old{font-size:13px;color:var(--muted);text-decoration:line-through;}
+.btn-order{width:100%;margin-top:12px;padding:11px;background:var(--gold);border:none;color:#fff;font-weight:700;border-radius:var(--radius-sm);cursor:pointer;font-size:14px;transition:.2s;}
+.btn-order:hover{background:var(--gold2);}
+
+.no-results{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--muted);}
+.no-results .ico{font-size:48px;margin-bottom:12px;}
+
+/* ====== LANDING PAGE ====== */
+#view-landing{background:var(--bg);}
+.lp-topbar{background:var(--card);border-bottom:1px solid var(--border);padding:14px 28px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:50;}
+.lp-topbar .shop-logo{font-size:18px;}
+.btn-back{background:transparent;border:none;color:var(--text2);cursor:pointer;font-size:14px;font-weight:600;display:flex;align-items:center;gap:6px;padding:6px 0;}
+.btn-back:hover{color:var(--gold);}
+
+.lp-main{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start;padding:28px;}
+.lp-main .offer-section{padding:0;max-width:none;margin:0;}
+.lp-main .order-form-wrap{max-width:none;margin:0;padding:22px;}
+.lp-hero{background:var(--card2);padding:24px;display:flex;flex-direction:column;gap:16px;align-items:center;text-align:center;border-radius:var(--radius);position:sticky;top:76px;}
+@media(max-width:800px){.lp-main{grid-template-columns:1fr;padding:16px;}.lp-hero{position:static;}}
+.lp-hero img{width:100%;border-radius:var(--radius);object-fit:cover;box-shadow:var(--shadow2);}
+.lp-hero-text{flex:1;min-width:240px;}
+.lp-hero-text h1{font-size:clamp(24px,3vw,36px);color:var(--text);margin-bottom:12px;}
+.lp-hero-text p{color:var(--text2);line-height:1.8;font-size:15px;margin-bottom:16px;}
+.lp-features{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0;}
+.lp-feat{background:var(--bg2);border:1.5px solid var(--border);border-radius:50px;padding:6px 14px;font-size:12px;color:var(--text2);font-weight:600;}
+.lp-feat::before{content:'✓ ';}
+
+/* OFFER PACKS */
+.offer-section{max-width:1000px;margin:0 auto;padding:32px 28px;}
+.offer-section h2{font-size:22px;color:var(--text);margin-bottom:20px;text-align:center;}
+.packs-grid{display:flex;flex-wrap:nowrap;gap:12px;margin-bottom:28px;overflow-x:auto;padding:4px 2px 8px;}
+.packs-grid .pack-card{flex:1 1 0;min-width:150px;padding:16px 10px;}
+.pack-card{
+  border:2px solid var(--border);border-radius:var(--radius);padding:20px;cursor:pointer;
+  transition:.2s;text-align:center;position:relative;background:var(--card);
+}
+.pack-card:hover{border-color:var(--gold2);}
+.pack-card.selected{border-color:var(--gold);background:var(--orange-light);box-shadow:0 0 0 3px rgba(31,122,92,0.15);}
+.pack-card .pack-qty{font-size:28px;font-weight:800;color:var(--gold);}
+.pack-card .pack-label{font-size:14px;color:var(--text2);margin:4px 0;}
+.pack-card .pack-price{font-size:22px;font-weight:800;color:var(--text);margin-top:8px;}
+.pack-card .pack-save{background:var(--green);color:#fff;padding:3px 10px;border-radius:50px;font-size:11px;font-weight:700;display:inline-block;margin-top:6px;}
+.pack-card .pack-free-del{background:var(--green-light);color:var(--green);padding:5px 12px;border-radius:6px;font-size:12px;font-weight:700;margin-top:8px;display:inline-flex;align-items:center;gap:4px;}
+.pack-card .pack-check{position:absolute;top:10px;right:10px;width:22px;height:22px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;transition:.2s;}
+.pack-card.selected .pack-check{background:var(--gold);border-color:var(--gold);color:#fff;}
+
+/* DETAILS + MEDIA */
+.lp-details{max-width:1000px;margin:0 auto 40px;padding:0 28px;}
+.lp-details p,.lp-details .lp-features{max-width:700px;margin-left:auto;margin-right:auto;text-align:center;justify-content:center;}
+.lp-details p{color:var(--text2);line-height:1.8;font-size:15px;margin-bottom:16px;}
+.lp-media{display:flex;flex-direction:column;gap:10px;margin-top:28px;}
+.lp-media img,.lp-media video{width:100%;height:auto;border-radius:var(--radius-sm);display:block;background:#000;}
+.lp-media iframe{width:100%;aspect-ratio:16/9;border:0;border-radius:var(--radius-sm);}
+.media-admin-item{display:flex;align-items:center;gap:10px;background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:8px;margin-bottom:8px;}
+.media-admin-item .thumb{width:54px;height:54px;border-radius:6px;object-fit:cover;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.media-admin-item .url{flex:1;font-size:12px;color:var(--text2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+/* ORDER FORM */
+.order-form-wrap{max-width:600px;margin:0 auto;padding:28px;background:var(--card);border-radius:var(--radius);border:1.5px solid var(--border);margin-bottom:40px;}
+.order-form-wrap h2{font-size:22px;margin-bottom:6px;}
+.order-form-wrap .sub{color:var(--text2);font-size:13px;margin-bottom:24px;}
+.form-group{margin-bottom:16px;}
+.form-group label{display:block;font-size:12px;color:var(--text2);margin-bottom:6px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;}
+.form-group input,.form-group select,.form-group textarea{
+  width:100%;padding:11px 14px;background:var(--bg2);border:1.5px solid var(--border);
+  border-radius:var(--radius-sm);color:var(--text);font-size:14px;outline:none;transition:.2s;
+}
+.form-group input:focus,.form-group select:focus{border-color:var(--gold2);background:#fff;}
+.form-group select option{background:#fff;}
+
+.summary-box{background:var(--bg2);border-radius:var(--radius-sm);padding:16px;margin:16px 0;}
+.summary-row{display:flex;justify-content:space-between;padding:5px 0;font-size:14px;color:var(--text2);}
+.summary-row.total{font-size:18px;font-weight:800;color:var(--gold);border-top:1.5px solid var(--border);margin-top:8px;padding-top:10px;}
+.summary-row.free-del{color:var(--green);font-weight:700;}
+
+.btn-submit{width:100%;padding:15px;background:var(--gold);border:none;color:#fff;font-size:17px;font-weight:800;border-radius:var(--radius-sm);cursor:pointer;transition:.2s;letter-spacing:.5px;}
+.btn-submit:hover{background:var(--gold2);}
+
+/* SUCCESS */
+.success-view{text-align:center;padding:80px 24px;max-width:500px;margin:0 auto;}
+.success-icon{font-size:72px;margin-bottom:20px;}
+.success-view h2{font-size:30px;color:var(--green);}
+.success-view p{color:var(--text2);line-height:1.8;margin-top:12px;}
+
+/* ====== ADMIN ====== */
+#view-admin{background:var(--bg);min-height:100vh;}
+
+/* Admin login hidden via URL trick */
+.admin-login-wrap{max-width:420px;margin:80px auto;background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:40px;box-shadow:var(--shadow2);}
+.admin-login-wrap h2{font-size:28px;color:var(--gold);margin-bottom:6px;}
+.admin-login-wrap .sub{color:var(--text2);font-size:14px;margin-bottom:28px;}
+
+.admin-layout{display:flex;min-height:100vh;}
+.sidebar{width:230px;background:var(--card);border-right:1.5px solid var(--border);padding:20px 0;position:fixed;top:0;left:0;height:100vh;display:flex;flex-direction:column;z-index:200;overflow-y:auto;}
+.sidebar-logo{padding:0 20px 16px;font-family:'Playfair Display',serif;font-size:18px;color:var(--gold);border-bottom:1px solid var(--border);margin-bottom:8px;}
+.sidebar-logo span{display:block;font-size:11px;font-family:'Nunito',sans-serif;color:var(--muted);font-weight:500;margin-top:2px;}
+.nav-item{padding:10px 20px;color:var(--text2);cursor:pointer;border-left:3px solid transparent;font-size:14px;font-weight:600;transition:.15s;display:flex;align-items:center;gap:8px;}
+.nav-item:hover{background:var(--bg2);color:var(--gold);}
+.nav-item.active{border-left-color:var(--gold);background:var(--orange-light);color:var(--gold);}
+.nav-item .badge-count{margin-left:auto;background:var(--accent);color:#fff;border-radius:50px;padding:2px 7px;font-size:11px;}
+.sidebar-footer{margin-top:auto;padding:16px 20px;border-top:1px solid var(--border);}
+.sidebar-user{font-size:13px;color:var(--text2);margin-bottom:8px;}
+.sidebar-user strong{display:block;color:var(--text);}
+
+.admin-main{margin-left:230px;padding:28px;flex:1;}
+.panel{display:none;}
+.panel.active{display:block;}
+
+.page-title{font-size:24px;color:var(--text);margin-bottom:6px;}
+.page-sub{color:var(--muted);font-size:14px;margin-bottom:24px;}
+
+/* Stats */
+.stats-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px;margin-bottom:24px;}
+.stat-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:20px;text-align:center;}
+.stat-val{font-size:28px;font-weight:800;color:var(--gold);}
+.stat-label{font-size:12px;color:var(--muted);margin-top:4px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;}
+
+/* Table */
+.tbl-wrap{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);overflow:hidden;}
+.tbl-head{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.tbl-head h3{font-size:15px;font-family:'Nunito',sans-serif;font-weight:700;color:var(--text);}
+table{width:100%;border-collapse:collapse;}
+th{padding:11px 14px;text-align:left;font-size:11px;color:var(--muted);font-weight:700;border-bottom:1px solid var(--border);text-transform:uppercase;letter-spacing:.5px;background:var(--bg2);}
+td{padding:11px 14px;font-size:13px;border-bottom:1px solid var(--border);vertical-align:middle;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:var(--bg2);}
+
+/* Badges */
+.badge-s{padding:3px 10px;border-radius:50px;font-size:11px;font-weight:700;display:inline-block;}
+.s-new{background:var(--blue-light);color:var(--blue);}
+.s-ok{background:var(--green-light);color:var(--green);}
+.s-cancel{background:var(--red-light);color:var(--red);}
+
+/* Admin inputs */
+.ai{width:100%;padding:10px 13px;background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-size:14px;outline:none;transition:.2s;margin-top:5px;}
+.ai:focus{border-color:var(--gold2);background:#fff;}
+.al{font-size:12px;color:var(--text2);font-weight:700;text-transform:uppercase;letter-spacing:.4px;}
+.ag{margin-bottom:14px;}
+
+/* Buttons */
+.btn{padding:9px 18px;border:none;border-radius:var(--radius-sm);cursor:pointer;font-size:13px;font-weight:700;transition:.2s;}
+.btn-primary{background:var(--gold);color:#fff;}
+.btn-primary:hover{background:var(--gold2);}
+.btn-danger{background:var(--red-light);color:var(--red);border:1px solid var(--red);}
+.btn-danger:hover{background:var(--red);color:#fff;}
+.btn-info{background:var(--blue-light);color:var(--blue);border:1px solid var(--blue);}
+.btn-info:hover{background:var(--blue);color:#fff;}
+.btn-success{background:var(--green-light);color:var(--green);border:1px solid var(--green);}
+.btn-success:hover{background:var(--green);color:#fff;}
+.btn-ghost{background:var(--bg2);color:var(--text2);border:1.5px solid var(--border);}
+.btn-ghost:hover{border-color:var(--gold2);color:var(--gold);}
+
+/* Card sections */
+.section-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:20px;}
+.section-card h3{font-size:16px;font-family:'Nunito',sans-serif;font-weight:700;color:var(--text);margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border);}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;}
+@media(max-width:600px){.g2,.g3{grid-template-columns:1fr;}}
+.full{grid-column:1/-1;}
+
+/* Product admin card */
+.prod-list-item{background:var(--card2);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:14px;display:flex;gap:14px;align-items:center;margin-bottom:10px;transition:.2s;}
+.prod-list-item:hover{border-color:var(--gold2);}
+.prod-list-item img{width:56px;height:56px;object-fit:cover;border-radius:8px;border:1px solid var(--border);}
+.prod-list-info{flex:1;}
+.prod-list-info h4{font-size:14px;font-weight:700;color:var(--text);}
+.prod-list-info p{font-size:12px;color:var(--muted);margin-top:3px;}
+.prod-list-actions{display:flex;gap:7px;flex-wrap:wrap;}
+
+/* Wilaya */
+.wilaya-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;}
+.wilaya-item{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:10px 14px;display:flex;align-items:center;gap:8px;}
+.wilaya-item span{flex:1;font-size:13px;font-weight:600;}
+.wilaya-item input{width:80px;padding:5px 8px;background:var(--card);border:1.5px solid var(--border);border-radius:6px;color:var(--gold);font-size:13px;text-align:center;outline:none;}
+.wilaya-item input:focus{border-color:var(--gold2);}
+
+/* Toggle */
+.toggle-row{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.toggle-sw{width:44px;height:24px;background:var(--border2);border-radius:12px;cursor:pointer;position:relative;transition:.3s;border:none;}
+.toggle-sw.on{background:var(--green);}
+.toggle-sw::after{content:'';width:18px;height:18px;background:#fff;border-radius:50%;position:absolute;top:3px;left:3px;transition:.3s;box-shadow:0 1px 3px rgba(0,0,0,.2);}
+.toggle-sw.on::after{left:23px;}
+.toggle-label{font-size:14px;font-weight:600;}
+
+/* Modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.35);backdrop-filter:blur(3px);z-index:500;display:flex;align-items:center;justify-content:center;padding:20px;}
+.modal{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:28px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;}
+.modal h3{font-size:20px;color:var(--text);margin-bottom:20px;display:flex;justify-content:space-between;align-items:center;}
+.modal-close{background:transparent;border:none;color:var(--muted);font-size:20px;cursor:pointer;}
+.modal-close:hover{color:var(--red);}
+
+/* Search filters */
+.filters-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;}
+.filter-input{padding:9px 14px;background:var(--card);border:1.5px solid var(--border);border-radius:50px;color:var(--text);font-size:13px;outline:none;transition:.2s;}
+.filter-input:focus{border-color:var(--gold2);}
+
+/* Toast */
+.toast{position:fixed;bottom:28px;right:28px;padding:13px 22px;border-radius:var(--radius-sm);font-size:14px;font-weight:700;z-index:9999;transform:translateY(80px);opacity:0;transition:.3s;box-shadow:var(--shadow2);}
+.toast.show{transform:translateY(0);opacity:1;}
+
+/* Mobile */
+.mob-menu-btn{display:none;position:fixed;top:14px;left:14px;z-index:300;background:var(--card);border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;cursor:pointer;font-size:16px;box-shadow:var(--shadow);}
+@media(max-width:768px){
+  .sidebar{transform:translateX(-100%);transition:.3s;}
+  .sidebar.open{transform:translateX(0);}
+  .admin-main{margin-left:0;padding:70px 16px 20px;}
+  .mob-menu-btn{display:block;}
+  .products-grid{padding:16px;}
+  .shop-header{padding:12px 16px;}
+}
+
+.footer{text-align:center;padding:32px;color:var(--muted);font-size:13px;border-top:1px solid var(--border);margin-top:20px;}
+
+/* Inline editable */
+.editable-cell input{width:80px;padding:4px 8px;border:1.5px solid var(--gold2);border-radius:6px;background:var(--bg2);color:var(--text);font-size:13px;text-align:center;outline:none;}
+
+/* pack offers in admin */
+.pack-admin{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:14px;margin-bottom:12px;}
+.pack-admin h4{font-size:14px;font-weight:700;color:var(--text2);margin-bottom:10px;}
+.pack-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+.pack-row label{font-size:12px;color:var(--muted);font-weight:700;}
+.pack-row input{width:100px;padding:7px 10px;background:var(--card);border:1.5px solid var(--border);border-radius:6px;color:var(--text);font-size:13px;outline:none;}
+.pack-row input:focus{border-color:var(--gold2);}
+</style>
+</head>
+<body>
+
+<div class="toast" id="toast"></div>
+
+<!-- ██████████████ SHOP VIEW ██████████████ -->
+<div class="view active" id="view-shop">
+  <div id="promo-banner" class="promo-banner"><span class="promo-text" id="promo-text">🔥 OFFRE LIMITÉE — Livraison GRATUITE pour toute commande ce week-end !</span></div>
+
+  <div class="shop-header">
+    <div class="shop-logo" id="shop-name-disp">Ma Boutique</div>
+    <div class="header-search">
+      <span class="ico">🔍</span>
+      <input type="text" id="shop-search" placeholder="Rechercher un produit..." oninput="renderShop()">
+    </div>
+    <div class="header-right">
+    </div>
+  </div>
+
+  <div class="shop-hero">
+    <h1 id="shop-tagline-disp">Produits Premium</h1>
+    <p id="shop-subtitle-disp">Qualité garantie — Livraison dans toute l'Algérie</p>
+  </div>
+
+  <div class="products-grid" id="products-grid"></div>
+  <div class="footer">© 2025 Ma Boutique — Tous droits réservés</div>
+</div>
+
+<!-- ██████████████ LANDING PAGE VIEW ██████████████ -->
+<div class="view" id="view-landing">
+  <div class="promo-banner hidden"><span class="promo-text"></span></div>
+
+  <div class="lp-topbar">
+    <button class="btn-back" onclick="location.hash='';showView('view-shop')">← Retour</button>
+    <div class="shop-logo" id="lp-shop-name">Ma Boutique</div>
+  </div>
+
+  <div style="max-width:1000px;margin:0 auto;">
+    <div class="lp-main">
+    <div class="lp-hero">
+      <img id="lp-img" src="" alt="">
+      <h1 id="lp-name"></h1>
+    </div>
+
+    <!-- OFFER PACKS -->
+    <div class="offer-section">
+      <h2>🎁 Choisissez votre offre</h2>
+      <div class="packs-grid" id="packs-grid"></div>
+
+      <!-- ORDER FORM -->
+      <div class="order-form-wrap">
+        <h2>🛒 Votre Commande</h2>
+        <p class="sub">Livraison rapide partout en Algérie</p>
+
+        <div class="form-group">
+          <label>Nom Complet *</label>
+          <input type="text" id="f-name" placeholder="Votre nom complet">
+        </div>
+        <div class="form-group">
+          <label>Téléphone *</label>
+          <input type="tel" id="f-phone" placeholder="05 / 06 / 07 xxxxxxxx">
+        </div>
+        <div class="form-group">
+          <label>Wilaya *</label>
+          <select id="f-wilaya" onchange="updateSummary()">
+            <option value="">— Choisissez votre wilaya —</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Commune / Adresse *</label>
+          <input type="text" id="f-commune" placeholder="Votre commune ou adresse précise">
+        </div>
+
+        <div class="summary-box" id="summary-box">
+          <div class="summary-row"><span>Pack sélectionné</span><span id="sum-pack">—</span></div>
+          <div class="summary-row"><span>Produit</span><span id="sum-price">—</span></div>
+          <div class="summary-row" id="sum-del-row"><span>Livraison</span><span id="sum-del">—</span></div>
+          <div class="summary-row total"><span>Total</span><span id="sum-total">—</span></div>
+        </div>
+
+        <input type="text" id="f-website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;opacity:0;height:0;width:0;">
+        <button class="btn-submit" onclick="submitOrder()">🛒 COMMANDER MAINTENANT</button>
+      </div>
+    </div>
+
+    </div><!-- /lp-main -->
+
+    <!-- DESCRIPTION + PHOTOS / VIDEOS -->
+    <div class="lp-details">
+      <p id="lp-desc"></p>
+      <div class="lp-features" id="lp-feats"></div>
+      <div class="lp-media" id="lp-media"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ██████████████ SUCCESS ██████████████ -->
+<div class="view" id="view-success">
+  <div class="success-view">
+    <div class="success-icon">✅</div>
+    <h2>Commande Confirmée !</h2>
+    <p>Merci pour votre commande.<br>Notre équipe vous contactera bientôt pour confirmer la livraison.</p>
+    <button class="btn btn-primary" style="margin-top:28px;" onclick="location.hash='';showView('view-shop')">← Continuer mes achats</button>
+  </div>
+</div>
+
+<!-- ██████████████ ADMIN VIEW ██████████████ -->
+<div class="view" id="view-admin">
+
+  <!-- LOGIN -->
+  <div id="admin-login-screen">
+    <button class="btn btn-ghost" style="margin:16px 28px;" onclick="location.hash='';showView('view-shop')">← Retour boutique</button>
+    <div class="admin-login-wrap">
+      <h2>🔐 Connexion Admin</h2>
+      <p class="sub">Accès réservé à l'administrateur</p>
+      <div class="ag" id="admin-email-wrap"><label class="al">Nom d'utilisateur</label>
+        <input class="ai" type="text" id="admin-email" placeholder="ex: admin" autocomplete="username" autocapitalize="none">
+      </div>
+      <div class="ag"><label class="al">Mot de passe</label>
+        <input class="ai" type="password" id="admin-pw" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+      </div>
+      <button class="btn btn-primary" style="width:100%;padding:12px;" onclick="doLogin()">Se connecter</button>
+      <p style="color:var(--red);font-size:13px;margin-top:10px;text-align:center;display:none;" id="login-err">❌ Nom d'utilisateur ou mot de passe incorrect</p>
+    </div>
+  </div>
+
+  <!-- PANEL -->
+  <div id="admin-panel" style="display:none;">
+    <button class="mob-menu-btn" onclick="toggleSidebar()">☰</button>
+
+    <div class="sidebar" id="sidebar">
+      <div class="sidebar-logo">
+        ⚙ Admin
+        <span id="sidebar-shop-name">Ma Boutique</span>
+      </div>
+      <div class="nav-item active" onclick="goPanel('products',this)">🛍 Produits</div>
+      <div class="nav-item" onclick="goPanel('wilaya',this)">🗺 Wilayas</div>
+      <div class="nav-item" onclick="goPanel('settings',this)">⚙ Paramètres</div>
+      <div class="sidebar-footer">
+        <div class="sidebar-user">Connecté en tant que<strong id="current-user-disp">admin</strong></div>
+        <button class="btn btn-ghost" style="width:100%;" onclick="doLogout()">🚪 Déconnexion</button>
+      </div>
+    </div>
+
+    <div class="admin-main">
+
+      <!-- PRODUCTS -->
+      <div class="panel active" id="panel-products">
+        <div class="page-title">🛍 Produits</div>
+        <div class="page-sub">Gérez votre catalogue de produits</div>
+
+        <div style="margin-bottom:16px;">
+          <button class="btn btn-primary" onclick="openAddProduct()">➕ Ajouter un produit</button>
+        </div>
+
+        <div id="prod-list-admin"></div>
+      </div>
+
+      <!-- WILAYA -->
+      <div class="panel" id="panel-wilaya">
+        <div class="page-title">🗺 Livraison par Wilaya</div>
+        <div class="page-sub">Prix de livraison pour chaque wilaya (en DA)</div>
+        <div class="section-card">
+          <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;align-items:center;">
+            <input class="filter-input" id="wilaya-search" oninput="renderWilayas()" placeholder="🔍 Filtrer wilayas...">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <label style="font-size:13px;font-weight:600;">Prix par défaut :</label>
+              <input type="number" id="def-price" value="400" style="width:80px;padding:7px 10px;background:var(--bg2);border:1.5px solid var(--border);border-radius:6px;outline:none;">
+              <button class="btn btn-ghost" onclick="applyDefaultPrice()">Appliquer à toutes</button>
+            </div>
+          </div>
+          <div class="wilaya-grid" id="wilaya-grid"></div>
+          <button class="btn btn-primary" style="margin-top:20px;" onclick="saveWilayas()">💾 Sauvegarder</button>
+        </div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div class="panel" id="panel-settings">
+        <div class="page-title">⚙ Paramètres</div>
+        <div class="page-sub">Configuration de votre boutique</div>
+
+        <div class="section-card">
+          <h3>🏪 Informations de la Boutique</h3>
+          <div class="g2">
+            <div class="ag"><label class="al">Nom de la boutique</label><input class="ai" id="set-name"></div>
+            <div class="ag"><label class="al">Slogan principal</label><input class="ai" id="set-tagline"></div>
+            <div class="ag full"><label class="al">Sous-titre</label><input class="ai" id="set-subtitle"></div>
+          </div>
+          <button class="btn btn-primary" onclick="saveSettings()">💾 Sauvegarder</button>
+        </div>
+
+        <div class="section-card">
+          <h3>🎯 Bannière Promotionnelle</h3>
+          <div class="toggle-row">
+            <button class="toggle-sw" id="promo-sw" onclick="togglePromoSw()"></button>
+            <span class="toggle-label" id="promo-sw-label">Désactivée</span>
+          </div>
+          <div class="ag"><label class="al">Texte de la bannière</label><input class="ai" id="set-promo"></div>
+          <button class="btn btn-primary" style="margin-top:10px;" onclick="savePromo()">💾 Sauvegarder</button>
+        </div>
+
+        <div class="section-card">
+          <h3>👥 Comptes Admin</h3>
+          <p style="font-size:14px;color:var(--text2);line-height:1.7;">Utilisateur : <b id="me-email"></b><br>
+          Pour ajouter un administrateur : <b>Supabase → Authentication → Users → Add user</b>, avec l'email <b>nom@boutique-admin.com</b> (le nom d'utilisateur est la partie avant le @).
+          Seuls ces comptes peuvent modifier la boutique.</p>
+          <div id="admins-list" style="margin-top:10px;"></div>
+        </div>
+
+        <div class="section-card">
+          <h3>🔐 Changer mon Mot de Passe</h3>
+          <div class="g2">
+            <div class="ag"><label class="al">Nouveau mot de passe</label><input class="ai" type="password" id="chg-pw1" placeholder="••••••••"></div>
+            <div class="ag"><label class="al">Confirmer</label><input class="ai" type="password" id="chg-pw2" placeholder="••••••••"></div>
+          </div>
+          <button class="btn btn-primary" style="margin-top:10px;" onclick="changeMyPw()">💾 Changer</button>
+        </div>
+      </div>
+
+    </div><!-- /admin-main -->
+  </div><!-- /admin-panel -->
+</div><!-- /view-admin -->
+
+<!-- ██████████████ PRODUCT MODAL ██████████████ -->
+<div class="modal-overlay" id="prod-modal" style="display:none;">
+  <div class="modal">
+    <h3 id="prod-modal-title">Ajouter un Produit <button class="modal-close" onclick="closeProdModal()">✕</button></h3>
+    <input type="hidden" id="mp-id">
+    <div class="g2">
+      <div class="ag full"><label class="al">Nom du produit *</label><input class="ai" id="mp-name" placeholder="Ex: Viga 150000 Honey"></div>
+      <div class="ag full"><label class="al">🔥 Texte de la barre « offre limitée » (ce produit)</label><input class="ai" id="mp-promo" placeholder="Laissez vide pour utiliser le texte général (Paramètres)"></div>
+      <div class="ag full"><label class="al">Adresse URL (lien du produit)</label><input class="ai" id="mp-slug" placeholder="ex: test"><small style="color:var(--muted);font-size:12px;">Lien : <span id="mp-slug-preview"></span></small></div>
+      <div class="ag"><label class="al">Prix de vente (DA) *</label><input class="ai" type="number" id="mp-price" placeholder="2500"></div>
+      <div class="ag"><label class="al">Prix d'achat (DA)</label><input class="ai" type="number" id="mp-cost" placeholder="1200"></div>
+      <div class="ag"><label class="al">Prix barré (DA, optionnel)</label><input class="ai" type="number" id="mp-old" placeholder="3500"></div>
+      <div class="ag"><label class="al">Badge (optionnel)</label><input class="ai" id="mp-badge" placeholder="PROMO / NOUVEAU"></div>
+      <div class="ag full"><label class="al">Photo principale (lien ou import)</label>
+        <div style="display:flex;gap:8px;"><input class="ai" id="mp-img" placeholder="https://..." style="flex:1;margin-top:0;">
+        <button class="btn btn-ghost" type="button" onclick="document.getElementById('main-file').click()">📁 Importer</button></div>
+        <input type="file" id="main-file" accept="image/*" style="display:none;" onchange="uploadMain(this)"></div>
+      <div class="ag full"><label class="al">Description</label><textarea class="ai" id="mp-desc" rows="3" placeholder="Description du produit..."></textarea></div>
+      <div class="ag full"><label class="al">Points forts (séparés par virgule)</label><input class="ai" id="mp-feats" placeholder="100% Naturel, Certifié, Livraison rapide"></div>
+    </div>
+
+    <!-- OFFERS PACKS -->
+    <div style="margin-top:16px;border-top:1px solid var(--border);padding-top:16px;">
+      <h4 style="font-size:15px;font-weight:700;margin-bottom:12px;">🎁 Offres / Packs</h4>
+      <div id="packs-admin-list"></div>
+      <button class="btn btn-ghost" style="margin-top:8px;" onclick="addPackRow()">➕ Ajouter une offre</button>
+    </div>
+
+    <!-- MEDIAS -->
+    <div style="margin-top:16px;border-top:1px solid var(--border);padding-top:16px;">
+      <h4 style="font-size:15px;font-weight:700;margin-bottom:4px;">📷 Photos & vidéos (affichées en bas de la page)</h4>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:10px;">Collez un lien (photo, vidéo .mp4 ou YouTube) ou importez des photos depuis votre appareil.</p>
+      <div id="media-admin-list"></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <input class="ai" id="media-url" placeholder="https://... (photo, .mp4, YouTube)" style="flex:1;min-width:180px;margin-top:0;">
+        <button class="btn btn-ghost" onclick="addMediaUrl()">➕ Ajouter</button>
+        <button class="btn btn-ghost" onclick="document.getElementById('media-file').click()">📁 Importer photos</button>
+        <input type="file" id="media-file" accept="image/*" multiple style="display:none;" onchange="addMediaFiles(this)">
+      </div>
+    </div>
+
+    <div style="display:flex;gap:10px;margin-top:20px;">
+      <button class="btn btn-primary" onclick="saveProd()">💾 Enregistrer</button>
+      <button class="btn btn-ghost" onclick="closeProdModal()">Annuler</button>
+    </div>
+  </div>
+</div>
+
+<script>/* supabase-js 2.45.4 (copie locale, aucune dépendance externe) */
+!function(e,t){"object"==typeof exports&&"object"==typeof module?module.exports=t():"function"==typeof define&&define.amd?define([],t):"object"==typeof exports?exports.supabase=t():e.supabase=t()}(self,(()=>(()=>{"use strict";var e,t,s,r,i={235:(e,t,s)=>{s.r(t),s.d(t,{AuthAdminApi:()=>ie,AuthApiError:()=>T,AuthClient:()=>ne,AuthError:()=>w,AuthImplicitGrantRedirectError:()=>x,AuthInvalidCredentialsError:()=>$,AuthInvalidTokenResponseError:()=>A,AuthPKCEGrantCodeExchangeError:()=>C,AuthRetryableFetchError:()=>R,AuthSessionMissingError:()=>j,AuthUnknownError:()=>E,AuthWeakPasswordError:()=>L,CustomAuthError:()=>O,GoTrueAdminApi:()=>K,GoTrueClient:()=>re,NavigatorLockAcquireTimeoutError:()=>X,isAuthApiError:()=>S,isAuthError:()=>k,isAuthRetryableFetchError:()=>I,isAuthSessionMissingError:()=>P,isAuthWeakPasswordError:()=>U,lockInternals:()=>Y,navigatorLock:()=>Z});const r="2.65.0",i={"X-Client-Info":`gotrue-js/${r}`},n="X-Supabase-Api-Version",o={"2024-01-01":{timestamp:Date.parse("2024-01-01T00:00:00.0Z"),name:"2024-01-01"}},a=()=>"undefined"!=typeof document,c={tested:!1,writable:!1},l=()=>{if(!a())return!1;try{if("object"!=typeof globalThis.localStorage)return!1}catch(e){return!1}if(c.tested)return c.writable;const e=`lswt-${Math.random()}${Math.random()}`;try{globalThis.localStorage.setItem(e,e),globalThis.localStorage.removeItem(e),c.tested=!0,c.writable=!0}catch(e){c.tested=!0,c.writable=!1}return c.writable};function h(e){const t={},s=new URL(e);if(s.hash&&"#"===s.hash[0])try{new URLSearchParams(s.hash.substring(1)).forEach(((e,s)=>{t[s]=e}))}catch(e){}return s.searchParams.forEach(((e,s)=>{t[s]=e})),t}const u=e=>{let t;return t=e||("undefined"==typeof fetch?(...e)=>Promise.resolve().then(s.bind(s,907)).then((({default:t})=>t(...e))):fetch),(...e)=>t(...e)},d=e=>"object"==typeof e&&null!==e&&"status"in e&&"ok"in e&&"json"in e&&"function"==typeof e.json,f=async(e,t,s)=>{await e.setItem(t,JSON.stringify(s))},p=async(e,t)=>{const s=await e.getItem(t);if(!s)return null;try{return JSON.parse(s)}catch(e){return s}},g=async(e,t)=>{await e.removeItem(t)};class y{constructor(){this.promise=new y.promiseConstructor(((e,t)=>{this.resolve=e,this.reject=t}))}}function v(e){const t=e.split(".");if(3!==t.length)throw new Error("JWT is not valid: not a JWT structure");if(!/^([a-z0-9_-]{4})*($|[a-z0-9_-]{3}=?$|[a-z0-9_-]{2}(==)?$)$/i.test(t[1]))throw new Error("JWT is not valid: payload is not in base64url format");const s=t[1];return JSON.parse(function(e){const t="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";let s,r,i,n,o,a,c,l="",h=0;for(e=e.replace("-","+").replace("_","/");h<e.length;)n=t.indexOf(e.charAt(h++)),o=t.indexOf(e.charAt(h++)),a=t.indexOf(e.charAt(h++)),c=t.indexOf(e.charAt(h++)),s=n<<2|o>>4,r=(15&o)<<4|a>>2,i=(3&a)<<6|c,l+=String.fromCharCode(s),64!=a&&0!=r&&(l+=String.fromCharCode(r)),64!=c&&0!=i&&(l+=String.fromCharCode(i));return l}(s))}function m(e){return("0"+e.toString(16)).substr(-2)}async function _(e,t,s=!1){const r=function(){const e=new Uint32Array(56);if("undefined"==typeof crypto){const e="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~",t=e.length;let s="";for(let r=0;r<56;r++)s+=e.charAt(Math.floor(Math.random()*t));return s}return crypto.getRandomValues(e),Array.from(e,m).join("")}();let i=r;s&&(i+="/PASSWORD_RECOVERY"),await f(e,`${t}-code-verifier`,i);const n=await async function(e){if("undefined"==typeof crypto||void 0===crypto.subtle||"undefined"==typeof TextEncoder)return console.warn("WebCrypto API is not supported. Code challenge method will default to use plain instead of sha256."),e;const t=await async function(e){const t=(new TextEncoder).encode(e),s=await crypto.subtle.digest("SHA-256",t),r=new Uint8Array(s);return Array.from(r).map((e=>String.fromCharCode(e))).join("")}(e);return btoa(t).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"")}(r);return[n,r===n?"plain":"s256"]}y.promiseConstructor=Promise;const b=/^2[0-9]{3}-(0[1-9]|1[0-2])-(0[1-9]|1[0-9]|2[0-9]|3[0-1])$/i;class w extends Error{constructor(e,t,s){super(e),this.__isAuthError=!0,this.name="AuthError",this.status=t,this.code=s}}function k(e){return"object"==typeof e&&null!==e&&"__isAuthError"in e}class T extends w{constructor(e,t,s){super(e,t,s),this.name="AuthApiError",this.status=t,this.code=s}}function S(e){return k(e)&&"AuthApiError"===e.name}class E extends w{constructor(e,t){super(e),this.name="AuthUnknownError",this.originalError=t}}class O extends w{constructor(e,t,s,r){super(e,s,r),this.name=t,this.status=s}}class j extends O{constructor(){super("Auth session missing!","AuthSessionMissingError",400,void 0)}}function P(e){return k(e)&&"AuthSessionMissingError"===e.name}class A extends O{constructor(){super("Auth session or user missing","AuthInvalidTokenResponseError",500,void 0)}}class $ extends O{constructor(e){super(e,"AuthInvalidCredentialsError",400,void 0)}}class x extends O{constructor(e,t=null){super(e,"AuthImplicitGrantRedirectError",500,void 0),this.details=null,this.details=t}toJSON(){return{name:this.name,message:this.message,status:this.status,details:this.details}}}class C extends O{constructor(e,t=null){super(e,"AuthPKCEGrantCodeExchangeError",500,void 0),this.details=null,this.details=t}toJSON(){return{name:this.name,message:this.message,status:this.status,details:this.details}}}class R extends O{constructor(e,t){super(e,"AuthRetryableFetchError",t,void 0)}}function I(e){return k(e)&&"AuthRetryableFetchError"===e.name}class L extends O{constructor(e,t,s){super(e,"AuthWeakPasswordError",t,"weak_password"),this.reasons=s}}function U(e){return k(e)&&"AuthWeakPasswordError"===e.name}const D=e=>e.msg||e.message||e.error_description||e.error||JSON.stringify(e),N=[502,503,504];async function F(e){var t;if(!d(e))throw new R(D(e),0);if(N.includes(e.status))throw new R(D(e),e.status);let s,r;try{s=await e.json()}catch(e){throw new E(D(e),e)}const i=function(e){const t=e.headers.get(n);if(!t)return null;if(!t.match(b))return null;try{return new Date(`${t}T00:00:00.0Z`)}catch(e){return null}}(e);if(i&&i.getTime()>=o["2024-01-01"].timestamp&&"object"==typeof s&&s&&"string"==typeof s.code?r=s.code:"object"==typeof s&&s&&"string"==typeof s.error_code&&(r=s.error_code),r){if("weak_password"===r)throw new L(D(s),e.status,(null===(t=s.weak_password)||void 0===t?void 0:t.reasons)||[]);if("session_not_found"===r)throw new j}else if("object"==typeof s&&s&&"object"==typeof s.weak_password&&s.weak_password&&Array.isArray(s.weak_password.reasons)&&s.weak_password.reasons.length&&s.weak_password.reasons.reduce(((e,t)=>e&&"string"==typeof t),!0))throw new L(D(s),e.status,s.weak_password.reasons);throw new T(D(s),e.status||500,r)}async function M(e,t,s,r){var i;const a=Object.assign({},null==r?void 0:r.headers);a[n]||(a[n]=o["2024-01-01"].name),(null==r?void 0:r.jwt)&&(a.Authorization=`Bearer ${r.jwt}`);const c=null!==(i=null==r?void 0:r.query)&&void 0!==i?i:{};(null==r?void 0:r.redirectTo)&&(c.redirect_to=r.redirectTo);const l=Object.keys(c).length?"?"+new URLSearchParams(c).toString():"",h=await async function(e,t,s,r,i,n){const o=((e,t,s,r)=>{const i={method:e,headers:(null==t?void 0:t.headers)||{}};return"GET"===e?i:(i.headers=Object.assign({"Content-Type":"application/json;charset=UTF-8"},null==t?void 0:t.headers),i.body=JSON.stringify(r),Object.assign(Object.assign({},i),s))})(t,r,{},n);let a;try{a=await e(s,Object.assign({},o))}catch(e){throw console.error(e),new R(D(e),0)}if(a.ok||await F(a),null==r?void 0:r.noResolveJson)return a;try{return await a.json()}catch(e){await F(e)}}(e,t,s+l,{headers:a,noResolveJson:null==r?void 0:r.noResolveJson},0,null==r?void 0:r.body);return(null==r?void 0:r.xform)?null==r?void 0:r.xform(h):{data:Object.assign({},h),error:null}}function B(e){var t;let s=null;var r;return function(e){return e.access_token&&e.refresh_token&&e.expires_in}(e)&&(s=Object.assign({},e),e.expires_at||(s.expires_at=(r=e.expires_in,Math.round(Date.now()/1e3)+r))),{data:{session:s,user:null!==(t=e.user)&&void 0!==t?t:e},error:null}}function q(e){const t=B(e);return!t.error&&e.weak_password&&"object"==typeof e.weak_password&&Array.isArray(e.weak_password.reasons)&&e.weak_password.reasons.length&&e.weak_password.message&&"string"==typeof e.weak_password.message&&e.weak_password.reasons.reduce(((e,t)=>e&&"string"==typeof t),!0)&&(t.data.weak_password=e.weak_password),t}function z(e){var t;return{data:{user:null!==(t=e.user)&&void 0!==t?t:e},error:null}}function H(e){return{data:e,error:null}}function J(e){const{action_link:t,email_otp:s,hashed_token:r,redirect_to:i,verification_type:n}=e,o=function(e,t){var s={};for(var r in e)Object.prototype.hasOwnProperty.call(e,r)&&t.indexOf(r)<0&&(s[r]=e[r]);if(null!=e&&"function"==typeof Object.getOwnPropertySymbols){var i=0;for(r=Object.getOwnPropertySymbols(e);i<r.length;i++)t.indexOf(r[i])<0&&Object.prototype.propertyIsEnumerable.call(e,r[i])&&(s[r[i]]=e[r[i]])}return s}(e,["action_link","email_otp","hashed_token","redirect_to","verification_type"]);return{data:{properties:{action_link:t,email_otp:s,hashed_token:r,redirect_to:i,verification_type:n},user:Object.assign({},o)},error:null}}function G(e){return e}class K{constructor({url:e="",headers:t={},fetch:s}){this.url=e,this.headers=t,this.fetch=u(s),this.mfa={listFactors:this._listFactors.bind(this),deleteFactor:this._deleteFactor.bind(this)}}async signOut(e,t="global"){try{return await M(this.fetch,"POST",`${this.url}/logout?scope=${t}`,{headers:this.headers,jwt:e,noResolveJson:!0}),{data:null,error:null}}catch(e){if(k(e))return{data:null,error:e};throw e}}async inviteUserByEmail(e,t={}){try{return await M(this.fetch,"POST",`${this.url}/invite`,{body:{email:e,data:t.data},headers:this.headers,redirectTo:t.redirectTo,xform:z})}catch(e){if(k(e))return{data:{user:null},error:e};throw e}}async generateLink(e){try{const{options:t}=e,s=function(e,t){var s={};for(var r in e)Object.prototype.hasOwnProperty.call(e,r)&&t.indexOf(r)<0&&(s[r]=e[r]);if(null!=e&&"function"==typeof Object.getOwnPropertySymbols){var i=0;for(r=Object.getOwnPropertySymbols(e);i<r.length;i++)t.indexOf(r[i])<0&&Object.prototype.propertyIsEnumerable.call(e,r[i])&&(s[r[i]]=e[r[i]])}return s}(e,["options"]),r=Object.assign(Object.assign({},s),t);return"newEmail"in s&&(r.new_email=null==s?void 0:s.newEmail,delete r.newEmail),await M(this.fetch,"POST",`${this.url}/admin/generate_link`,{body:r,headers:this.headers,xform:J,redirectTo:null==t?void 0:t.redirectTo})}catch(e){if(k(e))return{data:{properties:null,user:null},error:e};throw e}}async createUser(e){try{return await M(this.fetch,"POST",`${this.url}/admin/users`,{body:e,headers:this.headers,xform:z})}catch(e){if(k(e))return{data:{user:null},error:e};throw e}}async listUsers(e){var t,s,r,i,n,o,a;try{const c={nextPage:null,lastPage:0,total:0},l=await M(this.fetch,"GET",`${this.url}/admin/users`,{headers:this.headers,noResolveJson:!0,query:{page:null!==(s=null===(t=null==e?void 0:e.page)||void 0===t?void 0:t.toString())&&void 0!==s?s:"",per_page:null!==(i=null===(r=null==e?void 0:e.perPage)||void 0===r?void 0:r.toString())&&void 0!==i?i:""},xform:G});if(l.error)throw l.error;const h=await l.json(),u=null!==(n=l.headers.get("x-total-count"))&&void 0!==n?n:0,d=null!==(a=null===(o=l.headers.get("link"))||void 0===o?void 0:o.split(","))&&void 0!==a?a:[];return d.length>0&&(d.forEach((e=>{const t=parseInt(e.split(";")[0].split("=")[1].substring(0,1)),s=JSON.parse(e.split(";")[1].split("=")[1]);c[`${s}Page`]=t})),c.total=parseInt(u)),{data:Object.assign(Object.assign({},h),c),error:null}}catch(e){if(k(e))return{data:{users:[]},error:e};throw e}}async getUserById(e){try{return await M(this.fetch,"GET",`${this.url}/admin/users/${e}`,{headers:this.headers,xform:z})}catch(e){if(k(e))return{data:{user:null},error:e};throw e}}async updateUserById(e,t){try{return await M(this.fetch,"PUT",`${this.url}/admin/users/${e}`,{body:t,headers:this.headers,xform:z})}catch(e){if(k(e))return{data:{user:null},error:e};throw e}}async deleteUser(e,t=!1){try{return await M(this.fetch,"DELETE",`${this.url}/admin/users/${e}`,{headers:this.headers,body:{should_soft_delete:t},xform:z})}catch(e){if(k(e))return{data:{user:null},error:e};throw e}}async _listFactors(e){try{const{data:t,error:s}=await M(this.fetch,"GET",`${this.url}/admin/users/${e.userId}/factors`,{headers:this.headers,xform:e=>({data:{factors:e},error:null})});return{data:t,error:s}}catch(e){if(k(e))return{data:null,error:e};throw e}}async _deleteFactor(e){try{return{data:await M(this.fetch,"DELETE",`${this.url}/admin/users/${e.userId}/factors/${e.id}`,{headers:this.headers}),error:null}}catch(e){if(k(e))return{data:null,error:e};throw e}}}const W={getItem:e=>l()?globalThis.localStorage.getItem(e):null,setItem:(e,t)=>{l()&&globalThis.localStorage.setItem(e,t)},removeItem:e=>{l()&&globalThis.localStorage.removeItem(e)}};function V(e={}){return{getItem:t=>e[t]||null,setItem:(t,s)=>{e[t]=s},removeItem:t=>{delete e[t]}}}const Y={debug:!!(globalThis&&l()&&globalThis.localStorage&&"true"===globalThis.localStorage.getItem("supabase.gotrue-js.locks.debug"))};class Q extends Error{constructor(e){super(e),this.isAcquireTimeout=!0}}class X extends Q{}async function Z(e,t,s){Y.debug&&console.log("@supabase/gotrue-js: navigatorLock: acquire lock",e,t);const r=new globalThis.AbortController;return t>0&&setTimeout((()=>{r.abort(),Y.debug&&console.log("@supabase/gotrue-js: navigatorLock acquire timed out",e)}),t),await globalThis.navigator.locks.request(e,0===t?{mode:"exclusive",ifAvailable:!0}:{mode:"exclusive",signal:r.signal},(async r=>{if(!r){if(0===t)throw Y.debug&&console.log("@supabase/gotrue-js: navigatorLock: not immediately available",e),new X(`Acquiring an exclusive Navigator LockManager lock "${e}" immediately failed`);if(Y.debug)try{const e=await globalThis.navigator.locks.query();console.log("@supabase/gotrue-js: Navigator LockManager state",JSON.stringify(e,null,"  "))}catch(e){console.warn("@supabase/gotrue-js: Error when querying Navigator LockManager state",e)}return console.warn("@supabase/gotrue-js: Navigator LockManager returned a null lock when using #request without ifAvailable set to true, it appears this browser is not following the LockManager spec https://developer.mozilla.org/en-US/docs/Web/API/LockManager/request"),await s()}Y.debug&&console.log("@supabase/gotrue-js: navigatorLock: acquired",e,r.name);try{return await s()}finally{Y.debug&&console.log("@supabase/gotrue-js: navigatorLock: released",e,r.name)}}))}!function(){if("object"!=typeof globalThis)try{Object.defineProperty(Object.prototype,"__magic__",{get:function(){return this},configurable:!0}),__magic__.globalThis=__magic__,delete Object.prototype.__magic__}catch(e){"undefined"!=typeof self&&(self.globalThis=self)}}();const ee={url:"http://localhost:9999",storageKey:"supabase.auth.token",autoRefreshToken:!0,persistSession:!0,detectSessionInUrl:!0,headers:i,flowType:"implicit",debug:!1,hasCustomAuthorizationHeader:!1},te=3e4;async function se(e,t,s){return await s()}class re{constructor(e){var t,s;this.memoryStorage=null,this.stateChangeEmitters=new Map,this.autoRefreshTicker=null,this.visibilityChangedCallback=null,this.refreshingDeferred=null,this.initializePromise=null,this.detectSessionInUrl=!0,this.hasCustomAuthorizationHeader=!1,this.suppressGetSessionWarning=!1,this.lockAcquired=!1,this.pendingInLock=[],this.broadcastChannel=null,this.logger=console.log,this.instanceID=re.nextInstanceID,re.nextInstanceID+=1,this.instanceID>0&&a()&&console.warn("Multiple GoTrueClient instances detected in the same browser context. It is not an error, but this should be avoided as it may produce undefined behavior when used concurrently under the same storage key.");const r=Object.assign(Object.assign({},ee),e);if(this.logDebugMessages=!!r.debug,"function"==typeof r.debug&&(this.logger=r.debug),this.persistSession=r.persistSession,this.storageKey=r.storageKey,this.autoRefreshToken=r.autoRefreshToken,this.admin=new K({url:r.url,headers:r.headers,fetch:r.fetch}),this.url=r.url,this.headers=r.headers,this.fetch=u(r.fetch),this.lock=r.lock||se,this.detectSessionInUrl=r.detectSessionInUrl,this.flowType=r.flowType,this.hasCustomAuthorizationHeader=r.hasCustomAuthorizationHeader,r.lock?this.lock=r.lock:a()&&(null===(t=null===globalThis||void 0===globalThis?void 0:globalThis.navigator)||void 0===t?void 0:t.locks)?this.lock=Z:this.lock=se,this.mfa={verify:this._verify.bind(this),enroll:this._enroll.bind(this),unenroll:this._unenroll.bind(this),challenge:this._challenge.bind(this),listFactors:this._listFactors.bind(this),challengeAndVerify:this._challengeAndVerify.bind(this),getAuthenticatorAssuranceLevel:this._getAuthenticatorAssuranceLevel.bind(this)},this.persistSession?r.storage?this.storage=r.storage:l()?this.storage=W:(this.memoryStorage={},this.storage=V(this.memoryStorage)):(this.memoryStorage={},this.storage=V(this.memoryStorage)),a()&&globalThis.BroadcastChannel&&this.persistSession&&this.storageKey){try{this.broadcastChannel=new globalThis.BroadcastChannel(this.storageKey)}catch(e){console.error("Failed to create a new BroadcastChannel, multi-tab state changes will not be available",e)}null===(s=this.broadcastChannel)||void 0===s||s.addEventListener("message",(async e=>{this._debug("received broadcast notification from other tab or client",e),await this._notifyAllSubscribers(e.data.event,e.data.session,!1)}))}this.initialize()}_debug(...e){return this.logDebugMessages&&this.logger(`GoTrueClient@${this.instanceID} (${r}) ${(new Date).toISOString()}`,...e),this}async initialize(){return this.initializePromise||(this.initializePromise=(async()=>await this._acquireLock(-1,(async()=>await this._initialize())))()),await this.initializePromise}async _initialize(){try{const e=!!a()&&await this._isPKCEFlow();if(this._debug("#_initialize()","begin","is PKCE flow",e),e||this.detectSessionInUrl&&this._isImplicitGrantFlow()){const{data:t,error:s}=await this._getSessionFromURL(e);if(s)return this._debug("#_initialize()","error detecting session from URL",s),"Identity is already linked"===(null==s?void 0:s.message)||"Identity is already linked to another user"===(null==s?void 0:s.message)||await this._removeSession(),{error:s};const{session:r,redirectType:i}=t;return this._debug("#_initialize()","detected session in URL",r,"redirect type",i),await this._saveSession(r),setTimeout((async()=>{"recovery"===i?await this._notifyAllSubscribers("PASSWORD_RECOVERY",r):await this._notifyAllSubscribers("SIGNED_IN",r)}),0),{error:null}}return await this._recoverAndRefresh(),{error:null}}catch(e){return k(e)?{error:e}:{error:new E("Unexpected error during initialization",e)}}finally{await this._handleVisibilityChange(),this._debug("#_initialize()","end")}}async signInAnonymously(e){var t,s,r;try{const i=await M(this.fetch,"POST",`${this.url}/signup`,{headers:this.headers,body:{data:null!==(s=null===(t=null==e?void 0:e.options)||void 0===t?void 0:t.data)&&void 0!==s?s:{},gotrue_meta_security:{captcha_token:null===(r=null==e?void 0:e.options)||void 0===r?void 0:r.captchaToken}},xform:B}),{data:n,error:o}=i;if(o||!n)return{data:{user:null,session:null},error:o};const a=n.session,c=n.user;return n.session&&(await this._saveSession(n.session),await this._notifyAllSubscribers("SIGNED_IN",a)),{data:{user:c,session:a},error:null}}catch(e){if(k(e))return{data:{user:null,session:null},error:e};throw e}}async signUp(e){var t,s,r;try{let i;if("email"in e){const{email:s,password:r,options:n}=e;let o=null,a=null;"pkce"===this.flowType&&([o,a]=await _(this.storage,this.storageKey)),i=await M(this.fetch,"POST",`${this.url}/signup`,{headers:this.headers,redirectTo:null==n?void 0:n.emailRedirectTo,body:{email:s,password:r,data:null!==(t=null==n?void 0:n.data)&&void 0!==t?t:{},gotrue_meta_security:{captcha_token:null==n?void 0:n.captchaToken},code_challenge:o,code_challenge_method:a},xform:B})}else{if(!("phone"in e))throw new $("You must provide either an email or phone number and a password");{const{phone:t,password:n,options:o}=e;i=await M(this.fetch,"POST",`${this.url}/signup`,{headers:this.headers,body:{phone:t,password:n,data:null!==(s=null==o?void 0:o.data)&&void 0!==s?s:{},channel:null!==(r=null==o?void 0:o.channel)&&void 0!==r?r:"sms",gotrue_meta_security:{captcha_token:null==o?void 0:o.captchaToken}},xform:B})}}const{data:n,error:o}=i;if(o||!n)return{data:{user:null,session:null},error:o};const a=n.session,c=n.user;return n.session&&(await this._saveSession(n.session),await this._notifyAllSubscribers("SIGNED_IN",a)),{data:{user:c,session:a},error:null}}catch(e){if(k(e))return{data:{user:null,session:null},error:e};throw e}}async signInWithPassword(e){try{let t;if("email"in e){const{email:s,password:r,options:i}=e;t=await M(this.fetch,"POST",`${this.url}/token?grant_type=password`,{headers:this.headers,body:{email:s,password:r,gotrue_meta_security:{captcha_token:null==i?void 0:i.captchaToken}},xform:q})}else{if(!("phone"in e))throw new $("You must provide either an email or phone number and a password");{const{phone:s,password:r,options:i}=e;t=await M(this.fetch,"POST",`${this.url}/token?grant_type=password`,{headers:this.headers,body:{phone:s,password:r,gotrue_meta_security:{captcha_token:null==i?void 0:i.captchaToken}},xform:q})}}const{data:s,error:r}=t;return r?{data:{user:null,session:null},error:r}:s&&s.session&&s.user?(s.session&&(await this._saveSession(s.session),await this._notifyAllSubscribers("SIGNED_IN",s.session)),{data:Object.assign({user:s.user,session:s.session},s.weak_password?{weakPassword:s.weak_password}:null),error:r}):{data:{user:null,session:null},error:new A}}catch(e){if(k(e))return{data:{user:null,session:null},error:e};throw e}}async signInWithOAuth(e){var t,s,r,i;return await this._handleProviderSignIn(e.provider,{redirectTo:null===(t=e.options)||void 0===t?void 0:t.redirectTo,scopes:null===(s=e.options)||void 0===s?void 0:s.scopes,queryParams:null===(r=e.options)||void 0===r?void 0:r.queryParams,skipBrowserRedirect:null===(i=e.options)||void 0===i?void 0:i.skipBrowserRedirect})}async exchangeCodeForSession(e){return await this.initializePromise,this._acquireLock(-1,(async()=>this._exchangeCodeForSession(e)))}async _exchangeCodeForSession(e){const t=await p(this.storage,`${this.storageKey}-code-verifier`),[s,r]=(null!=t?t:"").split("/");try{const{data:t,error:i}=await M(this.fetch,"POST",`${this.url}/token?grant_type=pkce`,{headers:this.headers,body:{auth_code:e,code_verifier:s},xform:B});if(await g(this.storage,`${this.storageKey}-code-verifier`),i)throw i;return t&&t.session&&t.user?(t.session&&(await this._saveSession(t.session),await this._notifyAllSubscribers("SIGNED_IN",t.session)),{data:Object.assign(Object.assign({},t),{redirectType:null!=r?r:null}),error:i}):{data:{user:null,session:null,redirectType:null},error:new A}}catch(e){if(k(e))return{data:{user:null,session:null,redirectType:null},error:e};throw e}}async signInWithIdToken(e){try{const{options:t,provider:s,token:r,access_token:i,nonce:n}=e,o=await M(this.fetch,"POST",`${this.url}/token?grant_type=id_token`,{headers:this.headers,body:{provider:s,id_token:r,access_token:i,nonce:n,gotrue_meta_security:{captcha_token:null==t?void 0:t.captchaToken}},xform:B}),{data:a,error:c}=o;return c?{data:{user:null,session:null},error:c}:a&&a.session&&a.user?(a.session&&(await this._saveSession(a.session),await this._notifyAllSubscribers("SIGNED_IN",a.session)),{data:a,error:c}):{data:{user:null,session:null},error:new A}}catch(e){if(k(e))return{data:{user:null,session:null},error:e};throw e}}async signInWithOtp(e){var t,s,r,i,n;try{if("email"in e){const{email:r,options:i}=e;let n=null,o=null;"pkce"===this.flowType&&([n,o]=await _(this.storage,this.storageKey));const{error:a}=await M(this.fetch,"POST",`${this.url}/otp`,{headers:this.headers,body:{email:r,data:null!==(t=null==i?void 0:i.data)&&void 0!==t?t:{},create_user:null===(s=null==i?void 0:i.shouldCreateUser)||void 0===s||s,gotrue_meta_security:{captcha_token:null==i?void 0:i.captchaToken},code_challenge:n,code_challenge_method:o},redirectTo:null==i?void 0:i.emailRedirectTo});return{data:{user:null,session:null},error:a}}if("phone"in e){const{phone:t,options:s}=e,{data:o,error:a}=await M(this.fetch,"POST",`${this.url}/otp`,{headers:this.headers,body:{phone:t,data:null!==(r=null==s?void 0:s.data)&&void 0!==r?r:{},create_user:null===(i=null==s?void 0:s.shouldCreateUser)||void 0===i||i,gotrue_meta_security:{captcha_token:null==s?void 0:s.captchaToken},channel:null!==(n=null==s?void 0:s.channel)&&void 0!==n?n:"sms"}});return{data:{user:null,session:null,messageId:null==o?void 0:o.message_id},error:a}}throw new $("You must provide either an email or phone number.")}catch(e){if(k(e))return{data:{user:null,session:null},error:e};throw e}}async verifyOtp(e){var t,s;try{let r,i;"options"in e&&(r=null===(t=e.options)||void 0===t?void 0:t.redirectTo,i=null===(s=e.options)||void 0===s?void 0:s.captchaToken);const{data:n,error:o}=await M(this.fetch,"POST",`${this.url}/verify`,{headers:this.headers,body:Object.assign(Object.assign({},e),{gotrue_meta_security:{captcha_token:i}}),redirectTo:r,xform:B});if(o)throw o;if(!n)throw new Error("An error occurred on token verification.");const a=n.session,c=n.user;return(null==a?void 0:a.access_token)&&(await this._saveSession(a),await this._notifyAllSubscribers("recovery"==e.type?"PASSWORD_RECOVERY":"SIGNED_IN",a)),{data:{user:c,session:a},error:null}}catch(e){if(k(e))return{data:{user:null,session:null},error:e};throw e}}async signInWithSSO(e){var t,s,r;try{let i=null,n=null;return"pkce"===this.flowType&&([i,n]=await _(this.storage,this.storageKey)),await M(this.fetch,"POST",`${this.url}/sso`,{body:Object.assign(Object.assign(Object.assign(Object.assign(Object.assign({},"providerId"in e?{provider_id:e.providerId}:null),"domain"in e?{domain:e.domain}:null),{redirect_to:null!==(s=null===(t=e.options)||void 0===t?void 0:t.redirectTo)&&void 0!==s?s:void 0}),(null===(r=null==e?void 0:e.options)||void 0===r?void 0:r.captchaToken)?{gotrue_meta_security:{captcha_token:e.options.captchaToken}}:null),{skip_http_redirect:!0,code_challenge:i,code_challenge_method:n}),headers:this.headers,xform:H})}catch(e){if(k(e))return{data:null,error:e};throw e}}async reauthenticate(){return await this.initializePromise,await this._acquireLock(-1,(async()=>await this._reauthenticate()))}async _reauthenticate(){try{return await this._useSession((async e=>{const{data:{session:t},error:s}=e;if(s)throw s;if(!t)throw new j;const{error:r}=await M(this.fetch,"GET",`${this.url}/reauthenticate`,{headers:this.headers,jwt:t.access_token});return{data:{user:null,session:null},error:r}}))}catch(e){if(k(e))return{data:{user:null,session:null},error:e};throw e}}async resend(e){try{const t=`${this.url}/resend`;if("email"in e){const{email:s,type:r,options:i}=e,{error:n}=await M(this.fetch,"POST",t,{headers:this.headers,body:{email:s,type:r,gotrue_meta_security:{captcha_token:null==i?void 0:i.captchaToken}},redirectTo:null==i?void 0:i.emailRedirectTo});return{data:{user:null,session:null},error:n}}if("phone"in e){const{phone:s,type:r,options:i}=e,{data:n,error:o}=await M(this.fetch,"POST",t,{headers:this.headers,body:{phone:s,type:r,gotrue_meta_security:{captcha_token:null==i?void 0:i.captchaToken}}});return{data:{user:null,session:null,messageId:null==n?void 0:n.message_id},error:o}}throw new $("You must provide either an email or phone number and a type")}catch(e){if(k(e))return{data:{user:null,session:null},error:e};throw e}}async getSession(){return await this.initializePromise,await this._acquireLock(-1,(async()=>this._useSession((async e=>e))))}async _acquireLock(e,t){this._debug("#_acquireLock","begin",e);try{if(this.lockAcquired){const e=this.pendingInLock.length?this.pendingInLock[this.pendingInLock.length-1]:Promise.resolve(),s=(async()=>(await e,await t()))();return this.pendingInLock.push((async()=>{try{await s}catch(e){}})()),s}return await this.lock(`lock:${this.storageKey}`,e,(async()=>{this._debug("#_acquireLock","lock acquired for storage key",this.storageKey);try{this.lockAcquired=!0;const e=t();for(this.pendingInLock.push((async()=>{try{await e}catch(e){}})()),await e;this.pendingInLock.length;){const e=[...this.pendingInLock];await Promise.all(e),this.pendingInLock.splice(0,e.length)}return await e}finally{this._debug("#_acquireLock","lock released for storage key",this.storageKey),this.lockAcquired=!1}}))}finally{this._debug("#_acquireLock","end")}}async _useSession(e){this._debug("#_useSession","begin");try{const t=await this.__loadSession();return await e(t)}finally{this._debug("#_useSession","end")}}async __loadSession(){this._debug("#__loadSession()","begin"),this.lockAcquired||this._debug("#__loadSession()","used outside of an acquired lock!",(new Error).stack);try{let e=null;const t=await p(this.storage,this.storageKey);if(this._debug("#getSession()","session from storage",t),null!==t&&(this._isValidSession(t)?e=t:(this._debug("#getSession()","session from storage is not valid"),await this._removeSession())),!e)return{data:{session:null},error:null};const s=!!e.expires_at&&e.expires_at<=Date.now()/1e3;if(this._debug("#__loadSession()",`session has${s?"":" not"} expired`,"expires_at",e.expires_at),!s){if(this.storage.isServer){let t=this.suppressGetSessionWarning;e=new Proxy(e,{get:(e,s,r)=>(t||"user"!==s||(console.warn("Using the user object as returned from supabase.auth.getSession() or from some supabase.auth.onAuthStateChange() events could be insecure! This value comes directly from the storage medium (usually cookies on the server) and many not be authentic. Use supabase.auth.getUser() instead which authenticates the data by contacting the Supabase Auth server."),t=!0,this.suppressGetSessionWarning=!0),Reflect.get(e,s,r))})}return{data:{session:e},error:null}}const{session:r,error:i}=await this._callRefreshToken(e.refresh_token);return i?{data:{session:null},error:i}:{data:{session:r},error:null}}finally{this._debug("#__loadSession()","end")}}async getUser(e){return e?await this._getUser(e):(await this.initializePromise,await this._acquireLock(-1,(async()=>await this._getUser())))}async _getUser(e){try{return e?await M(this.fetch,"GET",`${this.url}/user`,{headers:this.headers,jwt:e,xform:z}):await this._useSession((async e=>{var t,s,r;const{data:i,error:n}=e;if(n)throw n;return(null===(t=i.session)||void 0===t?void 0:t.access_token)||this.hasCustomAuthorizationHeader?await M(this.fetch,"GET",`${this.url}/user`,{headers:this.headers,jwt:null!==(r=null===(s=i.session)||void 0===s?void 0:s.access_token)&&void 0!==r?r:void 0,xform:z}):{data:{user:null},error:new j}}))}catch(e){if(k(e))return P(e)&&(await this._removeSession(),await g(this.storage,`${this.storageKey}-code-verifier`),await this._notifyAllSubscribers("SIGNED_OUT",null)),{data:{user:null},error:e};throw e}}async updateUser(e,t={}){return await this.initializePromise,await this._acquireLock(-1,(async()=>await this._updateUser(e,t)))}async _updateUser(e,t={}){try{return await this._useSession((async s=>{const{data:r,error:i}=s;if(i)throw i;if(!r.session)throw new j;const n=r.session;let o=null,a=null;"pkce"===this.flowType&&null!=e.email&&([o,a]=await _(this.storage,this.storageKey));const{data:c,error:l}=await M(this.fetch,"PUT",`${this.url}/user`,{headers:this.headers,redirectTo:null==t?void 0:t.emailRedirectTo,body:Object.assign(Object.assign({},e),{code_challenge:o,code_challenge_method:a}),jwt:n.access_token,xform:z});if(l)throw l;return n.user=c.user,await this._saveSession(n),await this._notifyAllSubscribers("USER_UPDATED",n),{data:{user:n.user},error:null}}))}catch(e){if(k(e))return{data:{user:null},error:e};throw e}}_decodeJWT(e){return v(e)}async setSession(e){return await this.initializePromise,await this._acquireLock(-1,(async()=>await this._setSession(e)))}async _setSession(e){try{if(!e.access_token||!e.refresh_token)throw new j;const t=Date.now()/1e3;let s=t,r=!0,i=null;const n=v(e.access_token);if(n.exp&&(s=n.exp,r=s<=t),r){const{session:t,error:s}=await this._callRefreshToken(e.refresh_token);if(s)return{data:{user:null,session:null},error:s};if(!t)return{data:{user:null,session:null},error:null};i=t}else{const{data:r,error:n}=await this._getUser(e.access_token);if(n)throw n;i={access_token:e.access_token,refresh_token:e.refresh_token,user:r.user,token_type:"bearer",expires_in:s-t,expires_at:s},await this._saveSession(i),await this._notifyAllSubscribers("SIGNED_IN",i)}return{data:{user:i.user,session:i},error:null}}catch(e){if(k(e))return{data:{session:null,user:null},error:e};throw e}}async refreshSession(e){return await this.initializePromise,await this._acquireLock(-1,(async()=>await this._refreshSession(e)))}async _refreshSession(e){try{return await this._useSession((async t=>{var s;if(!e){const{data:r,error:i}=t;if(i)throw i;e=null!==(s=r.session)&&void 0!==s?s:void 0}if(!(null==e?void 0:e.refresh_token))throw new j;const{session:r,error:i}=await this._callRefreshToken(e.refresh_token);return i?{data:{user:null,session:null},error:i}:r?{data:{user:r.user,session:r},error:null}:{data:{user:null,session:null},error:null}}))}catch(e){if(k(e))return{data:{user:null,session:null},error:e};throw e}}async _getSessionFromURL(e){try{if(!a())throw new x("No browser detected.");if("implicit"===this.flowType&&!this._isImplicitGrantFlow())throw new x("Not a valid implicit grant flow url.");if("pkce"==this.flowType&&!e)throw new C("Not a valid PKCE flow url.");const t=h(window.location.href);if(e){if(!t.code)throw new C("No code detected.");const{data:e,error:s}=await this._exchangeCodeForSession(t.code);if(s)throw s;const r=new URL(window.location.href);return r.searchParams.delete("code"),window.history.replaceState(window.history.state,"",r.toString()),{data:{session:e.session,redirectType:null},error:null}}if(t.error||t.error_description||t.error_code)throw new x(t.error_description||"Error in URL with unspecified error_description",{error:t.error||"unspecified_error",code:t.error_code||"unspecified_code"});const{provider_token:s,provider_refresh_token:r,access_token:i,refresh_token:n,expires_in:o,expires_at:c,token_type:l}=t;if(!(i&&o&&n&&l))throw new x("No session defined in URL");const u=Math.round(Date.now()/1e3),d=parseInt(o);let f=u+d;c&&(f=parseInt(c));const p=f-u;1e3*p<=te&&console.warn(`@supabase/gotrue-js: Session as retrieved from URL expires in ${p}s, should have been closer to ${d}s`);const g=f-d;u-g>=120?console.warn("@supabase/gotrue-js: Session as retrieved from URL was issued over 120s ago, URL could be stale",g,f,u):u-g<0&&console.warn("@supabase/gotrue-js: Session as retrieved from URL was issued in the future? Check the device clock for skew",g,f,u);const{data:y,error:v}=await this._getUser(i);if(v)throw v;const m={provider_token:s,provider_refresh_token:r,access_token:i,expires_in:d,expires_at:f,refresh_token:n,token_type:l,user:y.user};return window.location.hash="",this._debug("#_getSessionFromURL()","clearing window.location.hash"),{data:{session:m,redirectType:t.type},error:null}}catch(e){if(k(e))return{data:{session:null,redirectType:null},error:e};throw e}}_isImplicitGrantFlow(){const e=h(window.location.href);return!(!a()||!e.access_token&&!e.error_description)}async _isPKCEFlow(){const e=h(window.location.href),t=await p(this.storage,`${this.storageKey}-code-verifier`);return!(!e.code||!t)}async signOut(e={scope:"global"}){return await this.initializePromise,await this._acquireLock(-1,(async()=>await this._signOut(e)))}async _signOut({scope:e}={scope:"global"}){return await this._useSession((async t=>{var s;const{data:r,error:i}=t;if(i)return{error:i};const n=null===(s=r.session)||void 0===s?void 0:s.access_token;if(n){const{error:t}=await this.admin.signOut(n,e);if(t&&(!S(t)||404!==t.status&&401!==t.status&&403!==t.status))return{error:t}}return"others"!==e&&(await this._removeSession(),await g(this.storage,`${this.storageKey}-code-verifier`),await this._notifyAllSubscribers("SIGNED_OUT",null)),{error:null}}))}onAuthStateChange(e){const t="xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g,(function(e){const t=16*Math.random()|0;return("x"==e?t:3&t|8).toString(16)})),s={id:t,callback:e,unsubscribe:()=>{this._debug("#unsubscribe()","state change callback with id removed",t),this.stateChangeEmitters.delete(t)}};return this._debug("#onAuthStateChange()","registered callback with id",t),this.stateChangeEmitters.set(t,s),(async()=>{await this.initializePromise,await this._acquireLock(-1,(async()=>{this._emitInitialSession(t)}))})(),{data:{subscription:s}}}async _emitInitialSession(e){return await this._useSession((async t=>{var s,r;try{const{data:{session:r},error:i}=t;if(i)throw i;await(null===(s=this.stateChangeEmitters.get(e))||void 0===s?void 0:s.callback("INITIAL_SESSION",r)),this._debug("INITIAL_SESSION","callback id",e,"session",r)}catch(t){await(null===(r=this.stateChangeEmitters.get(e))||void 0===r?void 0:r.callback("INITIAL_SESSION",null)),this._debug("INITIAL_SESSION","callback id",e,"error",t),console.error(t)}}))}async resetPasswordForEmail(e,t={}){let s=null,r=null;"pkce"===this.flowType&&([s,r]=await _(this.storage,this.storageKey,!0));try{return await M(this.fetch,"POST",`${this.url}/recover`,{body:{email:e,code_challenge:s,code_challenge_method:r,gotrue_meta_security:{captcha_token:t.captchaToken}},headers:this.headers,redirectTo:t.redirectTo})}catch(e){if(k(e))return{data:null,error:e};throw e}}async getUserIdentities(){var e;try{const{data:t,error:s}=await this.getUser();if(s)throw s;return{data:{identities:null!==(e=t.user.identities)&&void 0!==e?e:[]},error:null}}catch(e){if(k(e))return{data:null,error:e};throw e}}async linkIdentity(e){var t;try{const{data:s,error:r}=await this._useSession((async t=>{var s,r,i,n,o;const{data:a,error:c}=t;if(c)throw c;const l=await this._getUrlForProvider(`${this.url}/user/identities/authorize`,e.provider,{redirectTo:null===(s=e.options)||void 0===s?void 0:s.redirectTo,scopes:null===(r=e.options)||void 0===r?void 0:r.scopes,queryParams:null===(i=e.options)||void 0===i?void 0:i.queryParams,skipBrowserRedirect:!0});return await M(this.fetch,"GET",l,{headers:this.headers,jwt:null!==(o=null===(n=a.session)||void 0===n?void 0:n.access_token)&&void 0!==o?o:void 0})}));if(r)throw r;return a()&&!(null===(t=e.options)||void 0===t?void 0:t.skipBrowserRedirect)&&window.location.assign(null==s?void 0:s.url),{data:{provider:e.provider,url:null==s?void 0:s.url},error:null}}catch(t){if(k(t))return{data:{provider:e.provider,url:null},error:t};throw t}}async unlinkIdentity(e){try{return await this._useSession((async t=>{var s,r;const{data:i,error:n}=t;if(n)throw n;return await M(this.fetch,"DELETE",`${this.url}/user/identities/${e.identity_id}`,{headers:this.headers,jwt:null!==(r=null===(s=i.session)||void 0===s?void 0:s.access_token)&&void 0!==r?r:void 0})}))}catch(e){if(k(e))return{data:null,error:e};throw e}}async _refreshAccessToken(e){const t=`#_refreshAccessToken(${e.substring(0,5)}...)`;this._debug(t,"begin");try{const i=Date.now();return await(s=async s=>(s>0&&await async function(e){return await new Promise((t=>{setTimeout((()=>t(null)),e)}))}(200*Math.pow(2,s-1)),this._debug(t,"refreshing attempt",s),await M(this.fetch,"POST",`${this.url}/token?grant_type=refresh_token`,{body:{refresh_token:e},headers:this.headers,xform:B})),r=(e,t)=>{const s=200*Math.pow(2,e);return t&&I(t)&&Date.now()+s-i<te},new Promise(((e,t)=>{(async()=>{for(let i=0;i<1/0;i++)try{const t=await s(i);if(!r(i,null))return void e(t)}catch(e){if(!r(i,e))return void t(e)}})()})))}catch(e){if(this._debug(t,"error",e),k(e))return{data:{session:null,user:null},error:e};throw e}finally{this._debug(t,"end")}var s,r}_isValidSession(e){return"object"==typeof e&&null!==e&&"access_token"in e&&"refresh_token"in e&&"expires_at"in e}async _handleProviderSignIn(e,t){const s=await this._getUrlForProvider(`${this.url}/authorize`,e,{redirectTo:t.redirectTo,scopes:t.scopes,queryParams:t.queryParams});return this._debug("#_handleProviderSignIn()","provider",e,"options",t,"url",s),a()&&!t.skipBrowserRedirect&&window.location.assign(s),{data:{provider:e,url:s},error:null}}async _recoverAndRefresh(){var e;const t="#_recoverAndRefresh()";this._debug(t,"begin");try{const s=await p(this.storage,this.storageKey);if(this._debug(t,"session from storage",s),!this._isValidSession(s))return this._debug(t,"session is not valid"),void(null!==s&&await this._removeSession());const r=Math.round(Date.now()/1e3),i=(null!==(e=s.expires_at)&&void 0!==e?e:1/0)<r+10;if(this._debug(t,`session has${i?"":" not"} expired with margin of 10s`),i){if(this.autoRefreshToken&&s.refresh_token){const{error:e}=await this._callRefreshToken(s.refresh_token);e&&(console.error(e),I(e)||(this._debug(t,"refresh failed with a non-retryable error, removing the session",e),await this._removeSession()))}}else await this._notifyAllSubscribers("SIGNED_IN",s)}catch(e){return this._debug(t,"error",e),void console.error(e)}finally{this._debug(t,"end")}}async _callRefreshToken(e){var t,s;if(!e)throw new j;if(this.refreshingDeferred)return this.refreshingDeferred.promise;const r=`#_callRefreshToken(${e.substring(0,5)}...)`;this._debug(r,"begin");try{this.refreshingDeferred=new y;const{data:t,error:s}=await this._refreshAccessToken(e);if(s)throw s;if(!t.session)throw new j;await this._saveSession(t.session),await this._notifyAllSubscribers("TOKEN_REFRESHED",t.session);const r={session:t.session,error:null};return this.refreshingDeferred.resolve(r),r}catch(e){if(this._debug(r,"error",e),k(e)){const s={session:null,error:e};return I(e)||(await this._removeSession(),await this._notifyAllSubscribers("SIGNED_OUT",null)),null===(t=this.refreshingDeferred)||void 0===t||t.resolve(s),s}throw null===(s=this.refreshingDeferred)||void 0===s||s.reject(e),e}finally{this.refreshingDeferred=null,this._debug(r,"end")}}async _notifyAllSubscribers(e,t,s=!0){const r=`#_notifyAllSubscribers(${e})`;this._debug(r,"begin",t,`broadcast = ${s}`);try{this.broadcastChannel&&s&&this.broadcastChannel.postMessage({event:e,session:t});const r=[],i=Array.from(this.stateChangeEmitters.values()).map((async s=>{try{await s.callback(e,t)}catch(e){r.push(e)}}));if(await Promise.all(i),r.length>0){for(let e=0;e<r.length;e+=1)console.error(r[e]);throw r[0]}}finally{this._debug(r,"end")}}async _saveSession(e){this._debug("#_saveSession()",e),this.suppressGetSessionWarning=!0,await f(this.storage,this.storageKey,e)}async _removeSession(){this._debug("#_removeSession()"),await g(this.storage,this.storageKey)}_removeVisibilityChangedCallback(){this._debug("#_removeVisibilityChangedCallback()");const e=this.visibilityChangedCallback;this.visibilityChangedCallback=null;try{e&&a()&&(null===window||void 0===window?void 0:window.removeEventListener)&&window.removeEventListener("visibilitychange",e)}catch(e){console.error("removing visibilitychange callback failed",e)}}async _startAutoRefresh(){await this._stopAutoRefresh(),this._debug("#_startAutoRefresh()");const e=setInterval((()=>this._autoRefreshTokenTick()),te);this.autoRefreshTicker=e,e&&"object"==typeof e&&"function"==typeof e.unref?e.unref():"undefined"!=typeof Deno&&"function"==typeof Deno.unrefTimer&&Deno.unrefTimer(e),setTimeout((async()=>{await this.initializePromise,await this._autoRefreshTokenTick()}),0)}async _stopAutoRefresh(){this._debug("#_stopAutoRefresh()");const e=this.autoRefreshTicker;this.autoRefreshTicker=null,e&&clearInterval(e)}async startAutoRefresh(){this._removeVisibilityChangedCallback(),await this._startAutoRefresh()}async stopAutoRefresh(){this._removeVisibilityChangedCallback(),await this._stopAutoRefresh()}async _autoRefreshTokenTick(){this._debug("#_autoRefreshTokenTick()","begin");try{await this._acquireLock(0,(async()=>{try{const e=Date.now();try{return await this._useSession((async t=>{const{data:{session:s}}=t;if(!s||!s.refresh_token||!s.expires_at)return void this._debug("#_autoRefreshTokenTick()","no session");const r=Math.floor((1e3*s.expires_at-e)/te);this._debug("#_autoRefreshTokenTick()",`access token expires in ${r} ticks, a tick lasts 30000ms, refresh threshold is 3 ticks`),r<=3&&await this._callRefreshToken(s.refresh_token)}))}catch(e){console.error("Auto refresh tick failed with error. This is likely a transient error.",e)}}finally{this._debug("#_autoRefreshTokenTick()","end")}}))}catch(e){if(!(e.isAcquireTimeout||e instanceof Q))throw e;this._debug("auto refresh token tick lock not available")}}async _handleVisibilityChange(){if(this._debug("#_handleVisibilityChange()"),!a()||!(null===window||void 0===window?void 0:window.addEventListener))return this.autoRefreshToken&&this.startAutoRefresh(),!1;try{this.visibilityChangedCallback=async()=>await this._onVisibilityChanged(!1),null===window||void 0===window||window.addEventListener("visibilitychange",this.visibilityChangedCallback),await this._onVisibilityChanged(!0)}catch(e){console.error("_handleVisibilityChange",e)}}async _onVisibilityChanged(e){const t=`#_onVisibilityChanged(${e})`;this._debug(t,"visibilityState",document.visibilityState),"visible"===document.visibilityState?(this.autoRefreshToken&&this._startAutoRefresh(),e||(await this.initializePromise,await this._acquireLock(-1,(async()=>{"visible"===document.visibilityState?await this._recoverAndRefresh():this._debug(t,"acquired the lock to recover the session, but the browser visibilityState is no longer visible, aborting")})))):"hidden"===document.visibilityState&&this.autoRefreshToken&&this._stopAutoRefresh()}async _getUrlForProvider(e,t,s){const r=[`provider=${encodeURIComponent(t)}`];if((null==s?void 0:s.redirectTo)&&r.push(`redirect_to=${encodeURIComponent(s.redirectTo)}`),(null==s?void 0:s.scopes)&&r.push(`scopes=${encodeURIComponent(s.scopes)}`),"pkce"===this.flowType){const[e,t]=await _(this.storage,this.storageKey),s=new URLSearchParams({code_challenge:`${encodeURIComponent(e)}`,code_challenge_method:`${encodeURIComponent(t)}`});r.push(s.toString())}if(null==s?void 0:s.queryParams){const e=new URLSearchParams(s.queryParams);r.push(e.toString())}return(null==s?void 0:s.skipBrowserRedirect)&&r.push(`skip_http_redirect=${s.skipBrowserRedirect}`),`${e}?${r.join("&")}`}async _unenroll(e){try{return await this._useSession((async t=>{var s;const{data:r,error:i}=t;return i?{data:null,error:i}:await M(this.fetch,"DELETE",`${this.url}/factors/${e.factorId}`,{headers:this.headers,jwt:null===(s=null==r?void 0:r.session)||void 0===s?void 0:s.access_token})}))}catch(e){if(k(e))return{data:null,error:e};throw e}}async _enroll(e){try{return await this._useSession((async t=>{var s,r;const{data:i,error:n}=t;if(n)return{data:null,error:n};const o=Object.assign({friendly_name:e.friendlyName,factor_type:e.factorType},"phone"===e.factorType?{phone:e.phone}:{issuer:e.issuer}),{data:a,error:c}=await M(this.fetch,"POST",`${this.url}/factors`,{body:o,headers:this.headers,jwt:null===(s=null==i?void 0:i.session)||void 0===s?void 0:s.access_token});return c?{data:null,error:c}:("phone"===e.factorType&&delete a.totp,"totp"===e.factorType&&(null===(r=null==a?void 0:a.totp)||void 0===r?void 0:r.qr_code)&&(a.totp.qr_code=`data:image/svg+xml;utf-8,${a.totp.qr_code}`),{data:a,error:null})}))}catch(e){if(k(e))return{data:null,error:e};throw e}}async _verify(e){return this._acquireLock(-1,(async()=>{try{return await this._useSession((async t=>{var s;const{data:r,error:i}=t;if(i)return{data:null,error:i};const{data:n,error:o}=await M(this.fetch,"POST",`${this.url}/factors/${e.factorId}/verify`,{body:{code:e.code,challenge_id:e.challengeId},headers:this.headers,jwt:null===(s=null==r?void 0:r.session)||void 0===s?void 0:s.access_token});return o?{data:null,error:o}:(await this._saveSession(Object.assign({expires_at:Math.round(Date.now()/1e3)+n.expires_in},n)),await this._notifyAllSubscribers("MFA_CHALLENGE_VERIFIED",n),{data:n,error:o})}))}catch(e){if(k(e))return{data:null,error:e};throw e}}))}async _challenge(e){return this._acquireLock(-1,(async()=>{try{return await this._useSession((async t=>{var s;const{data:r,error:i}=t;return i?{data:null,error:i}:await M(this.fetch,"POST",`${this.url}/factors/${e.factorId}/challenge`,{body:{channel:e.channel},headers:this.headers,jwt:null===(s=null==r?void 0:r.session)||void 0===s?void 0:s.access_token})}))}catch(e){if(k(e))return{data:null,error:e};throw e}}))}async _challengeAndVerify(e){const{data:t,error:s}=await this._challenge({factorId:e.factorId});return s?{data:null,error:s}:await this._verify({factorId:e.factorId,challengeId:t.id,code:e.code})}async _listFactors(){const{data:{user:e},error:t}=await this.getUser();if(t)return{data:null,error:t};const s=(null==e?void 0:e.factors)||[],r=s.filter((e=>"totp"===e.factor_type&&"verified"===e.status)),i=s.filter((e=>"phone"===e.factor_type&&"verified"===e.status));return{data:{all:s,totp:r,phone:i},error:null}}async _getAuthenticatorAssuranceLevel(){return this._acquireLock(-1,(async()=>await this._useSession((async e=>{var t,s;const{data:{session:r},error:i}=e;if(i)return{data:null,error:i};if(!r)return{data:{currentLevel:null,nextLevel:null,currentAuthenticationMethods:[]},error:null};const n=this._decodeJWT(r.access_token);let o=null;n.aal&&(o=n.aal);let a=o;return(null!==(s=null===(t=r.user.factors)||void 0===t?void 0:t.filter((e=>"verified"===e.status)))&&void 0!==s?s:[]).length>0&&(a="aal2"),{data:{currentLevel:o,nextLevel:a,currentAuthenticationMethods:n.amr||[]},error:null}}))))}}re.nextInstanceID=0;const ie=K,ne=re},227:(e,t,s)=>{s.r(t),s.d(t,{FunctionRegion:()=>a,FunctionsClient:()=>c,FunctionsError:()=>r,FunctionsFetchError:()=>i,FunctionsHttpError:()=>o,FunctionsRelayError:()=>n});class r extends Error{constructor(e,t="FunctionsError",s){super(e),this.name=t,this.context=s}}class i extends r{constructor(e){super("Failed to send a request to the Edge Function","FunctionsFetchError",e)}}class n extends r{constructor(e){super("Relay Error invoking the Edge Function","FunctionsRelayError",e)}}class o extends r{constructor(e){super("Edge Function returned a non-2xx status code","FunctionsHttpError",e)}}var a;!function(e){e.Any="any",e.ApNortheast1="ap-northeast-1",e.ApNortheast2="ap-northeast-2",e.ApSouth1="ap-south-1",e.ApSoutheast1="ap-southeast-1",e.ApSoutheast2="ap-southeast-2",e.CaCentral1="ca-central-1",e.EuCentral1="eu-central-1",e.EuWest1="eu-west-1",e.EuWest2="eu-west-2",e.EuWest3="eu-west-3",e.SaEast1="sa-east-1",e.UsEast1="us-east-1",e.UsWest1="us-west-1",e.UsWest2="us-west-2"}(a||(a={}));class c{constructor(e,{headers:t={},customFetch:r,region:i=a.Any}={}){this.url=e,this.headers=t,this.region=i,this.fetch=(e=>{let t;return t=e||("undefined"==typeof fetch?(...e)=>Promise.resolve().then(s.bind(s,907)).then((({default:t})=>t(...e))):fetch),(...e)=>t(...e)})(r)}setAuth(e){this.headers.Authorization=`Bearer ${e}`}invoke(e,t={}){var s,r,a,c,l;return r=this,a=void 0,l=function*(){try{const{headers:r,method:a,body:c}=t;let l,h={},{region:u}=t;u||(u=this.region),u&&"any"!==u&&(h["x-region"]=u),c&&(r&&!Object.prototype.hasOwnProperty.call(r,"Content-Type")||!r)&&("undefined"!=typeof Blob&&c instanceof Blob||c instanceof ArrayBuffer?(h["Content-Type"]="application/octet-stream",l=c):"string"==typeof c?(h["Content-Type"]="text/plain",l=c):"undefined"!=typeof FormData&&c instanceof FormData?l=c:(h["Content-Type"]="application/json",l=JSON.stringify(c)));const d=yield this.fetch(`${this.url}/${e}`,{method:a||"POST",headers:Object.assign(Object.assign(Object.assign({},h),this.headers),r),body:l}).catch((e=>{throw new i(e)})),f=d.headers.get("x-relay-error");if(f&&"true"===f)throw new n(d);if(!d.ok)throw new o(d);let p,g=(null!==(s=d.headers.get("Content-Type"))&&void 0!==s?s:"text/plain").split(";")[0].trim();return p="application/json"===g?yield d.json():"application/octet-stream"===g?yield d.blob():"text/event-stream"===g?d:"multipart/form-data"===g?yield d.formData():yield d.text(),{data:p,error:null}}catch(e){return{data:null,error:e}}},new((c=void 0)||(c=Promise))((function(e,t){function s(e){try{n(l.next(e))}catch(e){t(e)}}function i(e){try{n(l.throw(e))}catch(e){t(e)}}function n(t){var r;t.done?e(t.value):(r=t.value,r instanceof c?r:new c((function(e){e(r)}))).then(s,i)}n((l=l.apply(r,a||[])).next())}))}}},907:(e,t,s)=>{s.r(t),s.d(t,{Headers:()=>o,Request:()=>a,Response:()=>c,default:()=>n,fetch:()=>i});var r=function(){if("undefined"!=typeof self)return self;if("undefined"!=typeof window)return window;if(void 0!==s.g)return s.g;throw new Error("unable to locate global object")}();const i=r.fetch,n=r.fetch.bind(r),o=r.Headers,a=r.Request,c=r.Response},660:function(e,t,s){var r=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};Object.defineProperty(t,"__esModule",{value:!0});const i=r(s(907)),n=r(s(818));t.default=class{constructor(e){this.shouldThrowOnError=!1,this.method=e.method,this.url=e.url,this.headers=e.headers,this.schema=e.schema,this.body=e.body,this.shouldThrowOnError=e.shouldThrowOnError,this.signal=e.signal,this.isMaybeSingle=e.isMaybeSingle,e.fetch?this.fetch=e.fetch:"undefined"==typeof fetch?this.fetch=i.default:this.fetch=fetch}throwOnError(){return this.shouldThrowOnError=!0,this}setHeader(e,t){return this.headers=Object.assign({},this.headers),this.headers[e]=t,this}then(e,t){void 0===this.schema||(["GET","HEAD"].includes(this.method)?this.headers["Accept-Profile"]=this.schema:this.headers["Content-Profile"]=this.schema),"GET"!==this.method&&"HEAD"!==this.method&&(this.headers["Content-Type"]="application/json");let s=(0,this.fetch)(this.url.toString(),{method:this.method,headers:this.headers,body:JSON.stringify(this.body),signal:this.signal}).then((async e=>{var t,s,r;let i=null,o=null,a=null,c=e.status,l=e.statusText;if(e.ok){if("HEAD"!==this.method){const t=await e.text();""===t||(o="text/csv"===this.headers.Accept||this.headers.Accept&&this.headers.Accept.includes("application/vnd.pgrst.plan+text")?t:JSON.parse(t))}const r=null===(t=this.headers.Prefer)||void 0===t?void 0:t.match(/count=(exact|planned|estimated)/),n=null===(s=e.headers.get("content-range"))||void 0===s?void 0:s.split("/");r&&n&&n.length>1&&(a=parseInt(n[1])),this.isMaybeSingle&&"GET"===this.method&&Array.isArray(o)&&(o.length>1?(i={code:"PGRST116",details:`Results contain ${o.length} rows, application/vnd.pgrst.object+json requires 1 row`,hint:null,message:"JSON object requested, multiple (or no) rows returned"},o=null,a=null,c=406,l="Not Acceptable"):o=1===o.length?o[0]:null)}else{const t=await e.text();try{i=JSON.parse(t),Array.isArray(i)&&404===e.status&&(o=[],i=null,c=200,l="OK")}catch(s){404===e.status&&""===t?(c=204,l="No Content"):i={message:t}}if(i&&this.isMaybeSingle&&(null===(r=null==i?void 0:i.details)||void 0===r?void 0:r.includes("0 rows"))&&(i=null,c=200,l="OK"),i&&this.shouldThrowOnError)throw new n.default(i)}return{error:i,data:o,count:a,status:c,statusText:l}}));return this.shouldThrowOnError||(s=s.catch((e=>{var t,s,r;return{error:{message:`${null!==(t=null==e?void 0:e.name)&&void 0!==t?t:"FetchError"}: ${null==e?void 0:e.message}`,details:`${null!==(s=null==e?void 0:e.stack)&&void 0!==s?s:""}`,hint:"",code:`${null!==(r=null==e?void 0:e.code)&&void 0!==r?r:""}`},data:null,count:null,status:0,statusText:""}}))),s.then(e,t)}}},961:function(e,t,s){var r=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};Object.defineProperty(t,"__esModule",{value:!0});const i=r(s(45)),n=r(s(825)),o=s(530);class a{constructor(e,{headers:t={},schema:s,fetch:r}={}){this.url=e,this.headers=Object.assign(Object.assign({},o.DEFAULT_HEADERS),t),this.schemaName=s,this.fetch=r}from(e){const t=new URL(`${this.url}/${e}`);return new i.default(t,{headers:Object.assign({},this.headers),schema:this.schemaName,fetch:this.fetch})}schema(e){return new a(this.url,{headers:this.headers,schema:e,fetch:this.fetch})}rpc(e,t={},{head:s=!1,get:r=!1,count:i}={}){let o;const a=new URL(`${this.url}/rpc/${e}`);let c;s||r?(o=s?"HEAD":"GET",Object.entries(t).filter((([e,t])=>void 0!==t)).map((([e,t])=>[e,Array.isArray(t)?`{${t.join(",")}}`:`${t}`])).forEach((([e,t])=>{a.searchParams.append(e,t)}))):(o="POST",c=t);const l=Object.assign({},this.headers);return i&&(l.Prefer=`count=${i}`),new n.default({method:o,url:a,headers:l,schema:this.schemaName,body:c,fetch:this.fetch,allowEmpty:!1})}}t.default=a},818:(e,t)=>{Object.defineProperty(t,"__esModule",{value:!0});class s extends Error{constructor(e){super(e.message),this.name="PostgrestError",this.details=e.details,this.hint=e.hint,this.code=e.code}}t.default=s},825:function(e,t,s){var r=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};Object.defineProperty(t,"__esModule",{value:!0});const i=r(s(261));class n extends i.default{eq(e,t){return this.url.searchParams.append(e,`eq.${t}`),this}neq(e,t){return this.url.searchParams.append(e,`neq.${t}`),this}gt(e,t){return this.url.searchParams.append(e,`gt.${t}`),this}gte(e,t){return this.url.searchParams.append(e,`gte.${t}`),this}lt(e,t){return this.url.searchParams.append(e,`lt.${t}`),this}lte(e,t){return this.url.searchParams.append(e,`lte.${t}`),this}like(e,t){return this.url.searchParams.append(e,`like.${t}`),this}likeAllOf(e,t){return this.url.searchParams.append(e,`like(all).{${t.join(",")}}`),this}likeAnyOf(e,t){return this.url.searchParams.append(e,`like(any).{${t.join(",")}}`),this}ilike(e,t){return this.url.searchParams.append(e,`ilike.${t}`),this}ilikeAllOf(e,t){return this.url.searchParams.append(e,`ilike(all).{${t.join(",")}}`),this}ilikeAnyOf(e,t){return this.url.searchParams.append(e,`ilike(any).{${t.join(",")}}`),this}is(e,t){return this.url.searchParams.append(e,`is.${t}`),this}in(e,t){const s=Array.from(new Set(t)).map((e=>"string"==typeof e&&new RegExp("[,()]").test(e)?`"${e}"`:`${e}`)).join(",");return this.url.searchParams.append(e,`in.(${s})`),this}contains(e,t){return"string"==typeof t?this.url.searchParams.append(e,`cs.${t}`):Array.isArray(t)?this.url.searchParams.append(e,`cs.{${t.join(",")}}`):this.url.searchParams.append(e,`cs.${JSON.stringify(t)}`),this}containedBy(e,t){return"string"==typeof t?this.url.searchParams.append(e,`cd.${t}`):Array.isArray(t)?this.url.searchParams.append(e,`cd.{${t.join(",")}}`):this.url.searchParams.append(e,`cd.${JSON.stringify(t)}`),this}rangeGt(e,t){return this.url.searchParams.append(e,`sr.${t}`),this}rangeGte(e,t){return this.url.searchParams.append(e,`nxl.${t}`),this}rangeLt(e,t){return this.url.searchParams.append(e,`sl.${t}`),this}rangeLte(e,t){return this.url.searchParams.append(e,`nxr.${t}`),this}rangeAdjacent(e,t){return this.url.searchParams.append(e,`adj.${t}`),this}overlaps(e,t){return"string"==typeof t?this.url.searchParams.append(e,`ov.${t}`):this.url.searchParams.append(e,`ov.{${t.join(",")}}`),this}textSearch(e,t,{config:s,type:r}={}){let i="";"plain"===r?i="pl":"phrase"===r?i="ph":"websearch"===r&&(i="w");const n=void 0===s?"":`(${s})`;return this.url.searchParams.append(e,`${i}fts${n}.${t}`),this}match(e){return Object.entries(e).forEach((([e,t])=>{this.url.searchParams.append(e,`eq.${t}`)})),this}not(e,t,s){return this.url.searchParams.append(e,`not.${t}.${s}`),this}or(e,{foreignTable:t,referencedTable:s=t}={}){const r=s?`${s}.or`:"or";return this.url.searchParams.append(r,`(${e})`),this}filter(e,t,s){return this.url.searchParams.append(e,`${t}.${s}`),this}}t.default=n},45:function(e,t,s){var r=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};Object.defineProperty(t,"__esModule",{value:!0});const i=r(s(825));t.default=class{constructor(e,{headers:t={},schema:s,fetch:r}){this.url=e,this.headers=t,this.schema=s,this.fetch=r}select(e,{head:t=!1,count:s}={}){const r=t?"HEAD":"GET";let n=!1;const o=(null!=e?e:"*").split("").map((e=>/\s/.test(e)&&!n?"":('"'===e&&(n=!n),e))).join("");return this.url.searchParams.set("select",o),s&&(this.headers.Prefer=`count=${s}`),new i.default({method:r,url:this.url,headers:this.headers,schema:this.schema,fetch:this.fetch,allowEmpty:!1})}insert(e,{count:t,defaultToNull:s=!0}={}){const r=[];if(this.headers.Prefer&&r.push(this.headers.Prefer),t&&r.push(`count=${t}`),s||r.push("missing=default"),this.headers.Prefer=r.join(","),Array.isArray(e)){const t=e.reduce(((e,t)=>e.concat(Object.keys(t))),[]);if(t.length>0){const e=[...new Set(t)].map((e=>`"${e}"`));this.url.searchParams.set("columns",e.join(","))}}return new i.default({method:"POST",url:this.url,headers:this.headers,schema:this.schema,body:e,fetch:this.fetch,allowEmpty:!1})}upsert(e,{onConflict:t,ignoreDuplicates:s=!1,count:r,defaultToNull:n=!0}={}){const o=[`resolution=${s?"ignore":"merge"}-duplicates`];if(void 0!==t&&this.url.searchParams.set("on_conflict",t),this.headers.Prefer&&o.push(this.headers.Prefer),r&&o.push(`count=${r}`),n||o.push("missing=default"),this.headers.Prefer=o.join(","),Array.isArray(e)){const t=e.reduce(((e,t)=>e.concat(Object.keys(t))),[]);if(t.length>0){const e=[...new Set(t)].map((e=>`"${e}"`));this.url.searchParams.set("columns",e.join(","))}}return new i.default({method:"POST",url:this.url,headers:this.headers,schema:this.schema,body:e,fetch:this.fetch,allowEmpty:!1})}update(e,{count:t}={}){const s=[];return this.headers.Prefer&&s.push(this.headers.Prefer),t&&s.push(`count=${t}`),this.headers.Prefer=s.join(","),new i.default({method:"PATCH",url:this.url,headers:this.headers,schema:this.schema,body:e,fetch:this.fetch,allowEmpty:!1})}delete({count:e}={}){const t=[];return e&&t.push(`count=${e}`),this.headers.Prefer&&t.unshift(this.headers.Prefer),this.headers.Prefer=t.join(","),new i.default({method:"DELETE",url:this.url,headers:this.headers,schema:this.schema,fetch:this.fetch,allowEmpty:!1})}}},261:function(e,t,s){var r=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};Object.defineProperty(t,"__esModule",{value:!0});const i=r(s(660));class n extends i.default{select(e){let t=!1;const s=(null!=e?e:"*").split("").map((e=>/\s/.test(e)&&!t?"":('"'===e&&(t=!t),e))).join("");return this.url.searchParams.set("select",s),this.headers.Prefer&&(this.headers.Prefer+=","),this.headers.Prefer+="return=representation",this}order(e,{ascending:t=!0,nullsFirst:s,foreignTable:r,referencedTable:i=r}={}){const n=i?`${i}.order`:"order",o=this.url.searchParams.get(n);return this.url.searchParams.set(n,`${o?`${o},`:""}${e}.${t?"asc":"desc"}${void 0===s?"":s?".nullsfirst":".nullslast"}`),this}limit(e,{foreignTable:t,referencedTable:s=t}={}){const r=void 0===s?"limit":`${s}.limit`;return this.url.searchParams.set(r,`${e}`),this}range(e,t,{foreignTable:s,referencedTable:r=s}={}){const i=void 0===r?"offset":`${r}.offset`,n=void 0===r?"limit":`${r}.limit`;return this.url.searchParams.set(i,`${e}`),this.url.searchParams.set(n,""+(t-e+1)),this}abortSignal(e){return this.signal=e,this}single(){return this.headers.Accept="application/vnd.pgrst.object+json",this}maybeSingle(){return"GET"===this.method?this.headers.Accept="application/json":this.headers.Accept="application/vnd.pgrst.object+json",this.isMaybeSingle=!0,this}csv(){return this.headers.Accept="text/csv",this}geojson(){return this.headers.Accept="application/geo+json",this}explain({analyze:e=!1,verbose:t=!1,settings:s=!1,buffers:r=!1,wal:i=!1,format:n="text"}={}){var o;const a=[e?"analyze":null,t?"verbose":null,s?"settings":null,r?"buffers":null,i?"wal":null].filter(Boolean).join("|"),c=null!==(o=this.headers.Accept)&&void 0!==o?o:"application/json";return this.headers.Accept=`application/vnd.pgrst.plan+${n}; for="${c}"; options=${a};`,this}rollback(){var e;return(null!==(e=this.headers.Prefer)&&void 0!==e?e:"").trim().length>0?this.headers.Prefer+=",tx=rollback":this.headers.Prefer="tx=rollback",this}returns(){return this}}t.default=n},530:(e,t,s)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.DEFAULT_HEADERS=void 0;const r=s(519);t.DEFAULT_HEADERS={"X-Client-Info":`postgrest-js/${r.version}`}},279:function(e,t,s){var r=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};Object.defineProperty(t,"__esModule",{value:!0}),t.PostgrestBuilder=t.PostgrestTransformBuilder=t.PostgrestFilterBuilder=t.PostgrestQueryBuilder=t.PostgrestClient=void 0;const i=r(s(961));t.PostgrestClient=i.default;const n=r(s(45));t.PostgrestQueryBuilder=n.default;const o=r(s(825));t.PostgrestFilterBuilder=o.default;const a=r(s(261));t.PostgrestTransformBuilder=a.default;const c=r(s(660));t.PostgrestBuilder=c.default,t.default={PostgrestClient:i.default,PostgrestQueryBuilder:n.default,PostgrestFilterBuilder:o.default,PostgrestTransformBuilder:a.default,PostgrestBuilder:c.default}},519:(e,t)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.version=void 0,t.version="2.45.4"},932:(e,t,s)=>{s.r(t),s.d(t,{REALTIME_CHANNEL_STATES:()=>P,REALTIME_LISTEN_TYPES:()=>E,REALTIME_POSTGRES_CHANGES_LISTEN_EVENT:()=>S,REALTIME_PRESENCE_LISTEN_EVENTS:()=>T,REALTIME_SUBSCRIBE_STATES:()=>O,RealtimeChannel:()=>A,RealtimeClient:()=>C,RealtimePresence:()=>j});const r={"X-Client-Info":"realtime-js/2.10.2"};var i,n,o,a,c,l;!function(e){e[e.connecting=0]="connecting",e[e.open=1]="open",e[e.closing=2]="closing",e[e.closed=3]="closed"}(i||(i={})),function(e){e.closed="closed",e.errored="errored",e.joined="joined",e.joining="joining",e.leaving="leaving"}(n||(n={})),function(e){e.close="phx_close",e.error="phx_error",e.join="phx_join",e.reply="phx_reply",e.leave="phx_leave",e.access_token="access_token"}(o||(o={})),function(e){e.websocket="websocket"}(a||(a={})),function(e){e.Connecting="connecting",e.Open="open",e.Closing="closing",e.Closed="closed"}(c||(c={}));class h{constructor(){this.HEADER_LENGTH=1}decode(e,t){return e.constructor===ArrayBuffer?t(this._binaryDecode(e)):t("string"==typeof e?JSON.parse(e):{})}_binaryDecode(e){const t=new DataView(e),s=new TextDecoder;return this._decodeBroadcast(e,t,s)}_decodeBroadcast(e,t,s){const r=t.getUint8(1),i=t.getUint8(2);let n=this.HEADER_LENGTH+2;const o=s.decode(e.slice(n,n+r));n+=r;const a=s.decode(e.slice(n,n+i));return n+=i,{ref:null,topic:o,event:a,payload:JSON.parse(s.decode(e.slice(n,e.byteLength)))}}}class u{constructor(e,t){this.callback=e,this.timerCalc=t,this.timer=void 0,this.tries=0,this.callback=e,this.timerCalc=t}reset(){this.tries=0,clearTimeout(this.timer)}scheduleTimeout(){clearTimeout(this.timer),this.timer=setTimeout((()=>{this.tries=this.tries+1,this.callback()}),this.timerCalc(this.tries+1))}}!function(e){e.abstime="abstime",e.bool="bool",e.date="date",e.daterange="daterange",e.float4="float4",e.float8="float8",e.int2="int2",e.int4="int4",e.int4range="int4range",e.int8="int8",e.int8range="int8range",e.json="json",e.jsonb="jsonb",e.money="money",e.numeric="numeric",e.oid="oid",e.reltime="reltime",e.text="text",e.time="time",e.timestamp="timestamp",e.timestamptz="timestamptz",e.timetz="timetz",e.tsrange="tsrange",e.tstzrange="tstzrange"}(l||(l={}));const d=(e,t,s={})=>{var r;const i=null!==(r=s.skipTypes)&&void 0!==r?r:[];return Object.keys(t).reduce(((s,r)=>(s[r]=f(r,e,t,i),s)),{})},f=(e,t,s,r)=>{const i=t.find((t=>t.name===e)),n=null==i?void 0:i.type,o=s[e];return n&&!r.includes(n)?p(n,o):g(o)},p=(e,t)=>{if("_"===e.charAt(0)){const s=e.slice(1,e.length);return _(t,s)}switch(e){case l.bool:return y(t);case l.float4:case l.float8:case l.int2:case l.int4:case l.int8:case l.numeric:case l.oid:return v(t);case l.json:case l.jsonb:return m(t);case l.timestamp:return b(t);case l.abstime:case l.date:case l.daterange:case l.int4range:case l.int8range:case l.money:case l.reltime:case l.text:case l.time:case l.timestamptz:case l.timetz:case l.tsrange:case l.tstzrange:default:return g(t)}},g=e=>e,y=e=>{switch(e){case"t":return!0;case"f":return!1;default:return e}},v=e=>{if("string"==typeof e){const t=parseFloat(e);if(!Number.isNaN(t))return t}return e},m=e=>{if("string"==typeof e)try{return JSON.parse(e)}catch(t){return console.log(`JSON parse error: ${t}`),e}return e},_=(e,t)=>{if("string"!=typeof e)return e;const s=e.length-1,r=e[s];if("{"===e[0]&&"}"===r){let r;const i=e.slice(1,s);try{r=JSON.parse("["+i+"]")}catch(e){r=i?i.split(","):[]}return r.map((e=>p(t,e)))}return e},b=e=>"string"==typeof e?e.replace(" ","T"):e,w=e=>{let t=e;return t=t.replace(/^ws/i,"http"),t=t.replace(/(\/socket\/websocket|\/socket|\/websocket)\/?$/i,""),t.replace(/\/+$/,"")};class k{constructor(e,t,s={},r=1e4){this.channel=e,this.event=t,this.payload=s,this.timeout=r,this.sent=!1,this.timeoutTimer=void 0,this.ref="",this.receivedResp=null,this.recHooks=[],this.refEvent=null}resend(e){this.timeout=e,this._cancelRefEvent(),this.ref="",this.refEvent=null,this.receivedResp=null,this.sent=!1,this.send()}send(){this._hasReceived("timeout")||(this.startTimeout(),this.sent=!0,this.channel.socket.push({topic:this.channel.topic,event:this.event,payload:this.payload,ref:this.ref,join_ref:this.channel._joinRef()}))}updatePayload(e){this.payload=Object.assign(Object.assign({},this.payload),e)}receive(e,t){var s;return this._hasReceived(e)&&t(null===(s=this.receivedResp)||void 0===s?void 0:s.response),this.recHooks.push({status:e,callback:t}),this}startTimeout(){this.timeoutTimer||(this.ref=this.channel.socket._makeRef(),this.refEvent=this.channel._replyEventName(this.ref),this.channel._on(this.refEvent,{},(e=>{this._cancelRefEvent(),this._cancelTimeout(),this.receivedResp=e,this._matchReceive(e)})),this.timeoutTimer=setTimeout((()=>{this.trigger("timeout",{})}),this.timeout))}trigger(e,t){this.refEvent&&this.channel._trigger(this.refEvent,{status:e,response:t})}destroy(){this._cancelRefEvent(),this._cancelTimeout()}_cancelRefEvent(){this.refEvent&&this.channel._off(this.refEvent,{})}_cancelTimeout(){clearTimeout(this.timeoutTimer),this.timeoutTimer=void 0}_matchReceive({status:e,response:t}){this.recHooks.filter((t=>t.status===e)).forEach((e=>e.callback(t)))}_hasReceived(e){return this.receivedResp&&this.receivedResp.status===e}}var T,S,E,O;!function(e){e.SYNC="sync",e.JOIN="join",e.LEAVE="leave"}(T||(T={}));class j{constructor(e,t){this.channel=e,this.state={},this.pendingDiffs=[],this.joinRef=null,this.caller={onJoin:()=>{},onLeave:()=>{},onSync:()=>{}};const s=(null==t?void 0:t.events)||{state:"presence_state",diff:"presence_diff"};this.channel._on(s.state,{},(e=>{const{onJoin:t,onLeave:s,onSync:r}=this.caller;this.joinRef=this.channel._joinRef(),this.state=j.syncState(this.state,e,t,s),this.pendingDiffs.forEach((e=>{this.state=j.syncDiff(this.state,e,t,s)})),this.pendingDiffs=[],r()})),this.channel._on(s.diff,{},(e=>{const{onJoin:t,onLeave:s,onSync:r}=this.caller;this.inPendingSyncState()?this.pendingDiffs.push(e):(this.state=j.syncDiff(this.state,e,t,s),r())})),this.onJoin(((e,t,s)=>{this.channel._trigger("presence",{event:"join",key:e,currentPresences:t,newPresences:s})})),this.onLeave(((e,t,s)=>{this.channel._trigger("presence",{event:"leave",key:e,currentPresences:t,leftPresences:s})})),this.onSync((()=>{this.channel._trigger("presence",{event:"sync"})}))}static syncState(e,t,s,r){const i=this.cloneDeep(e),n=this.transformState(t),o={},a={};return this.map(i,((e,t)=>{n[e]||(a[e]=t)})),this.map(n,((e,t)=>{const s=i[e];if(s){const r=t.map((e=>e.presence_ref)),i=s.map((e=>e.presence_ref)),n=t.filter((e=>i.indexOf(e.presence_ref)<0)),c=s.filter((e=>r.indexOf(e.presence_ref)<0));n.length>0&&(o[e]=n),c.length>0&&(a[e]=c)}else o[e]=t})),this.syncDiff(i,{joins:o,leaves:a},s,r)}static syncDiff(e,t,s,r){const{joins:i,leaves:n}={joins:this.transformState(t.joins),leaves:this.transformState(t.leaves)};return s||(s=()=>{}),r||(r=()=>{}),this.map(i,((t,r)=>{var i;const n=null!==(i=e[t])&&void 0!==i?i:[];if(e[t]=this.cloneDeep(r),n.length>0){const s=e[t].map((e=>e.presence_ref)),r=n.filter((e=>s.indexOf(e.presence_ref)<0));e[t].unshift(...r)}s(t,n,r)})),this.map(n,((t,s)=>{let i=e[t];if(!i)return;const n=s.map((e=>e.presence_ref));i=i.filter((e=>n.indexOf(e.presence_ref)<0)),e[t]=i,r(t,i,s),0===i.length&&delete e[t]})),e}static map(e,t){return Object.getOwnPropertyNames(e).map((s=>t(s,e[s])))}static transformState(e){return e=this.cloneDeep(e),Object.getOwnPropertyNames(e).reduce(((t,s)=>{const r=e[s];return t[s]="metas"in r?r.metas.map((e=>(e.presence_ref=e.phx_ref,delete e.phx_ref,delete e.phx_ref_prev,e))):r,t}),{})}static cloneDeep(e){return JSON.parse(JSON.stringify(e))}onJoin(e){this.caller.onJoin=e}onLeave(e){this.caller.onLeave=e}onSync(e){this.caller.onSync=e}inPendingSyncState(){return!this.joinRef||this.joinRef!==this.channel._joinRef()}}!function(e){e.ALL="*",e.INSERT="INSERT",e.UPDATE="UPDATE",e.DELETE="DELETE"}(S||(S={})),function(e){e.BROADCAST="broadcast",e.PRESENCE="presence",e.POSTGRES_CHANGES="postgres_changes"}(E||(E={})),function(e){e.SUBSCRIBED="SUBSCRIBED",e.TIMED_OUT="TIMED_OUT",e.CLOSED="CLOSED",e.CHANNEL_ERROR="CHANNEL_ERROR"}(O||(O={}));const P=n;class A{constructor(e,t={config:{}},s){this.topic=e,this.params=t,this.socket=s,this.bindings={},this.state=n.closed,this.joinedOnce=!1,this.pushBuffer=[],this.subTopic=e.replace(/^realtime:/i,""),this.params.config=Object.assign({broadcast:{ack:!1,self:!1},presence:{key:""},private:!1},t.config),this.timeout=this.socket.timeout,this.joinPush=new k(this,o.join,this.params,this.timeout),this.rejoinTimer=new u((()=>this._rejoinUntilConnected()),this.socket.reconnectAfterMs),this.joinPush.receive("ok",(()=>{this.state=n.joined,this.rejoinTimer.reset(),this.pushBuffer.forEach((e=>e.send())),this.pushBuffer=[]})),this._onClose((()=>{this.rejoinTimer.reset(),this.socket.log("channel",`close ${this.topic} ${this._joinRef()}`),this.state=n.closed,this.socket._remove(this)})),this._onError((e=>{this._isLeaving()||this._isClosed()||(this.socket.log("channel",`error ${this.topic}`,e),this.state=n.errored,this.rejoinTimer.scheduleTimeout())})),this.joinPush.receive("timeout",(()=>{this._isJoining()&&(this.socket.log("channel",`timeout ${this.topic}`,this.joinPush.timeout),this.state=n.errored,this.rejoinTimer.scheduleTimeout())})),this._on(o.reply,{},((e,t)=>{this._trigger(this._replyEventName(t),e)})),this.presence=new j(this),this.broadcastEndpointURL=w(this.socket.endPoint)+"/api/broadcast"}subscribe(e,t=this.timeout){var s,r;if(this.socket.isConnected()||this.socket.connect(),this.joinedOnce)throw"tried to subscribe multiple times. 'subscribe' can only be called a single time per channel instance";{const{config:{broadcast:i,presence:n,private:o}}=this.params;this._onError((t=>e&&e("CHANNEL_ERROR",t))),this._onClose((()=>e&&e("CLOSED")));const a={},c={broadcast:i,presence:n,postgres_changes:null!==(r=null===(s=this.bindings.postgres_changes)||void 0===s?void 0:s.map((e=>e.filter)))&&void 0!==r?r:[],private:o};this.socket.accessToken&&(a.access_token=this.socket.accessToken),this.updateJoinPayload(Object.assign({config:c},a)),this.joinedOnce=!0,this._rejoin(t),this.joinPush.receive("ok",(({postgres_changes:t})=>{var s;if(this.socket.accessToken&&this.socket.setAuth(this.socket.accessToken),void 0!==t){const r=this.bindings.postgres_changes,i=null!==(s=null==r?void 0:r.length)&&void 0!==s?s:0,n=[];for(let s=0;s<i;s++){const i=r[s],{filter:{event:o,schema:a,table:c,filter:l}}=i,h=t&&t[s];if(!h||h.event!==o||h.schema!==a||h.table!==c||h.filter!==l)return this.unsubscribe(),void(e&&e("CHANNEL_ERROR",new Error("mismatch between server and client bindings for postgres changes")));n.push(Object.assign(Object.assign({},i),{id:h.id}))}return this.bindings.postgres_changes=n,void(e&&e("SUBSCRIBED"))}e&&e("SUBSCRIBED")})).receive("error",(t=>{e&&e("CHANNEL_ERROR",new Error(JSON.stringify(Object.values(t).join(", ")||"error")))})).receive("timeout",(()=>{e&&e("TIMED_OUT")}))}return this}presenceState(){return this.presence.state}async track(e,t={}){return await this.send({type:"presence",event:"track",payload:e},t.timeout||this.timeout)}async untrack(e={}){return await this.send({type:"presence",event:"untrack"},e)}on(e,t,s){return this._on(e,t,s)}async send(e,t={}){var s,r;if(this._canPush()||"broadcast"!==e.type)return new Promise((s=>{var r,i,n;const o=this._push(e.type,e,t.timeout||this.timeout);"broadcast"!==e.type||(null===(n=null===(i=null===(r=this.params)||void 0===r?void 0:r.config)||void 0===i?void 0:i.broadcast)||void 0===n?void 0:n.ack)||s("ok"),o.receive("ok",(()=>s("ok"))),o.receive("error",(()=>s("error"))),o.receive("timeout",(()=>s("timed out")))}));{const{event:i,payload:n}=e,o={method:"POST",headers:{Authorization:this.socket.accessToken?`Bearer ${this.socket.accessToken}`:"",apikey:this.socket.apiKey?this.socket.apiKey:"","Content-Type":"application/json"},body:JSON.stringify({messages:[{topic:this.subTopic,event:i,payload:n}]})};try{const e=await this._fetchWithTimeout(this.broadcastEndpointURL,o,null!==(s=t.timeout)&&void 0!==s?s:this.timeout);return await(null===(r=e.body)||void 0===r?void 0:r.cancel()),e.ok?"ok":"error"}catch(e){return"AbortError"===e.name?"timed out":"error"}}}updateJoinPayload(e){this.joinPush.updatePayload(e)}unsubscribe(e=this.timeout){this.state=n.leaving;const t=()=>{this.socket.log("channel",`leave ${this.topic}`),this._trigger(o.close,"leave",this._joinRef())};return this.rejoinTimer.reset(),this.joinPush.destroy(),new Promise((s=>{const r=new k(this,o.leave,{},e);r.receive("ok",(()=>{t(),s("ok")})).receive("timeout",(()=>{t(),s("timed out")})).receive("error",(()=>{s("error")})),r.send(),this._canPush()||r.trigger("ok",{})}))}async _fetchWithTimeout(e,t,s){const r=new AbortController,i=setTimeout((()=>r.abort()),s),n=await this.socket.fetch(e,Object.assign(Object.assign({},t),{signal:r.signal}));return clearTimeout(i),n}_push(e,t,s=this.timeout){if(!this.joinedOnce)throw`tried to push '${e}' to '${this.topic}' before joining. Use channel.subscribe() before pushing events`;let r=new k(this,e,t,s);return this._canPush()?r.send():(r.startTimeout(),this.pushBuffer.push(r)),r}_onMessage(e,t,s){return t}_isMember(e){return this.topic===e}_joinRef(){return this.joinPush.ref}_trigger(e,t,s){var r,i;const n=e.toLocaleLowerCase(),{close:a,error:c,leave:l,join:h}=o;if(s&&[a,c,l,h].indexOf(n)>=0&&s!==this._joinRef())return;let u=this._onMessage(n,t,s);if(t&&!u)throw"channel onMessage callbacks must return the payload, modified or unmodified";["insert","update","delete"].includes(n)?null===(r=this.bindings.postgres_changes)||void 0===r||r.filter((e=>{var t,s,r;return"*"===(null===(t=e.filter)||void 0===t?void 0:t.event)||(null===(r=null===(s=e.filter)||void 0===s?void 0:s.event)||void 0===r?void 0:r.toLocaleLowerCase())===n})).map((e=>e.callback(u,s))):null===(i=this.bindings[n])||void 0===i||i.filter((e=>{var s,r,i,o,a,c;if(["broadcast","presence","postgres_changes"].includes(n)){if("id"in e){const n=e.id,o=null===(s=e.filter)||void 0===s?void 0:s.event;return n&&(null===(r=t.ids)||void 0===r?void 0:r.includes(n))&&("*"===o||(null==o?void 0:o.toLocaleLowerCase())===(null===(i=t.data)||void 0===i?void 0:i.type.toLocaleLowerCase()))}{const s=null===(a=null===(o=null==e?void 0:e.filter)||void 0===o?void 0:o.event)||void 0===a?void 0:a.toLocaleLowerCase();return"*"===s||s===(null===(c=null==t?void 0:t.event)||void 0===c?void 0:c.toLocaleLowerCase())}}return e.type.toLocaleLowerCase()===n})).map((e=>{if("object"==typeof u&&"ids"in u){const e=u.data,{schema:t,table:s,commit_timestamp:r,type:i,errors:n}=e,o={schema:t,table:s,commit_timestamp:r,eventType:i,new:{},old:{},errors:n};u=Object.assign(Object.assign({},o),this._getPayloadRecords(e))}e.callback(u,s)}))}_isClosed(){return this.state===n.closed}_isJoined(){return this.state===n.joined}_isJoining(){return this.state===n.joining}_isLeaving(){return this.state===n.leaving}_replyEventName(e){return`chan_reply_${e}`}_on(e,t,s){const r=e.toLocaleLowerCase(),i={type:r,filter:t,callback:s};return this.bindings[r]?this.bindings[r].push(i):this.bindings[r]=[i],this}_off(e,t){const s=e.toLocaleLowerCase();return this.bindings[s]=this.bindings[s].filter((e=>{var r;return!((null===(r=e.type)||void 0===r?void 0:r.toLocaleLowerCase())===s&&A.isEqual(e.filter,t))})),this}static isEqual(e,t){if(Object.keys(e).length!==Object.keys(t).length)return!1;for(const s in e)if(e[s]!==t[s])return!1;return!0}_rejoinUntilConnected(){this.rejoinTimer.scheduleTimeout(),this.socket.isConnected()&&this._rejoin()}_onClose(e){this._on(o.close,{},e)}_onError(e){this._on(o.error,{},(t=>e(t)))}_canPush(){return this.socket.isConnected()&&this._isJoined()}_rejoin(e=this.timeout){this._isLeaving()||(this.socket._leaveOpenTopic(this.topic),this.state=n.joining,this.joinPush.resend(e))}_getPayloadRecords(e){const t={new:{},old:{}};return"INSERT"!==e.type&&"UPDATE"!==e.type||(t.new=d(e.columns,e.record)),"UPDATE"!==e.type&&"DELETE"!==e.type||(t.old=d(e.columns,e.old_record)),t}}const $=()=>{},x="undefined"!=typeof WebSocket;class C{constructor(e,t){var i;this.accessToken=null,this.apiKey=null,this.channels=[],this.endPoint="",this.httpEndpoint="",this.headers=r,this.params={},this.timeout=1e4,this.heartbeatIntervalMs=3e4,this.heartbeatTimer=void 0,this.pendingHeartbeatRef=null,this.ref=0,this.logger=$,this.conn=null,this.sendBuffer=[],this.serializer=new h,this.stateChangeCallbacks={open:[],close:[],error:[],message:[]},this._resolveFetch=e=>{let t;return t=e||("undefined"==typeof fetch?(...e)=>Promise.resolve().then(s.bind(s,907)).then((({default:t})=>t(...e))):fetch),(...e)=>t(...e)},this.endPoint=`${e}/${a.websocket}`,this.httpEndpoint=w(e),(null==t?void 0:t.transport)?this.transport=t.transport:this.transport=null,(null==t?void 0:t.params)&&(this.params=t.params),(null==t?void 0:t.headers)&&(this.headers=Object.assign(Object.assign({},this.headers),t.headers)),(null==t?void 0:t.timeout)&&(this.timeout=t.timeout),(null==t?void 0:t.logger)&&(this.logger=t.logger),(null==t?void 0:t.heartbeatIntervalMs)&&(this.heartbeatIntervalMs=t.heartbeatIntervalMs);const n=null===(i=null==t?void 0:t.params)||void 0===i?void 0:i.apikey;n&&(this.accessToken=n,this.apiKey=n),this.reconnectAfterMs=(null==t?void 0:t.reconnectAfterMs)?t.reconnectAfterMs:e=>[1e3,2e3,5e3,1e4][e-1]||1e4,this.encode=(null==t?void 0:t.encode)?t.encode:(e,t)=>t(JSON.stringify(e)),this.decode=(null==t?void 0:t.decode)?t.decode:this.serializer.decode.bind(this.serializer),this.reconnectTimer=new u((async()=>{this.disconnect(),this.connect()}),this.reconnectAfterMs),this.fetch=this._resolveFetch(null==t?void 0:t.fetch)}connect(){if(!this.conn)if(this.transport)this.conn=new this.transport(this._endPointURL(),void 0,{headers:this.headers});else{if(x)return this.conn=new WebSocket(this._endPointURL()),void this.setupConnection();this.conn=new R(this._endPointURL(),void 0,{close:()=>{this.conn=null}}),s.e(591).then(s.t.bind(s,591,23)).then((({default:e})=>{this.conn=new e(this._endPointURL(),void 0,{headers:this.headers}),this.setupConnection()}))}}disconnect(e,t){this.conn&&(this.conn.onclose=function(){},e?this.conn.close(e,null!=t?t:""):this.conn.close(),this.conn=null,this.heartbeatTimer&&clearInterval(this.heartbeatTimer),this.reconnectTimer.reset())}getChannels(){return this.channels}async removeChannel(e){const t=await e.unsubscribe();return 0===this.channels.length&&this.disconnect(),t}async removeAllChannels(){const e=await Promise.all(this.channels.map((e=>e.unsubscribe())));return this.disconnect(),e}log(e,t,s){this.logger(e,t,s)}connectionState(){switch(this.conn&&this.conn.readyState){case i.connecting:return c.Connecting;case i.open:return c.Open;case i.closing:return c.Closing;default:return c.Closed}}isConnected(){return this.connectionState()===c.Open}channel(e,t={config:{}}){const s=new A(`realtime:${e}`,t,this);return this.channels.push(s),s}push(e){const{topic:t,event:s,payload:r,ref:i}=e,n=()=>{this.encode(e,(e=>{var t;null===(t=this.conn)||void 0===t||t.send(e)}))};this.log("push",`${t} ${s} (${i})`,r),this.isConnected()?n():this.sendBuffer.push(n)}setAuth(e){this.accessToken=e,this.channels.forEach((t=>{e&&t.updateJoinPayload({access_token:e}),t.joinedOnce&&t._isJoined()&&t._push(o.access_token,{access_token:e})}))}_makeRef(){let e=this.ref+1;return e===this.ref?this.ref=0:this.ref=e,this.ref.toString()}_leaveOpenTopic(e){let t=this.channels.find((t=>t.topic===e&&(t._isJoined()||t._isJoining())));t&&(this.log("transport",`leaving duplicate topic "${e}"`),t.unsubscribe())}_remove(e){this.channels=this.channels.filter((t=>t._joinRef()!==e._joinRef()))}setupConnection(){this.conn&&(this.conn.binaryType="arraybuffer",this.conn.onopen=()=>this._onConnOpen(),this.conn.onerror=e=>this._onConnError(e),this.conn.onmessage=e=>this._onConnMessage(e),this.conn.onclose=e=>this._onConnClose(e))}_endPointURL(){return this._appendParams(this.endPoint,Object.assign({},this.params,{vsn:"1.0.0"}))}_onConnMessage(e){this.decode(e.data,(e=>{let{topic:t,event:s,payload:r,ref:i}=e;(i&&i===this.pendingHeartbeatRef||s===(null==r?void 0:r.type))&&(this.pendingHeartbeatRef=null),this.log("receive",`${r.status||""} ${t} ${s} ${i&&"("+i+")"||""}`,r),this.channels.filter((e=>e._isMember(t))).forEach((e=>e._trigger(s,r,i))),this.stateChangeCallbacks.message.forEach((t=>t(e)))}))}_onConnOpen(){this.log("transport",`connected to ${this._endPointURL()}`),this._flushSendBuffer(),this.reconnectTimer.reset(),this.heartbeatTimer&&clearInterval(this.heartbeatTimer),this.heartbeatTimer=setInterval((()=>this._sendHeartbeat()),this.heartbeatIntervalMs),this.stateChangeCallbacks.open.forEach((e=>e()))}_onConnClose(e){this.log("transport","close",e),this._triggerChanError(),this.heartbeatTimer&&clearInterval(this.heartbeatTimer),this.reconnectTimer.scheduleTimeout(),this.stateChangeCallbacks.close.forEach((t=>t(e)))}_onConnError(e){this.log("transport",e.message),this._triggerChanError(),this.stateChangeCallbacks.error.forEach((t=>t(e)))}_triggerChanError(){this.channels.forEach((e=>e._trigger(o.error)))}_appendParams(e,t){if(0===Object.keys(t).length)return e;const s=e.match(/\?/)?"&":"?";return`${e}${s}${new URLSearchParams(t)}`}_flushSendBuffer(){this.isConnected()&&this.sendBuffer.length>0&&(this.sendBuffer.forEach((e=>e())),this.sendBuffer=[])}_sendHeartbeat(){var e;if(this.isConnected()){if(this.pendingHeartbeatRef)return this.pendingHeartbeatRef=null,this.log("transport","heartbeat timeout. Attempting to re-establish connection"),void(null===(e=this.conn)||void 0===e||e.close(1e3,"hearbeat timeout"));this.pendingHeartbeatRef=this._makeRef(),this.push({topic:"phoenix",event:"heartbeat",payload:{},ref:this.pendingHeartbeatRef}),this.setAuth(this.accessToken)}}}class R{constructor(e,t,s){this.binaryType="arraybuffer",this.onclose=()=>{},this.onerror=()=>{},this.onmessage=()=>{},this.onopen=()=>{},this.readyState=i.connecting,this.send=()=>{},this.url=null,this.url=e,this.close=s.close}}},623:(e,t,s)=>{s.r(t),s.d(t,{StorageApiError:()=>n,StorageClient:()=>S,StorageError:()=>r,StorageUnknownError:()=>o,isStorageError:()=>i});class r extends Error{constructor(e){super(e),this.__isStorageError=!0,this.name="StorageError"}}function i(e){return"object"==typeof e&&null!==e&&"__isStorageError"in e}class n extends r{constructor(e,t){super(e),this.name="StorageApiError",this.status=t}toJSON(){return{name:this.name,message:this.message,status:this.status}}}class o extends r{constructor(e,t){super(e),this.name="StorageUnknownError",this.originalError=t}}const a=e=>{let t;return t=e||("undefined"==typeof fetch?(...e)=>Promise.resolve().then(s.bind(s,907)).then((({default:t})=>t(...e))):fetch),(...e)=>t(...e)},c=e=>{if(Array.isArray(e))return e.map((e=>c(e)));if("function"==typeof e||e!==Object(e))return e;const t={};return Object.entries(e).forEach((([e,s])=>{const r=e.replace(/([-_][a-z])/gi,(e=>e.toUpperCase().replace(/[-_]/g,"")));t[r]=c(s)})),t};var l=function(e,t,s,r){return new(s||(s=Promise))((function(i,n){function o(e){try{c(r.next(e))}catch(e){n(e)}}function a(e){try{c(r.throw(e))}catch(e){n(e)}}function c(e){var t;e.done?i(e.value):(t=e.value,t instanceof s?t:new s((function(e){e(t)}))).then(o,a)}c((r=r.apply(e,t||[])).next())}))};const h=e=>e.msg||e.message||e.error_description||e.error||JSON.stringify(e),u=(e,t,r)=>l(void 0,void 0,void 0,(function*(){const i=yield(a=void 0,c=void 0,l=void 0,u=function*(){return"undefined"==typeof Response?(yield Promise.resolve().then(s.bind(s,907))).Response:Response},new(l||(l=Promise))((function(e,t){function s(e){try{i(u.next(e))}catch(e){t(e)}}function r(e){try{i(u.throw(e))}catch(e){t(e)}}function i(t){var i;t.done?e(t.value):(i=t.value,i instanceof l?i:new l((function(e){e(i)}))).then(s,r)}i((u=u.apply(a,c||[])).next())})));var a,c,l,u;e instanceof i&&!(null==r?void 0:r.noResolveJson)?e.json().then((s=>{t(new n(h(s),e.status||500))})).catch((e=>{t(new o(h(e),e))})):t(new o(h(e),e))})),d=(e,t,s,r)=>{const i={method:e,headers:(null==t?void 0:t.headers)||{}};return"GET"===e?i:(i.headers=Object.assign({"Content-Type":"application/json"},null==t?void 0:t.headers),r&&(i.body=JSON.stringify(r)),Object.assign(Object.assign({},i),s))};function f(e,t,s,r,i,n){return l(this,void 0,void 0,(function*(){return new Promise(((o,a)=>{e(s,d(t,r,i,n)).then((e=>{if(!e.ok)throw e;return(null==r?void 0:r.noResolveJson)?e:e.json()})).then((e=>o(e))).catch((e=>u(e,a,r)))}))}))}function p(e,t,s,r){return l(this,void 0,void 0,(function*(){return f(e,"GET",t,s,r)}))}function g(e,t,s,r,i){return l(this,void 0,void 0,(function*(){return f(e,"POST",t,r,i,s)}))}function y(e,t,s,r,i){return l(this,void 0,void 0,(function*(){return f(e,"DELETE",t,r,i,s)}))}var v=function(e,t,s,r){return new(s||(s=Promise))((function(i,n){function o(e){try{c(r.next(e))}catch(e){n(e)}}function a(e){try{c(r.throw(e))}catch(e){n(e)}}function c(e){var t;e.done?i(e.value):(t=e.value,t instanceof s?t:new s((function(e){e(t)}))).then(o,a)}c((r=r.apply(e,t||[])).next())}))};const m={limit:100,offset:0,sortBy:{column:"name",order:"asc"}},_={cacheControl:"3600",contentType:"text/plain;charset=UTF-8",upsert:!1};class b{constructor(e,t={},s,r){this.url=e,this.headers=t,this.bucketId=s,this.fetch=a(r)}uploadOrUpdate(e,t,s,r){return v(this,void 0,void 0,(function*(){try{let i;const n=Object.assign(Object.assign({},_),r);let o=Object.assign(Object.assign({},this.headers),"POST"===e&&{"x-upsert":String(n.upsert)});const a=n.metadata;"undefined"!=typeof Blob&&s instanceof Blob?(i=new FormData,i.append("cacheControl",n.cacheControl),i.append("",s),a&&i.append("metadata",this.encodeMetadata(a))):"undefined"!=typeof FormData&&s instanceof FormData?(i=s,i.append("cacheControl",n.cacheControl),a&&i.append("metadata",this.encodeMetadata(a))):(i=s,o["cache-control"]=`max-age=${n.cacheControl}`,o["content-type"]=n.contentType,a&&(o["x-metadata"]=this.toBase64(this.encodeMetadata(a)))),(null==r?void 0:r.headers)&&(o=Object.assign(Object.assign({},o),r.headers));const c=this._removeEmptyFolders(t),l=this._getFinalPath(c),h=yield this.fetch(`${this.url}/object/${l}`,Object.assign({method:e,body:i,headers:o},(null==n?void 0:n.duplex)?{duplex:n.duplex}:{})),u=yield h.json();return h.ok?{data:{path:c,id:u.Id,fullPath:u.Key},error:null}:{data:null,error:u}}catch(e){if(i(e))return{data:null,error:e};throw e}}))}upload(e,t,s){return v(this,void 0,void 0,(function*(){return this.uploadOrUpdate("POST",e,t,s)}))}uploadToSignedUrl(e,t,s,r){return v(this,void 0,void 0,(function*(){const n=this._removeEmptyFolders(e),o=this._getFinalPath(n),a=new URL(this.url+`/object/upload/sign/${o}`);a.searchParams.set("token",t);try{let e;const t=Object.assign({upsert:_.upsert},r),i=Object.assign(Object.assign({},this.headers),{"x-upsert":String(t.upsert)});"undefined"!=typeof Blob&&s instanceof Blob?(e=new FormData,e.append("cacheControl",t.cacheControl),e.append("",s)):"undefined"!=typeof FormData&&s instanceof FormData?(e=s,e.append("cacheControl",t.cacheControl)):(e=s,i["cache-control"]=`max-age=${t.cacheControl}`,i["content-type"]=t.contentType);const o=yield this.fetch(a.toString(),{method:"PUT",body:e,headers:i}),c=yield o.json();return o.ok?{data:{path:n,fullPath:c.Key},error:null}:{data:null,error:c}}catch(e){if(i(e))return{data:null,error:e};throw e}}))}createSignedUploadUrl(e,t){return v(this,void 0,void 0,(function*(){try{let s=this._getFinalPath(e);const i=Object.assign({},this.headers);(null==t?void 0:t.upsert)&&(i["x-upsert"]="true");const n=yield g(this.fetch,`${this.url}/object/upload/sign/${s}`,{},{headers:i}),o=new URL(this.url+n.url),a=o.searchParams.get("token");if(!a)throw new r("No token returned by API");return{data:{signedUrl:o.toString(),path:e,token:a},error:null}}catch(e){if(i(e))return{data:null,error:e};throw e}}))}update(e,t,s){return v(this,void 0,void 0,(function*(){return this.uploadOrUpdate("PUT",e,t,s)}))}move(e,t,s){return v(this,void 0,void 0,(function*(){try{return{data:yield g(this.fetch,`${this.url}/object/move`,{bucketId:this.bucketId,sourceKey:e,destinationKey:t,destinationBucket:null==s?void 0:s.destinationBucket},{headers:this.headers}),error:null}}catch(e){if(i(e))return{data:null,error:e};throw e}}))}copy(e,t,s){return v(this,void 0,void 0,(function*(){try{return{data:{path:(yield g(this.fetch,`${this.url}/object/copy`,{bucketId:this.bucketId,sourceKey:e,destinationKey:t,destinationBucket:null==s?void 0:s.destinationBucket},{headers:this.headers})).Key},error:null}}catch(e){if(i(e))return{data:null,error:e};throw e}}))}createSignedUrl(e,t,s){return v(this,void 0,void 0,(function*(){try{let r=this._getFinalPath(e),i=yield g(this.fetch,`${this.url}/object/sign/${r}`,Object.assign({expiresIn:t},(null==s?void 0:s.transform)?{transform:s.transform}:{}),{headers:this.headers});const n=(null==s?void 0:s.download)?`&download=${!0===s.download?"":s.download}`:"";return i={signedUrl:encodeURI(`${this.url}${i.signedURL}${n}`)},{data:i,error:null}}catch(e){if(i(e))return{data:null,error:e};throw e}}))}createSignedUrls(e,t,s){return v(this,void 0,void 0,(function*(){try{const r=yield g(this.fetch,`${this.url}/object/sign/${this.bucketId}`,{expiresIn:t,paths:e},{headers:this.headers}),i=(null==s?void 0:s.download)?`&download=${!0===s.download?"":s.download}`:"";return{data:r.map((e=>Object.assign(Object.assign({},e),{signedUrl:e.signedURL?encodeURI(`${this.url}${e.signedURL}${i}`):null}))),error:null}}catch(e){if(i(e))return{data:null,error:e};throw e}}))}download(e,t){return v(this,void 0,void 0,(function*(){const s=void 0!==(null==t?void 0:t.transform)?"render/image/authenticated":"object",r=this.transformOptsToQueryString((null==t?void 0:t.transform)||{}),n=r?`?${r}`:"";try{const t=this._getFinalPath(e),r=yield p(this.fetch,`${this.url}/${s}/${t}${n}`,{headers:this.headers,noResolveJson:!0});return{data:yield r.blob(),error:null}}catch(e){if(i(e))return{data:null,error:e};throw e}}))}info(e){return v(this,void 0,void 0,(function*(){const t=this._getFinalPath(e);try{const e=yield p(this.fetch,`${this.url}/object/info/${t}`,{headers:this.headers});return{data:c(e),error:null}}catch(e){if(i(e))return{data:null,error:e};throw e}}))}exists(e){return v(this,void 0,void 0,(function*(){const t=this._getFinalPath(e);try{return yield function(e,t,s){return l(this,void 0,void 0,(function*(){return f(e,"HEAD",t,Object.assign(Object.assign({},s),{noResolveJson:!0}),undefined)}))}(this.fetch,`${this.url}/object/${t}`,{headers:this.headers}),{data:!0,error:null}}catch(e){if(i(e)&&e instanceof o){const t=e.originalError;if([400,404].includes(null==t?void 0:t.status))return{data:!1,error:e}}throw e}}))}getPublicUrl(e,t){const s=this._getFinalPath(e),r=[],i=(null==t?void 0:t.download)?`download=${!0===t.download?"":t.download}`:"";""!==i&&r.push(i);const n=void 0!==(null==t?void 0:t.transform)?"render/image":"object",o=this.transformOptsToQueryString((null==t?void 0:t.transform)||{});""!==o&&r.push(o);let a=r.join("&");return""!==a&&(a=`?${a}`),{data:{publicUrl:encodeURI(`${this.url}/${n}/public/${s}${a}`)}}}remove(e){return v(this,void 0,void 0,(function*(){try{return{data:yield y(this.fetch,`${this.url}/object/${this.bucketId}`,{prefixes:e},{headers:this.headers}),error:null}}catch(e){if(i(e))return{data:null,error:e};throw e}}))}list(e,t,s){return v(this,void 0,void 0,(function*(){try{const r=Object.assign(Object.assign(Object.assign({},m),t),{prefix:e||""});return{data:yield g(this.fetch,`${this.url}/object/list/${this.bucketId}`,r,{headers:this.headers},s),error:null}}catch(e){if(i(e))return{data:null,error:e};throw e}}))}encodeMetadata(e){return JSON.stringify(e)}toBase64(e){return"undefined"!=typeof Buffer?Buffer.from(e).toString("base64"):btoa(e)}_getFinalPath(e){return`${this.bucketId}/${e}`}_removeEmptyFolders(e){return e.replace(/^\/|\/$/g,"").replace(/\/+/g,"/")}transformOptsToQueryString(e){const t=[];return e.width&&t.push(`width=${e.width}`),e.height&&t.push(`height=${e.height}`),e.resize&&t.push(`resize=${e.resize}`),e.format&&t.push(`format=${e.format}`),e.quality&&t.push(`quality=${e.quality}`),t.join("&")}}const w={"X-Client-Info":"storage-js/2.7.0"};var k=function(e,t,s,r){return new(s||(s=Promise))((function(i,n){function o(e){try{c(r.next(e))}catch(e){n(e)}}function a(e){try{c(r.throw(e))}catch(e){n(e)}}function c(e){var t;e.done?i(e.value):(t=e.value,t instanceof s?t:new s((function(e){e(t)}))).then(o,a)}c((r=r.apply(e,t||[])).next())}))};class T{constructor(e,t={},s){this.url=e,this.headers=Object.assign(Object.assign({},w),t),this.fetch=a(s)}listBuckets(){return k(this,void 0,void 0,(function*(){try{return{data:yield p(this.fetch,`${this.url}/bucket`,{headers:this.headers}),error:null}}catch(e){if(i(e))return{data:null,error:e};throw e}}))}getBucket(e){return k(this,void 0,void 0,(function*(){try{return{data:yield p(this.fetch,`${this.url}/bucket/${e}`,{headers:this.headers}),error:null}}catch(e){if(i(e))return{data:null,error:e};throw e}}))}createBucket(e,t={public:!1}){return k(this,void 0,void 0,(function*(){try{return{data:yield g(this.fetch,`${this.url}/bucket`,{id:e,name:e,public:t.public,file_size_limit:t.fileSizeLimit,allowed_mime_types:t.allowedMimeTypes},{headers:this.headers}),error:null}}catch(e){if(i(e))return{data:null,error:e};throw e}}))}updateBucket(e,t){return k(this,void 0,void 0,(function*(){try{const s=yield function(e,t,s,r){return l(this,void 0,void 0,(function*(){return f(e,"PUT",t,r,undefined,s)}))}(this.fetch,`${this.url}/bucket/${e}`,{id:e,name:e,public:t.public,file_size_limit:t.fileSizeLimit,allowed_mime_types:t.allowedMimeTypes},{headers:this.headers});return{data:s,error:null}}catch(e){if(i(e))return{data:null,error:e};throw e}}))}emptyBucket(e){return k(this,void 0,void 0,(function*(){try{return{data:yield g(this.fetch,`${this.url}/bucket/${e}/empty`,{},{headers:this.headers}),error:null}}catch(e){if(i(e))return{data:null,error:e};throw e}}))}deleteBucket(e){return k(this,void 0,void 0,(function*(){try{return{data:yield y(this.fetch,`${this.url}/bucket/${e}`,{},{headers:this.headers}),error:null}}catch(e){if(i(e))return{data:null,error:e};throw e}}))}}class S extends T{constructor(e,t={},s){super(e,t,s)}from(e){return new b(this.url,this.headers,e,this.fetch)}}},787:function(e,t,s){var r=this&&this.__awaiter||function(e,t,s,r){return new(s||(s=Promise))((function(i,n){function o(e){try{c(r.next(e))}catch(e){n(e)}}function a(e){try{c(r.throw(e))}catch(e){n(e)}}function c(e){var t;e.done?i(e.value):(t=e.value,t instanceof s?t:new s((function(e){e(t)}))).then(o,a)}c((r=r.apply(e,t||[])).next())}))};Object.defineProperty(t,"__esModule",{value:!0});const i=s(227),n=s(279),o=s(932),a=s(623),c=s(985),l=s(720),h=s(793),u=s(689);t.default=class{constructor(e,t,s){var r,i,o;if(this.supabaseUrl=e,this.supabaseKey=t,!e)throw new Error("supabaseUrl is required.");if(!t)throw new Error("supabaseKey is required.");const a=(0,h.stripTrailingSlash)(e);this.realtimeUrl=`${a}/realtime/v1`.replace(/^http/i,"ws"),this.authUrl=`${a}/auth/v1`,this.storageUrl=`${a}/storage/v1`,this.functionsUrl=`${a}/functions/v1`;const u=`sb-${new URL(this.authUrl).hostname.split(".")[0]}-auth-token`,d={db:c.DEFAULT_DB_OPTIONS,realtime:c.DEFAULT_REALTIME_OPTIONS,auth:Object.assign(Object.assign({},c.DEFAULT_AUTH_OPTIONS),{storageKey:u}),global:c.DEFAULT_GLOBAL_OPTIONS},f=(0,h.applySettingDefaults)(null!=s?s:{},d);this.storageKey=null!==(r=f.auth.storageKey)&&void 0!==r?r:"",this.headers=null!==(i=f.global.headers)&&void 0!==i?i:{},f.accessToken?(this.accessToken=f.accessToken,this.auth=new Proxy({},{get:(e,t)=>{throw new Error(`@supabase/supabase-js: Supabase Client is configured with the accessToken option, accessing supabase.auth.${String(t)} is not possible`)}})):this.auth=this._initSupabaseAuthClient(null!==(o=f.auth)&&void 0!==o?o:{},this.headers,f.global.fetch),this.fetch=(0,l.fetchWithAuth)(t,this._getAccessToken.bind(this),f.global.fetch),this.realtime=this._initRealtimeClient(Object.assign({headers:this.headers},f.realtime)),this.rest=new n.PostgrestClient(`${a}/rest/v1`,{headers:this.headers,schema:f.db.schema,fetch:this.fetch}),f.accessToken||this._listenForAuthEvents()}get functions(){return new i.FunctionsClient(this.functionsUrl,{headers:this.headers,customFetch:this.fetch})}get storage(){return new a.StorageClient(this.storageUrl,this.headers,this.fetch)}from(e){return this.rest.from(e)}schema(e){return this.rest.schema(e)}rpc(e,t={},s={}){return this.rest.rpc(e,t,s)}channel(e,t={config:{}}){return this.realtime.channel(e,t)}getChannels(){return this.realtime.getChannels()}removeChannel(e){return this.realtime.removeChannel(e)}removeAllChannels(){return this.realtime.removeAllChannels()}_getAccessToken(){var e,t;return r(this,void 0,void 0,(function*(){if(this.accessToken)return yield this.accessToken();const{data:s}=yield this.auth.getSession();return null!==(t=null===(e=s.session)||void 0===e?void 0:e.access_token)&&void 0!==t?t:null}))}_initSupabaseAuthClient({autoRefreshToken:e,persistSession:t,detectSessionInUrl:s,storage:r,storageKey:i,flowType:n,lock:o,debug:a},c,l){var h;const d={Authorization:`Bearer ${this.supabaseKey}`,apikey:`${this.supabaseKey}`};return new u.SupabaseAuthClient({url:this.authUrl,headers:Object.assign(Object.assign({},d),c),storageKey:i,autoRefreshToken:e,persistSession:t,detectSessionInUrl:s,storage:r,flowType:n,lock:o,debug:a,fetch:l,hasCustomAuthorizationHeader:null!==(h="Authorization"in this.headers)&&void 0!==h&&h})}_initRealtimeClient(e){return new o.RealtimeClient(this.realtimeUrl,Object.assign(Object.assign({},e),{params:Object.assign({apikey:this.supabaseKey},null==e?void 0:e.params)}))}_listenForAuthEvents(){return this.auth.onAuthStateChange(((e,t)=>{this._handleTokenChanged(e,"CLIENT",null==t?void 0:t.access_token)}))}_handleTokenChanged(e,t,s){"TOKEN_REFRESHED"!==e&&"SIGNED_IN"!==e||this.changedAccessToken===s?"SIGNED_OUT"===e&&(this.realtime.setAuth(this.supabaseKey),"STORAGE"==t&&this.auth.signOut(),this.changedAccessToken=void 0):(this.realtime.setAuth(null!=s?s:null),this.changedAccessToken=s)}}},440:function(e,t,s){var r=this&&this.__createBinding||(Object.create?function(e,t,s,r){void 0===r&&(r=s);var i=Object.getOwnPropertyDescriptor(t,s);i&&!("get"in i?!t.__esModule:i.writable||i.configurable)||(i={enumerable:!0,get:function(){return t[s]}}),Object.defineProperty(e,r,i)}:function(e,t,s,r){void 0===r&&(r=s),e[r]=t[s]}),i=this&&this.__exportStar||function(e,t){for(var s in e)"default"===s||Object.prototype.hasOwnProperty.call(t,s)||r(t,e,s)},n=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};Object.defineProperty(t,"__esModule",{value:!0}),t.createClient=t.SupabaseClient=t.FunctionRegion=t.FunctionsError=t.FunctionsRelayError=t.FunctionsFetchError=t.FunctionsHttpError=void 0;const o=n(s(787));i(s(235),t);var a=s(227);Object.defineProperty(t,"FunctionsHttpError",{enumerable:!0,get:function(){return a.FunctionsHttpError}}),Object.defineProperty(t,"FunctionsFetchError",{enumerable:!0,get:function(){return a.FunctionsFetchError}}),Object.defineProperty(t,"FunctionsRelayError",{enumerable:!0,get:function(){return a.FunctionsRelayError}}),Object.defineProperty(t,"FunctionsError",{enumerable:!0,get:function(){return a.FunctionsError}}),Object.defineProperty(t,"FunctionRegion",{enumerable:!0,get:function(){return a.FunctionRegion}}),i(s(932),t);var c=s(787);Object.defineProperty(t,"SupabaseClient",{enumerable:!0,get:function(){return n(c).default}}),t.createClient=(e,t,s)=>new o.default(e,t,s)},689:(e,t,s)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.SupabaseAuthClient=void 0;const r=s(235);class i extends r.AuthClient{constructor(e){super(e)}}t.SupabaseAuthClient=i},985:(e,t,s)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.DEFAULT_REALTIME_OPTIONS=t.DEFAULT_AUTH_OPTIONS=t.DEFAULT_DB_OPTIONS=t.DEFAULT_GLOBAL_OPTIONS=t.DEFAULT_HEADERS=void 0;const r=s(560);let i="";i="undefined"!=typeof Deno?"deno":"undefined"!=typeof document?"web":"undefined"!=typeof navigator&&"ReactNative"===navigator.product?"react-native":"node",t.DEFAULT_HEADERS={"X-Client-Info":`supabase-js-${i}/${r.version}`},t.DEFAULT_GLOBAL_OPTIONS={headers:t.DEFAULT_HEADERS},t.DEFAULT_DB_OPTIONS={schema:"public"},t.DEFAULT_AUTH_OPTIONS={autoRefreshToken:!0,persistSession:!0,detectSessionInUrl:!0,flowType:"implicit"},t.DEFAULT_REALTIME_OPTIONS={}},720:function(e,t,s){var r=this&&this.__createBinding||(Object.create?function(e,t,s,r){void 0===r&&(r=s);var i=Object.getOwnPropertyDescriptor(t,s);i&&!("get"in i?!t.__esModule:i.writable||i.configurable)||(i={enumerable:!0,get:function(){return t[s]}}),Object.defineProperty(e,r,i)}:function(e,t,s,r){void 0===r&&(r=s),e[r]=t[s]}),i=this&&this.__setModuleDefault||(Object.create?function(e,t){Object.defineProperty(e,"default",{enumerable:!0,value:t})}:function(e,t){e.default=t}),n=this&&this.__importStar||function(e){if(e&&e.__esModule)return e;var t={};if(null!=e)for(var s in e)"default"!==s&&Object.prototype.hasOwnProperty.call(e,s)&&r(t,e,s);return i(t,e),t},o=this&&this.__awaiter||function(e,t,s,r){return new(s||(s=Promise))((function(i,n){function o(e){try{c(r.next(e))}catch(e){n(e)}}function a(e){try{c(r.throw(e))}catch(e){n(e)}}function c(e){var t;e.done?i(e.value):(t=e.value,t instanceof s?t:new s((function(e){e(t)}))).then(o,a)}c((r=r.apply(e,t||[])).next())}))};Object.defineProperty(t,"__esModule",{value:!0}),t.fetchWithAuth=t.resolveHeadersConstructor=t.resolveFetch=void 0;const a=n(s(907));t.resolveFetch=e=>{let t;return t=e||("undefined"==typeof fetch?a.default:fetch),(...e)=>t(...e)},t.resolveHeadersConstructor=()=>"undefined"==typeof Headers?a.Headers:Headers,t.fetchWithAuth=(e,s,r)=>{const i=(0,t.resolveFetch)(r),n=(0,t.resolveHeadersConstructor)();return(t,r)=>o(void 0,void 0,void 0,(function*(){var o;const a=null!==(o=yield s())&&void 0!==o?o:e;let c=new n(null==r?void 0:r.headers);return c.has("apikey")||c.set("apikey",e),c.has("Authorization")||c.set("Authorization",`Bearer ${a}`),i(t,Object.assign(Object.assign({},r),{headers:c}))}))}},793:function(e,t){var s=this&&this.__awaiter||function(e,t,s,r){return new(s||(s=Promise))((function(i,n){function o(e){try{c(r.next(e))}catch(e){n(e)}}function a(e){try{c(r.throw(e))}catch(e){n(e)}}function c(e){var t;e.done?i(e.value):(t=e.value,t instanceof s?t:new s((function(e){e(t)}))).then(o,a)}c((r=r.apply(e,t||[])).next())}))};Object.defineProperty(t,"__esModule",{value:!0}),t.applySettingDefaults=t.isBrowser=t.stripTrailingSlash=t.uuid=void 0,t.uuid=function(){return"xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g,(function(e){var t=16*Math.random()|0;return("x"==e?t:3&t|8).toString(16)}))},t.stripTrailingSlash=function(e){return e.replace(/\/$/,"")},t.isBrowser=()=>"undefined"!=typeof window,t.applySettingDefaults=function(e,t){const{db:r,auth:i,realtime:n,global:o}=e,{db:a,auth:c,realtime:l,global:h}=t,u={db:Object.assign(Object.assign({},a),r),auth:Object.assign(Object.assign({},c),i),realtime:Object.assign(Object.assign({},l),n),global:Object.assign(Object.assign({},h),o),accessToken:()=>s(this,void 0,void 0,(function*(){return""}))};return e.accessToken?u.accessToken=e.accessToken:delete u.accessToken,u}},560:(e,t)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.version=void 0,t.version="2.45.4"}},n={};function o(e){var t=n[e];if(void 0!==t)return t.exports;var s=n[e]={exports:{}};return i[e].call(s.exports,s,s.exports,o),s.exports}return o.m=i,t=Object.getPrototypeOf?e=>Object.getPrototypeOf(e):e=>e.__proto__,o.t=function(s,r){if(1&r&&(s=this(s)),8&r)return s;if("object"==typeof s&&s){if(4&r&&s.__esModule)return s;if(16&r&&"function"==typeof s.then)return s}var i=Object.create(null);o.r(i);var n={};e=e||[null,t({}),t([]),t(t)];for(var a=2&r&&s;"object"==typeof a&&!~e.indexOf(a);a=t(a))Object.getOwnPropertyNames(a).forEach((e=>n[e]=()=>s[e]));return n.default=()=>s,o.d(i,n),i},o.d=(e,t)=>{for(var s in t)o.o(t,s)&&!o.o(e,s)&&Object.defineProperty(e,s,{enumerable:!0,get:t[s]})},o.f={},o.e=e=>Promise.all(Object.keys(o.f).reduce(((t,s)=>(o.f[s](e,t),t)),[])),o.u=e=>e+".supabase.js",o.g=function(){if("object"==typeof globalThis)return globalThis;try{return this||new Function("return this")()}catch(e){if("object"==typeof window)return window}}(),o.o=(e,t)=>Object.prototype.hasOwnProperty.call(e,t),s={},r="supabase:",o.l=(e,t,i,n)=>{if(s[e])s[e].push(t);else{var a,c;if(void 0!==i)for(var l=document.getElementsByTagName("script"),h=0;h<l.length;h++){var u=l[h];if(u.getAttribute("src")==e||u.getAttribute("data-webpack")==r+i){a=u;break}}a||(c=!0,(a=document.createElement("script")).charset="utf-8",a.timeout=120,o.nc&&a.setAttribute("nonce",o.nc),a.setAttribute("data-webpack",r+i),a.src=e),s[e]=[t];var d=(t,r)=>{a.onerror=a.onload=null,clearTimeout(f);var i=s[e];if(delete s[e],a.parentNode&&a.parentNode.removeChild(a),i&&i.forEach((e=>e(r))),t)return t(r)},f=setTimeout(d.bind(null,void 0,{type:"timeout",target:a}),12e4);a.onerror=d.bind(null,a.onerror),a.onload=d.bind(null,a.onload),c&&document.head.appendChild(a)}},o.r=e=>{"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},(()=>{var e;o.g.importScripts&&(e=o.g.location+"");var t=o.g.document;if(!e&&t&&(t.currentScript&&"SCRIPT"===t.currentScript.tagName.toUpperCase()&&(e=t.currentScript.src),!e)){var s=t.getElementsByTagName("script");if(s.length)for(var r=s.length-1;r>-1&&(!e||!/^http(s?):/.test(e));)e=s[r--].src}e=e||"/";e=e.replace(/#.*$/,"").replace(/\?.*$/,"").replace(/\/[^\/]+$/,"/"),o.p=e})(),(()=>{var e={792:0};o.f.j=(t,s)=>{var r=o.o(e,t)?e[t]:void 0;if(0!==r)if(r)s.push(r[2]);else{var i=new Promise(((s,i)=>r=e[t]=[s,i]));s.push(r[2]=i);var n=o.p+o.u(t),a=new Error;o.l(n,(s=>{if(o.o(e,t)&&(0!==(r=e[t])&&(e[t]=void 0),r)){var i=s&&("load"===s.type?"missing":s.type),n=s&&s.target&&s.target.src;a.message="Loading chunk "+t+" failed.\n("+i+": "+n+")",a.name="ChunkLoadError",a.type=i,a.request=n,r[1](a)}}),"chunk-"+t,t)}};var t=(t,s)=>{var r,i,[n,a,c]=s,l=0;if(n.some((t=>0!==e[t]))){for(r in a)o.o(a,r)&&(o.m[r]=a[r]);c&&c(o)}for(t&&t(s);l<n.length;l++)i=n[l],o.o(e,i)&&e[i]&&e[i][0](),e[i]=0},s=self.webpackChunksupabase=self.webpackChunksupabase||[];s.forEach(t.bind(null,0)),s.push=t.bind(null,s.push.bind(s))})(),o(440)})()));
+</script>
+<script>
+// ════════════════════════════════
+// BASE DE DONNÉES (Supabase) — collez vos 2 valeurs ici
+// ════════════════════════════════
+const SUPABASE_URL = 'COLLEZ_ICI_VOTRE_URL';        // ex: https://abcdxyz.supabase.co
+const SUPABASE_KEY = 'COLLEZ_ICI_VOTRE_CLE_ANON';   // clé "anon public"
+const USE_REMOTE = /^https:\/\/[a-z0-9-]+\.supabase\.co/.test(SUPABASE_URL) && typeof supabase !== 'undefined';
+const sb = USE_REMOTE ? supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+const AUTH_DOMAIN = 'boutique-admin.com';  // le nom d'utilisateur 'sarah' devient sarah@boutique-admin.com dans Supabase
+const esc = t => String(t ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+// mode local (sans base) : uniquement pour tester sur votre ordinateur, jamais en ligne
+const LOCAL_OK = location.protocol === 'file:' || ['localhost','127.0.0.1'].includes(location.hostname);
+let remoteEmpty = false;
+let currentUser = null; // admin connecté
+
+// ════════════════════════════════
+// DATA
+// ════════════════════════════════
+const WILAYAS_LIST = [
+  'Adrar','Chlef','Laghouat','Oum El Bouaghi','Batna','Béjaïa','Biskra','Béchar',
+  'Blida','Bouira','Tamanrasset','Tébessa','Tlemcen','Tiaret','Tizi Ouzou','Alger',
+  'Djelfa','Jijel','Sétif','Saïda','Skikda','Sidi Bel Abbès','Annaba','Guelma',
+  'Constantine','Médéa','Mostaganem','M\'Sila','Mascara','Ouargla','Oran','El Bayadh',
+  'Illizi','Bordj Bou Arréridj','Boumerdès','El Tarf','Tindouf','Tissemsilt','El Oued',
+  'Khenchela','Souk Ahras','Tipaza','Mila','Aïn Defla','Naâma','Aïn Témouchent',
+  'Ghardaïa','Relizane','Timimoun','Bordj Badji Mokhtar','Ouled Djellal','Béni Abbès',
+  'In Salah','In Guezzam','Touggourt','Djanet','El M\'Ghair','El Menia'
+];
+
+let db = (!USE_REMOTE && JSON.parse(localStorage.getItem('boutiqueV2') || 'null')) || {
+  shopName: 'Ma Boutique',
+  tagline: 'Produits Premium',
+  subtitle: 'Qualité garantie — Livraison dans toute l\'Algérie',
+  promoActive: true,
+  promoText: '🔥 OFFRE LIMITÉE — Livraison GRATUITE pour toute commande ce week-end !',
+  users: LOCAL_OK && !USE_REMOTE ? [{ name: 'admin', pw: 'admin123' }] : [],
+  products: [
+    {
+      id: 1, slug: 'viga-150000-honey', name: 'Viga 150000 Honey', price: 2500, cost: 1200, oldPrice: 3500,
+      badge: 'BEST-SELLER',
+      desc: 'Miel naturel premium formulé spécialement pour les hommes. 15 sachets de 20g de haute qualité.',
+      features: '100% Naturel,Certifié,15 Sachets x 20g,Livraison rapide',
+      img: 'https://placehold.co/400x300/e6eeea/1f7a5c?text=Viga+150000',
+      packs: [
+        { qty: 1, label: '1 Boîte', price: 2500, freeDelivery: false },
+        { qty: 2, label: '2 Boîtes', price: 4500, freeDelivery: true },
+        { qty: 3, label: '3 Boîtes', price: 6500, freeDelivery: true }
+      ]
+    },
+    {
+      id: 2, slug: 'humble-plus', name: 'Magnesium Bisglycinate HUMBLE+', price: 1800, cost: 900, oldPrice: null,
+      badge: 'NOUVEAU',
+      desc: 'Magnésium bisglycinate Age-Well avec vitamines D3, B6 & B12. 90 gélules.',
+      features: 'Vitamines D3 B6 B12,90 Gélules,Sans gluten',
+      img: 'https://placehold.co/400x300/e6eeea/1f7a5c?text=Humble%2B',
+      packs: [
+        { qty: 1, label: '1 Flacon', price: 1800, freeDelivery: false },
+        { qty: 2, label: '2 Flacons', price: 3200, freeDelivery: true }
+      ]
+    },
+    {
+      id: 3, slug: 'novoma', name: 'Magnésium Bisglycinate NOVOMA', price: 1600, cost: 800, oldPrice: 2000,
+      badge: 'PROMO',
+      desc: 'Magnésium bisglycinate + Taurine & Vitamine B6. 120 gélules.',
+      features: '+Taurine,+Vitamine B6,120 Gélules,Énergie & Muscles',
+      img: 'https://placehold.co/400x300/e6eeea/1f7a5c?text=Novoma',
+      packs: [
+        { qty: 1, label: '1 Flacon', price: 1600, freeDelivery: false },
+        { qty: 2, label: '2 Flacons', price: 2800, freeDelivery: true },
+        { qty: 3, label: '3 Flacons', price: 3900, freeDelivery: true }
+      ]
+    }
+  ],
+  wilayas: {},
+  orders: []
+};
+
+// init wilayas
+WILAYAS_LIST.forEach(w => { if (db.wilayas[w] === undefined) db.wilayas[w] = 400; });
+
+function slugify(t) {
+  return String(t||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+    .replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'') || 'produit';
+}
+function uniqueSlug(base, ignoreId) {
+  let slug = base, n = 0;
+  while (db.products.some(p => p.slug === slug && p.id !== ignoreId)) { n++; slug = base + n; }
+  return slug;
+}
+db.products.forEach(p => { if (!p.slug) p.slug = uniqueSlug(slugify(p.name), p.id); });
+// Produit d'exemple avec landing page (ajouté une seule fois)
+if (!db.demoAdded) {
+  const ph = (w,h,bg,t) => `https://placehold.co/${w}x${h}/${bg}/ffffff.png?text=${encodeURIComponent(t)}`;
+  db.products.unshift({
+    id: Date.now(), slug: 'exemple-landing', name: 'EXEMPLE — Miel Premium (landing page)',
+    price: 2500, cost: 1200, oldPrice: 3500, badge: 'EXEMPLE',
+    desc: 'Ceci est un produit d\'exemple : cliquez sur ✏ dans Admin → Produits pour voir comment ajouter plusieurs grandes photos. Supprimez-le quand vous avez compris.',
+    features: '100% Naturel,Livraison rapide,Paiement à la livraison,Garantie satisfait',
+    img: ph(800,800,'1f7a5c','PHOTO PRINCIPALE'),
+    packs: [
+      { qty: 1, label: '1 Boîte', price: 2500, freeDelivery: false },
+      { qty: 2, label: '2 Boîtes', price: 4500, freeDelivery: true },
+      { qty: 3, label: '3 Boîtes', price: 6500, freeDelivery: true }
+    ],
+    media: [
+      ph(1200,700,'2a9d78','BANNIERE 1 — Titre accrocheur'),
+      ph(1200,900,'14513c','PHOTO 2 — Le produit en gros plan'),
+      ph(1200,900,'e4572e','PHOTO 3 — Les bienfaits'),
+      ph(1200,700,'1f7a5c','PHOTO 4 — Mode d\'emploi'),
+      ph(1200,900,'4f635a','PHOTO 5 — Avis clients'),
+      ph(1200,500,'2a9d78','PHOTO 6 — Commandez maintenant !')
+    ]
+  });
+  db.demoAdded = true;
+  save();
+}
+
+// Produit d'exemple (ajouté une seule fois) pour montrer une landing page complète
+if (!db.exampleAdded) {
+  if (!db.products.some(p => p.slug === 'exemple-landing-page')) {
+    const ph = (t, c) => `https://placehold.co/1200x800/${c}/ffffff?text=${encodeURIComponent(t)}&font=montserrat`;
+    db.products.unshift({
+      id: 999001, slug: 'exemple-landing-page', name: 'Exemple Landing Page — Miel Premium',
+      price: 2500, cost: 1200, oldPrice: 3500, badge: 'EXEMPLE',
+      desc: 'Ceci est un produit d\'exemple : regardez en bas de cette page pour voir comment s\'affichent plusieurs grandes photos. Modifiez ou supprimez ce produit depuis Admin → Produits.',
+      features: '100% Naturel,Certifié,Livraison rapide,Paiement à la livraison',
+      img: ph('Photo principale', '1f7a5c'),
+      packs: [
+        { qty: 1, label: '1 Boîte', price: 2500, freeDelivery: false },
+        { qty: 2, label: '2 Boîtes', price: 4500, freeDelivery: true },
+        { qty: 3, label: '3 Boîtes', price: 6500, freeDelivery: true }
+      ],
+      media: [
+        ph('Grande photo 1 — Présentation du produit', '2a9d78'),
+        ph('Grande photo 2 — Bienfaits', '14513c'),
+        ph('Grande photo 3 — Mode d\'emploi', 'e4572e'),
+        ph('Grande photo 4 — Avis clients', '1f7a5c'),
+        ph('Grande photo 5 — Garantie & livraison', '2a9d78')
+      ]
+    });
+  }
+  db.exampleAdded = true;
+  try { localStorage.setItem('boutiqueV2', JSON.stringify(db)); } catch (e) {}
+}
+function productUrl(p) { return location.href.split('#')[0] + '#/' + p.slug; }
+
+let saveTimer;
+function save() {
+  if (!USE_REMOTE) {
+    try { localStorage.setItem('boutiqueV2', JSON.stringify(db)); }
+    catch (e) { alert("Stockage plein."); }
+    return;
+  }
+  if (!currentUser) return;           // seul l'admin connecté enregistre
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(pushShop, 300);
+}
+// ── Correspondance site <-> tables de la base ──
+const settingsRow = () => ({ shop_name: db.shopName, tagline: db.tagline, subtitle: db.subtitle, promo_active: !!db.promoActive, promo_text: db.promoText });
+const prodRow = (p, i) => ({
+  id: p.id, slug: p.slug, name: p.name,
+  price: Math.round(p.price || 0), cost: Math.round(p.cost || 0), old_price: p.oldPrice ? Math.round(p.oldPrice) : null,
+  badge: p.badge || null, description: p.desc || '', features: p.features || '',
+  image_url: p.img || null, promo_text: p.promoText || null, media: p.media || [], position: i,
+  packs: (p.packs || []).map(k => ({ qty: Math.round(k.qty || 1), label: k.label, price: Math.round(k.price || 0), freeDelivery: !!k.freeDelivery }))
+});
+const rowToProd = r => ({
+  id: Number(r.id), slug: r.slug, name: r.name, price: r.price, cost: r.cost, oldPrice: r.old_price,
+  badge: r.badge || '', desc: r.description || '', features: r.features || '', img: r.image_url || '',
+  promoText: r.promo_text || '', media: r.media || [],
+  packs: (r.product_packs || []).sort((x, y) => x.position - y.position)
+    .map(k => ({ qty: k.qty, label: k.label, price: k.price, freeDelivery: k.free_delivery }))
+});
+
+// ce qui est déjà enregistré en ligne (pour n'envoyer que les changements)
+const synced = { settings: null, products: new Map(), wilayas: {} };
+let syncing = false, syncAgain = false;
+
+async function pushShop() {
+  if (syncing) { syncAgain = true; return; }
+  syncing = true;
+  try {
+    do {
+      syncAgain = false;
+      // 1. paramètres
+      const st = settingsRow(), stJ = JSON.stringify(st);
+      if (stJ !== synced.settings) {
+        const { error } = await sb.from('settings').upsert({ id: 1, ...st, updated_at: new Date().toISOString() });
+        if (error) throw error; synced.settings = stJ;
+      }
+      // 2. produits supprimés
+      const ids = new Set(db.products.map(p => p.id));
+      for (const id of [...synced.products.keys()]) if (!ids.has(id)) {
+        const { error } = await sb.from('products').delete().eq('id', id);
+        if (error) throw error; synced.products.delete(id);
+      }
+      // 3. produits ajoutés / modifiés (avec leurs offres)
+      for (let i = 0; i < db.products.length; i++) {
+        const row = prodRow(db.products[i], i), j = JSON.stringify(row);
+        if (synced.products.get(row.id) !== j) {
+          const { error } = await sb.rpc('save_product', { p: row });
+          if (error) throw error; synced.products.set(row.id, j);
+        }
+      }
+      // 4. frais de livraison par wilaya
+      const changed = [];
+      WILAYAS_LIST.forEach(w => { const v = Math.max(0, Math.round(Number(db.wilayas[w] ?? 400))); if (synced.wilayas[w] !== v) changed.push({ name: w, delivery_price: v }); });
+      if (changed.length) {
+        const { error } = await sb.from('wilayas').upsert(changed);
+        if (error) throw error; changed.forEach(c => synced.wilayas[c.name] = c.delivery_price);
+      }
+    } while (syncAgain);
+    remoteEmpty = false;
+    showToast('☁️ Enregistré en ligne');
+  } catch (e) {
+    showToast('❌ Erreur d\'enregistrement : ' + (e.message || e), 'var(--red)');
+  } finally { syncing = false; }
+}
+
+async function loadRemote() {
+  if (!USE_REMOTE) return;
+  try {
+    const [st, pr, wi] = await Promise.all([
+      sb.from('settings').select('*').eq('id', 1).maybeSingle(),
+      sb.from('products').select('*, product_packs(*)').order('position'),
+      sb.from('wilayas').select('*')
+    ]);
+    const err = st.error || pr.error || wi.error; if (err) throw err;
+    if (!st.data) remoteEmpty = true;            // base vide : la 1re connexion admin y envoie la boutique
+    else {
+      Object.assign(db, { shopName: st.data.shop_name, tagline: st.data.tagline, subtitle: st.data.subtitle,
+        promoActive: st.data.promo_active, promoText: st.data.promo_text });
+      db.products = pr.data.map(rowToProd);
+      db.wilayas = {}; wi.data.forEach(w => db.wilayas[w.name] = w.delivery_price);
+      synced.settings = JSON.stringify(settingsRow());
+      db.products.forEach((p, i) => synced.products.set(p.id, JSON.stringify(prodRow(p, i))));
+      wi.data.forEach(w => synced.wilayas[w.name] = w.delivery_price);
+    }
+    WILAYAS_LIST.forEach(w => { if (db.wilayas[w] === undefined) db.wilayas[w] = 400; });
+    db.products.forEach(p => { if (!p.slug) p.slug = uniqueSlug(slugify(p.name), p.id); });
+    const { data: ses } = await sb.auth.getSession();
+    if (ses && ses.session) currentUser = (ses.session.user.email || '').replace('@' + AUTH_DOMAIN, '');
+  } catch (e) {
+    showToast('❌ Connexion à la base impossible : ' + (e.message || e), 'var(--red)');
+  }
+}
+
+// ════════════════════════════════
+// SESSION
+// ════════════════════════════════
+
+// ════════════════════════════════
+// ROUTING (hidden login URL)
+// ════════════════════════════════
+// Admin accessible via clicking Admin btn; URL trick is cosmetic
+function goAdmin() {
+  showView('view-admin');
+  // show login or panel
+  if (currentUser) {
+    document.getElementById('admin-login-screen').style.display = 'none';
+    document.getElementById('admin-panel').style.display = 'flex';
+    renderAdmin();
+  } else {
+    document.getElementById('admin-login-screen').style.display = 'block';
+    document.getElementById('admin-panel').style.display = 'none';
+  }
+}
+
+// ════════════════════════════════
+// VIEWS
+// ════════════════════════════════
+function handleHash() {
+  if (location.hash === '#admin') { goAdmin(); return; }
+  const m = location.hash.match(/^#\/(.+)$/);
+  if (m) {
+    const p = db.products.find(x => x.slug === decodeURIComponent(m[1]));
+    if (p) { openLanding(p.id, true); return; }
+  }
+  showView('view-shop');
+}
+window.addEventListener('hashchange', handleHash);
+
+function showView(id) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+// ════════════════════════════════
+// SHOP
+// ════════════════════════════════
+function renderPromo() {
+  document.querySelectorAll('.promo-banner').forEach(b => {
+    const isShop = b.id === 'promo-banner';
+    // page produit : texte propre au produit, sinon texte général
+    const custom = !isShop && activeProd && activeProd.promoText;
+    const show = !isShop && (custom || db.promoActive);   // jamais sur la liste des produits
+    b.classList.toggle('hidden', !show);
+    b.querySelector('.promo-text').textContent = custom ? activeProd.promoText : db.promoText;
+  });
+}
+
+function renderShop() {
+  document.getElementById('shop-name-disp').textContent = db.shopName;
+  document.getElementById('shop-tagline-disp').textContent = db.tagline;
+  document.getElementById('shop-subtitle-disp').textContent = db.subtitle;
+  document.title = db.shopName;
+
+  renderPromo();
+
+  const q = (document.getElementById('shop-search')?.value || '').toLowerCase();
+  const prods = db.products.filter(p => !q || (p.name||'').toLowerCase().includes(q) || (p.desc||'').toLowerCase().includes(q));
+
+  const grid = document.getElementById('products-grid');
+  if (!prods.length) {
+    grid.innerHTML = `<div class="no-results"><div class="ico">🔍</div><p>Aucun produit trouvé pour "${esc(q)}"</p></div>`;
+    return;
+  }
+  grid.innerHTML = prods.map(p => {
+    const minPack = p.packs && p.packs.length ? p.packs[0] : null;
+    const displayPrice = minPack ? minPack.price : p.price;
+    return `
+    <div class="product-card" onclick="openLanding(${p.id})">
+      ${p.badge ? `<div class="badge">${esc(p.badge)}</div>` : ''}
+      <img src="${esc(p.img || 'https://placehold.co/400x230/e6eeea/1f7a5c?text=' + encodeURIComponent(p.name))}"
+           onerror="this.src='https://placehold.co/400x230/e6eeea/1f7a5c?text=Photo'" alt="${esc(p.name)}">
+      <div class="product-info">
+        <h3>${esc(p.name)}</h3>
+        <p>${esc((p.desc||'').substring(0, 90))}...</p>
+        <div class="product-price">
+          <span class="price-main">${displayPrice.toLocaleString()} DA</span>
+          ${p.oldPrice ? `<span class="price-old">${Number(p.oldPrice).toLocaleString()} DA</span>` : ''}
+        </div>
+        <button class="btn-order">🛒 Commander</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ════════════════════════════════
+// LANDING PAGE
+// ════════════════════════════════
+let activeProd = null;
+let activePack = null;
+
+function openLanding(id, fromHash) {
+  activeProd = db.products.find(p => p.id === id);
+  if (!activeProd) return;
+  if (!fromHash && location.hash !== '#/' + activeProd.slug) { location.hash = '/' + activeProd.slug; return; }
+  activePack = activeProd.packs && activeProd.packs.length ? activeProd.packs[0] : null;
+
+  document.getElementById('lp-shop-name').textContent = db.shopName;
+  document.getElementById('lp-img').src = activeProd.img || `https://placehold.co/400x400/e6eeea/1f7a5c?text=${encodeURIComponent(activeProd.name)}`;
+  document.getElementById('lp-name').textContent = activeProd.name;
+  document.getElementById('lp-desc').textContent = activeProd.desc;
+
+  const feats = (activeProd.features || '').split(',').filter(Boolean);
+  document.getElementById('lp-feats').innerHTML = feats.map(f => `<div class="lp-feat">${esc(f.trim())}</div>`).join('');
+
+  // Packs
+  renderLandingPacks();
+  renderLandingMedia();
+  renderPromo();
+
+  // Wilaya select
+  const sel = document.getElementById('f-wilaya');
+  sel.innerHTML = '<option value="">— Choisissez votre wilaya —</option>' + WILAYAS_LIST.map(w => `<option>${w}</option>`).join('');
+
+  // Reset form
+  ['f-name','f-phone','f-commune'].forEach(id => document.getElementById(id).value = '');
+  sel.value = '';
+
+  updateSummary();
+  showView('view-landing');
+}
+
+function ytId(u) {
+  const m = u.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([\w-]{11})/);
+  return m ? m[1] : null;
+}
+function mediaType(u) {
+  if (ytId(u)) return 'youtube';
+  if (/^data:video|\.(mp4|webm|ogg|mov)(\?|#|$)/i.test(u)) return 'video';
+  return 'image';
+}
+const escA = esc;
+
+function renderLandingMedia() {
+  const list = (activeProd.media || []);
+  document.getElementById('lp-media').innerHTML = list.map(u => {
+    const t = mediaType(u);
+    if (t === 'youtube') return `<iframe src="https://www.youtube.com/embed/${ytId(u)}" allowfullscreen loading="lazy"></iframe>`;
+    if (t === 'video') return `<video src="${escA(u)}" controls playsinline preload="metadata"></video>`;
+    return `<img src="${escA(u)}" alt="" loading="lazy">`;
+  }).join('');
+}
+
+function renderLandingPacks() {
+  const packs = activeProd.packs || [];
+  if (!packs.length) {
+    document.getElementById('packs-grid').innerHTML = '';
+    return;
+  }
+  document.getElementById('packs-grid').innerHTML = packs.map((pk, i) => {
+    const isSelected = activePack === pk || (i === 0 && !activePack);
+    return `
+    <div class="pack-card ${isSelected ? 'selected' : ''}" onclick="selectPack(${i})">
+      <div class="pack-check">${isSelected ? '✓' : ''}</div>
+      <div class="pack-qty">${pk.qty}</div>
+      <div class="pack-label">${esc(pk.label)}</div>
+      <div class="pack-price">${Number(pk.price).toLocaleString()} DA</div>
+      ${i > 0 ? `<div class="pack-save">Économisez ${Math.round(((activeProd.price * pk.qty) - pk.price) / (activeProd.price * pk.qty) * 100)}%</div>` : ''}
+      ${pk.freeDelivery ? `<div class="pack-free-del">🚚 Livraison Gratuite</div>` : ''}
+    </div>`;
+  }).join('');
+}
+
+function selectPack(i) {
+  activePack = activeProd.packs[i];
+  renderLandingPacks();
+  updateSummary();
+}
+
+function updateSummary() {
+  if (!activeProd || !activePack) return;
+  const wilaya = document.getElementById('f-wilaya').value;
+  const deliv = activePack.freeDelivery ? 0 : (wilaya ? (db.wilayas[wilaya] || 400) : 0);
+  const total = activePack.price + deliv;
+
+  document.getElementById('sum-pack').textContent = activePack.label;
+  document.getElementById('sum-price').textContent = Number(activePack.price).toLocaleString() + ' DA';
+
+  const delRow = document.getElementById('sum-del-row');
+  const delSpan = document.getElementById('sum-del');
+  if (activePack.freeDelivery) {
+    delRow.classList.add('free-del');
+    delSpan.textContent = '🎉 GRATUITE';
+  } else {
+    delRow.classList.remove('free-del');
+    delSpan.textContent = wilaya ? deliv.toLocaleString() + ' DA' : '—';
+  }
+  document.getElementById('sum-total').textContent = wilaya ? total.toLocaleString() + ' DA' : '—';
+}
+
+let lastOrderAt = 0;
+async function submitOrder() {
+  if (document.getElementById('f-website').value) { showView('view-success'); return; }   // robot : on fait semblant
+  if (Date.now() - lastOrderAt < 20000) { showToast('⏳ Patientez quelques secondes', 'var(--red)'); return; }
+  const name = document.getElementById('f-name').value.trim();
+  const phone = document.getElementById('f-phone').value.trim();
+  const wilaya = document.getElementById('f-wilaya').value;
+  const commune = document.getElementById('f-commune').value.trim();
+  if (!name || !phone || !wilaya || !commune) { showToast('❌ Veuillez remplir tous les champs', 'var(--red)'); return; }
+  if (!activePack) { showToast('❌ Choisissez une offre', 'var(--red)'); return; }
+  if (!/^[0-9+\s().-]{8,16}$/.test(phone)) { showToast('❌ Numéro de téléphone invalide', 'var(--red)'); return; }
+  if (name.length > 80 || commune.length > 80) { showToast('❌ Texte trop long', 'var(--red)'); return; }
+
+  const deliv = activePack.freeDelivery ? 0 : (db.wilayas[wilaya] || 400);
+  const total = activePack.price + deliv;
+
+  const order = {
+    id: Date.now(),
+    date: new Date().toLocaleDateString('fr-DZ'),
+    name, phone, wilaya, commune,
+    product: activeProd.name, productId: activeProd.id,
+    packLabel: activePack.label, qty: activePack.qty,
+    unitPrice: activeProd.price, packPrice: activePack.price,
+    delivery: deliv, total, status: 'Nouvelle',
+    treatedBy: ''
+  };
+  lastOrderAt = Date.now();
+  if (USE_REMOTE) {
+    const { error } = await sb.from('orders').insert({
+      customer_name: name, phone, wilaya, commune,
+      product_id: activeProd.id, pack_label: activePack.label
+    });   // prix, livraison et total sont recalculés par la base : impossible de tricher
+    if (error) { showToast('❌ Commande non envoyée, réessayez', 'var(--red)'); return; }
+  } else { db.orders.unshift(order); save(); }
+  showView('view-success');
+}
+
+// ════════════════════════════════
+// ADMIN LOGIN
+// ════════════════════════════════
+let loginFails = 0, lockUntil = 0;
+function loginMsg(t) { const e = document.getElementById('login-err'); e.textContent = t; e.style.display = 'block'; }
+async function doLogin() {
+  const now = Date.now();
+  if (now < lockUntil) { loginMsg('⏳ Trop d\'essais. Réessayez dans ' + Math.ceil((lockUntil - now) / 1000) + ' s'); return; }
+  if (!USE_REMOTE && !LOCAL_OK) { loginMsg('❌ Base de données non configurée : connexion désactivée.'); return; }
+  const pw = document.getElementById('admin-pw').value;
+  const uname = document.getElementById('admin-email').value.trim().toLowerCase();
+  let ok = false;
+  if (USE_REMOTE) {
+    const email = uname.includes('@') ? uname : uname + '@' + AUTH_DOMAIN;
+    const { data, error } = await sb.auth.signInWithPassword({ email, password: pw });
+    if (!error && data.user) {
+      const { data: isAdm } = await sb.rpc('is_admin');   // le compte doit être dans la liste des admins
+      if (isAdm === true) { currentUser = uname; ok = true; } else { await sb.auth.signOut(); }
+    }
+  } else {
+    const user = db.users.find(u => u.name.toLowerCase() === uname && u.pw === pw);
+    if (user) { currentUser = user.name; ok = true; }
+  }
+  if (ok) {
+    loginFails = 0;
+    document.getElementById('login-err').style.display = 'none';
+    document.getElementById('admin-pw').value = '';
+    document.getElementById('admin-login-screen').style.display = 'none';
+    document.getElementById('admin-panel').style.display = 'flex';
+    renderAdmin(); armIdle();
+    if (USE_REMOTE && remoteEmpty) pushShop();
+  } else {
+    loginFails++;
+    const wait = loginFails >= 5 ? Math.min(900, 30 * Math.pow(2, loginFails - 5)) : 0;   // 30s, 60s, 2min… max 15min
+    if (wait) lockUntil = Date.now() + wait * 1000;
+    loginMsg(wait ? '⏳ Trop d\'essais. Réessayez dans ' + wait + ' s' : '❌ Nom d\'utilisateur ou mot de passe incorrect');
+  }
+}
+// déconnexion automatique après 30 min d'inactivité
+let idleTimer;
+function armIdle() {
+  clearTimeout(idleTimer);
+  if (!currentUser) return;
+  idleTimer = setTimeout(() => { if (currentUser) { doLogout(); alert('Session expirée : reconnectez-vous.'); } }, 30 * 60 * 1000);
+}
+['click', 'keydown', 'touchstart'].forEach(ev => document.addEventListener(ev, armIdle, { passive: true }));
+function doLogout() {
+  clearTimeout(idleTimer);
+  if (USE_REMOTE) sb.auth.signOut();
+  currentUser = null;
+  document.getElementById('admin-pw').value = '';
+  document.getElementById('admin-panel').style.display = 'none';
+  document.getElementById('admin-login-screen').style.display = 'block';
+  location.hash = '';
+  showView('view-shop');
+}
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+}
+
+// ════════════════════════════════
+// ADMIN RENDER
+// ════════════════════════════════
+async function renderAdminsList() {
+  const box = document.getElementById('admins-list'); if (!box || !USE_REMOTE) return;
+  const { data } = await sb.from('admins').select('username, created_at').order('created_at');
+  box.innerHTML = (data || []).map(a => `<div style="padding:6px 0;border-bottom:1px solid var(--border);font-size:14px;">👤 <b>${esc(a.username || '—')}</b> <span style="color:var(--muted);font-size:12px;">· ${esc((a.created_at || '').slice(0, 10))}</span></div>`).join('');
+}
+
+function renderAdmin() {
+  renderAdminsList();
+  document.getElementById('sidebar-shop-name').textContent = db.shopName;
+  document.getElementById('current-user-disp').textContent = currentUser || 'admin';
+  renderProdsAdmin();
+}
+
+function goPanel(id, el) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  if (el) el.classList.add('active');
+  if (id==='products') renderProdsAdmin();
+  if (id==='wilaya') renderWilayas();
+  if (id==='settings') renderSettings();
+}
+
+// PRODUCTS ADMIN
+function renderProdsAdmin() {
+  document.getElementById('prod-list-admin').innerHTML = db.products.map(p => `
+    <div class="prod-list-item">
+      <img src="${esc(p.img||'https://placehold.co/56x56/e6eeea/1f7a5c?text=P')}"
+           onerror="this.src='https://placehold.co/56x56/e6eeea/1f7a5c?text=P'" alt="">
+      <div class="prod-list-info">
+        <h4>${esc(p.name)}</h4>
+        <p>🔗 <a href="${productUrl(p)}" target="_blank" style="color:var(--gold);">#/${p.slug}</a> <button class="btn btn-ghost" style="padding:2px 8px;font-size:11px;" onclick="copyLink(${p.id})">Copier le lien</button></p>
+        <p>Vente: ${p.price.toLocaleString()} DA | Achat: ${p.cost.toLocaleString()} DA | Marge: <strong style="color:var(--green)">${(p.price-p.cost).toLocaleString()} DA</strong></p>
+      </div>
+      <div class="prod-list-actions">
+        <button class="btn btn-info" onclick="openEditProduct(${p.id})">✏</button>
+        <button class="btn btn-success" onclick="duplicateProd(${p.id})">⧉ Dupliquer</button>
+        <button class="btn btn-danger" onclick="deleteProd(${p.id})">🗑</button>
+      </div>
+    </div>`).join('') || '<p style="color:var(--muted);padding:20px;">Aucun produit. Cliquez sur "Ajouter un produit".</p>';
+}
+
+// PRODUCT MODAL
+let packRows = [];
+let mediaRows = [];
+
+function renderMediaRows() {
+  document.getElementById('media-admin-list').innerHTML = mediaRows.map((u, i) => {
+    const t = mediaType(u);
+    const thumb = t === 'image' ? `<img class="thumb" src="${escA(u)}" alt="">` : `<div class="thumb">${t === 'youtube' ? '▶️' : '🎬'}</div>`;
+    return `<div class="media-admin-item">${thumb}<div class="url">${t === 'image' ? 'Photo' : 'Vidéo'} — ${u.startsWith('data:') ? 'fichier importé' : escA(u)}</div>
+      <button class="btn btn-ghost" style="padding:4px 8px;" onclick="moveMedia(${i},-1)">↑</button>
+      <button class="btn btn-ghost" style="padding:4px 8px;" onclick="moveMedia(${i},1)">↓</button>
+      <button class="btn btn-danger" style="padding:4px 8px;" onclick="removeMedia(${i})">✕</button></div>`;
+  }).join('');
+}
+function addMediaUrl() {
+  const el = document.getElementById('media-url');
+  const u = el.value.trim();
+  if (!/^https?:\/\//i.test(u)) { showToast('❌ Collez un lien valide (https://...)', 'var(--red)'); return; }
+  mediaRows.push(u); el.value = ''; renderMediaRows();
+}
+// réduit la photo puis l'envoie dans Supabase Storage (ou garde en local sans base)
+function shrinkImage(file, max) {
+  return new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onerror = reject;
+    r.onload = () => {
+      const img = new Image();
+      img.onerror = reject;
+      img.onload = () => {
+        const k = Math.min(1, max / Math.max(img.width, img.height));
+        const c = document.createElement('canvas');
+        c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
+        c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+        c.toBlob(b => resolve({ blob: b, dataUrl: c.toDataURL('image/jpeg', 0.75) }), 'image/jpeg', 0.8);
+      };
+      img.src = r.result;
+    };
+    r.readAsDataURL(file);
+  });
+}
+async function uploadPhoto(file, max) {
+  const { blob, dataUrl } = await shrinkImage(file, max);
+  if (!USE_REMOTE) return dataUrl;
+  const path = Date.now() + '-' + Math.random().toString(36).slice(2, 8) + '.jpg';
+  const { error } = await sb.storage.from('photos').upload(path, blob, { contentType: 'image/jpeg' });
+  if (error) throw error;
+  return sb.storage.from('photos').getPublicUrl(path).data.publicUrl;
+}
+async function addMediaFiles(input) {
+  const files = [...input.files]; input.value = '';
+  showToast('⏳ Envoi des photos…', 'var(--text2)');
+  for (const f of files) {
+    try { mediaRows.push(await uploadPhoto(f, 1200)); renderMediaRows(); }
+    catch (e) { showToast('❌ Envoi impossible : ' + (e.message || e), 'var(--red)'); return; }
+  }
+  showToast('✅ Photos ajoutées');
+}
+async function uploadMain(input) {
+  const f = input.files[0]; input.value = ''; if (!f) return;
+  showToast('⏳ Envoi de la photo…', 'var(--text2)');
+  try { document.getElementById('mp-img').value = await uploadPhoto(f, 1000); showToast('✅ Photo ajoutée'); }
+  catch (e) { showToast('❌ Envoi impossible : ' + (e.message || e), 'var(--red)'); }
+}
+function removeMedia(i) { mediaRows.splice(i, 1); renderMediaRows(); }
+function moveMedia(i, d) {
+  const j = i + d; if (j < 0 || j >= mediaRows.length) return;
+  [mediaRows[i], mediaRows[j]] = [mediaRows[j], mediaRows[i]]; renderMediaRows();
+}
+
+function openAddProduct() {
+  document.getElementById('mp-id').value = '';
+  document.getElementById('prod-modal-title').innerHTML = 'Ajouter un Produit <button class="modal-close" onclick="closeProdModal()">✕</button>';
+  ['mp-name','mp-slug','mp-promo','mp-price','mp-cost','mp-old','mp-badge','mp-img','mp-desc','mp-feats'].forEach(id => document.getElementById(id).value = '');
+  packRows = [
+    { qty: 1, label: '1 unité', price: 0, freeDelivery: false },
+    { qty: 2, label: '2 unités', price: 0, freeDelivery: true },
+    { qty: 3, label: '3 unités', price: 0, freeDelivery: true }
+  ];
+  renderPackRows();
+  mediaRows = []; renderMediaRows();
+  delete document.getElementById('mp-slug').dataset.manual;
+  document.getElementById('mp-slug-preview').textContent = '';
+  document.getElementById('prod-modal').style.display = 'flex';
+}
+
+function openEditProduct(id) {
+  const p = db.products.find(x => x.id === id);
+  if (!p) return;
+  document.getElementById('prod-modal-title').innerHTML = 'Modifier le Produit <button class="modal-close" onclick="closeProdModal()">✕</button>';
+  document.getElementById('mp-id').value = p.id;
+  document.getElementById('mp-name').value = p.name;
+  document.getElementById('mp-slug').value = p.slug || '';
+  document.getElementById('mp-promo').value = p.promoText || '';
+  document.getElementById('mp-price').value = p.price;
+  document.getElementById('mp-cost').value = p.cost;
+  document.getElementById('mp-old').value = p.oldPrice || '';
+  document.getElementById('mp-badge').value = p.badge || '';
+  document.getElementById('mp-img').value = p.img || '';
+  document.getElementById('mp-desc').value = p.desc || '';
+  document.getElementById('mp-feats').value = p.features || '';
+  packRows = JSON.parse(JSON.stringify(p.packs || []));
+  renderPackRows();
+  mediaRows = [...(p.media || [])]; renderMediaRows();
+  document.getElementById('mp-slug').dataset.manual = '1';
+  document.getElementById('mp-slug-preview').textContent = '#/' + (p.slug||'');
+  document.getElementById('prod-modal').style.display = 'flex';
+}
+
+document.addEventListener('input', e => {
+  if (e.target.id === 'mp-slug' || e.target.id === 'mp-name') {
+    const sl = document.getElementById('mp-slug');
+    if (e.target.id === 'mp-name' && !document.getElementById('mp-id').value && !sl.dataset.manual) sl.value = slugify(e.target.value);
+    if (e.target.id === 'mp-slug') sl.dataset.manual = '1';
+    document.getElementById('mp-slug-preview').textContent = '#/' + slugify(sl.value);
+  }
+});
+
+function closeProdModal() { document.getElementById('prod-modal').style.display = 'none'; }
+
+function addPackRow() {
+  packRows.push({ qty: 1, label: 'Nouvelle offre', price: 0, freeDelivery: false });
+  renderPackRows();
+}
+
+function renderPackRows() {
+  document.getElementById('packs-admin-list').innerHTML = packRows.map((pk, i) => `
+    <div class="pack-admin">
+      <h4>Offre ${i+1} ${i===0?'(Offre de base)':''}</h4>
+      <div class="pack-row">
+        <div><label>Quantité</label><br><input type="number" value="${pk.qty}" min="1" onchange="packRows[${i}].qty=Number(this.value)"></div>
+        <div><label>Libellé</label><br><input type="text" value="${esc(pk.label)}" onchange="packRows[${i}].label=this.value" style="width:140px;"></div>
+        <div><label>Prix total (DA)</label><br><input type="number" value="${pk.price}" onchange="packRows[${i}].price=Number(this.value)"></div>
+        <div style="display:flex;align-items:center;gap:6px;margin-top:16px;">
+          <input type="checkbox" id="fd-${i}" ${pk.freeDelivery?'checked':''} onchange="packRows[${i}].freeDelivery=this.checked">
+          <label for="fd-${i}" style="font-size:13px;">Livraison gratuite</label>
+        </div>
+        ${packRows.length > 1 ? `<button class="btn btn-danger" style="margin-top:16px;padding:5px 10px;" onclick="removePackRow(${i})">✕</button>` : ''}
+      </div>
+    </div>`).join('');
+}
+
+function removePackRow(i) {
+  packRows.splice(i, 1);
+  renderPackRows();
+}
+
+function saveProd() {
+  const id = document.getElementById('mp-id').value;
+  const prod = {
+    id: id ? Number(id) : Date.now(),
+    slug: uniqueSlug(slugify(document.getElementById('mp-slug').value || document.getElementById('mp-name').value), id ? Number(id) : null),
+    name: document.getElementById('mp-name').value.trim() || 'Produit',
+    price: Number(document.getElementById('mp-price').value) || 0,
+    cost: Number(document.getElementById('mp-cost').value) || 0,
+    oldPrice: document.getElementById('mp-old').value ? Number(document.getElementById('mp-old').value) : null,
+    badge: document.getElementById('mp-badge').value.trim(),
+    promoText: document.getElementById('mp-promo').value.trim(),
+    img: document.getElementById('mp-img').value.trim(),
+    desc: document.getElementById('mp-desc').value.trim(),
+    features: document.getElementById('mp-feats').value.trim(),
+    packs: JSON.parse(JSON.stringify(packRows)),
+    media: [...mediaRows]
+  };
+  if (id) {
+    const idx = db.products.findIndex(p => p.id === Number(id));
+    if (idx >= 0) db.products[idx] = prod;
+  } else {
+    db.products.push(prod);
+  }
+  save(); closeProdModal(); renderProdsAdmin(); renderShop();
+  showToast('✅ Produit enregistré');
+}
+
+function copyLink(id) {
+  const p = db.products.find(x => x.id === id); if (!p) return;
+  (navigator.clipboard ? navigator.clipboard.writeText(productUrl(p)) : Promise.reject()).then(
+    () => showToast('🔗 Lien copié'), () => prompt('Copiez le lien :', productUrl(p)));
+}
+
+function duplicateProd(id) {
+  const p = db.products.find(x => x.id === id);
+  if (!p) return;
+  const copy = JSON.parse(JSON.stringify(p));
+  copy.id = Date.now();
+  copy.name = copy.name + ' (Copie)';
+  copy.slug = uniqueSlug(p.slug);  // test -> test1 -> test2
+  db.products.push(copy);
+  save(); renderProdsAdmin(); renderShop();
+  showToast('⧉ Produit dupliqué');
+}
+
+function deleteProd(id) {
+  if (!confirm('Supprimer ce produit ?')) return;
+  db.products = db.products.filter(p => p.id !== id);
+  save(); renderProdsAdmin(); renderShop();
+  showToast('🗑 Produit supprimé', 'var(--red)');
+}
+
+// WILAYAS
+function renderWilayas() {
+  const q = (document.getElementById('wilaya-search')?.value||'').toLowerCase();
+  const list = WILAYAS_LIST.filter(w => !q || w.toLowerCase().includes(q));
+  document.getElementById('wilaya-grid').innerHTML = list.map(w => {
+    const key = w.replace(/[\s']/g,'_');
+    return `<div class="wilaya-item">
+      <span>${w}</span>
+      <input type="number" id="wp-${key}" value="${db.wilayas[w]||400}" min="0"> DA
+    </div>`;
+  }).join('');
+}
+
+function applyDefaultPrice() {
+  const def = Number(document.getElementById('def-price').value) || 400;
+  WILAYAS_LIST.forEach(w => { db.wilayas[w] = def; });
+  renderWilayas(); showToast('✅ Prix appliqué à toutes les wilayas');
+}
+
+function saveWilayas() {
+  WILAYAS_LIST.forEach(w => {
+    const key = w.replace(/[\s']/g,'_');
+    const el = document.getElementById('wp-'+key);
+    if (el) db.wilayas[w] = Number(el.value) || 0;
+  });
+  save(); showToast('✅ Wilayas sauvegardées');
+}
+
+// SETTINGS
+function renderSettings() {
+  document.getElementById('set-name').value = db.shopName;
+  document.getElementById('set-tagline').value = db.tagline;
+  document.getElementById('set-subtitle').value = db.subtitle;
+  document.getElementById('set-promo').value = db.promoText;
+  const sw = document.getElementById('promo-sw');
+  if (db.promoActive) { sw.classList.add('on'); document.getElementById('promo-sw-label').textContent='Activée'; }
+  else { sw.classList.remove('on'); document.getElementById('promo-sw-label').textContent='Désactivée'; }
+  const me = document.getElementById('me-email'); if (me) me.textContent = currentUser || '';
+}
+
+function saveSettings() {
+  db.shopName = document.getElementById('set-name').value || db.shopName;
+  db.tagline = document.getElementById('set-tagline').value;
+  db.subtitle = document.getElementById('set-subtitle').value;
+  save(); renderShop(); document.getElementById('sidebar-shop-name').textContent = db.shopName;
+  showToast('✅ Paramètres sauvegardés');
+}
+
+function togglePromoSw() {
+  db.promoActive = !db.promoActive;
+  const sw = document.getElementById('promo-sw');
+  if (db.promoActive) { sw.classList.add('on'); document.getElementById('promo-sw-label').textContent='Activée'; }
+  else { sw.classList.remove('on'); document.getElementById('promo-sw-label').textContent='Désactivée'; }
+}
+
+function savePromo() {
+  db.promoText = document.getElementById('set-promo').value || db.promoText;
+  save(); renderShop(); showToast('✅ Bannière mise à jour');
+}
+
+async function changeMyPw() {
+  const p1 = document.getElementById('chg-pw1').value;
+  const p2 = document.getElementById('chg-pw2').value;
+  if (!p1 || p1 !== p2) { showToast('❌ Mots de passe différents','var(--red)'); return; }
+  if (USE_REMOTE) {
+    if (p1.length < 6) { showToast('❌ 6 caractères minimum','var(--red)'); return; }
+    const { error } = await sb.auth.updateUser({ password: p1 });
+    if (error) { showToast('❌ ' + error.message,'var(--red)'); return; }
+  } else {
+    const u = db.users.find(u=>u.name===currentUser); if (u) u.pw = p1; save();
+  }
+  document.getElementById('chg-pw1').value=''; document.getElementById('chg-pw2').value='';
+  showToast('✅ Mot de passe changé');
+}
+
+// TOAST
+function showToast(msg, color='var(--green)') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.background = color;
+  t.style.color = '#fff';
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+// INIT
+loadRemote().then(() => { renderShop(); handleHash(); });
+</script>
+</body>
+</html>
