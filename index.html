@@ -451,6 +451,7 @@ tr:hover td{background:var(--bg2);}
         <span id="sidebar-shop-name">Ma Boutique</span>
       </div>
       <div class="nav-item active" onclick="goPanel('products',this)">🛍 Produits</div>
+      <div class="nav-item" onclick="goPanel('orders',this)">📦 Commandes</div>
       <div class="nav-item" onclick="goPanel('wilaya',this)">🗺 Wilayas</div>
       <div class="nav-item" onclick="goPanel('settings',this)">⚙ Paramètres</div>
       <div class="sidebar-footer">
@@ -471,6 +472,30 @@ tr:hover td{background:var(--bg2);}
         </div>
 
         <div id="prod-list-admin"></div>
+      </div>
+
+      <!-- ORDERS -->
+      <div class="panel" id="panel-orders">
+        <div class="page-title">📦 Commandes</div>
+        <div class="page-sub">Consultez les commandes reçues et mettez à jour leur statut</div>
+        <div class="stats-row" id="orders-stats"></div>
+        <div class="tbl-wrap">
+          <div class="tbl-head">
+            <h3>Liste des commandes</h3>
+            <button class="btn btn-ghost" onclick="renderOrders()">↻ Actualiser</button>
+          </div>
+          <div style="overflow-x:auto;">
+            <table>
+              <thead><tr>
+                <th>Date</th><th>Client</th><th>Contact</th><th>Adresse</th>
+                <th>Produit / Offre</th><th>Total</th><th>Statut</th>
+              </tr></thead>
+              <tbody id="orders-list">
+                <tr><td colspan="7" style="text-align:center;color:var(--muted);padding:24px;">Chargement...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
 
       <!-- WILAYA -->
@@ -1155,6 +1180,73 @@ function goPanel(id, el) {
   if (id==='products') renderProdsAdmin();
   if (id==='wilaya') renderWilayas();
   if (id==='settings') renderSettings();
+}
+
+// ORDERS ADMIN
+async function renderOrders() {
+  const body = document.getElementById('orders-list');
+  const stats = document.getElementById('orders-stats');
+  if (!body || !stats) return;
+  if (!USE_REMOTE) {
+    body.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:24px;">Les commandes en ligne nécessitent la connexion Supabase.</td></tr>';
+    stats.innerHTML = '';
+    return;
+  }
+
+  body.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:24px;">Chargement des commandes...</td></tr>';
+  const { data, error } = await sb.from('orders').select('*').order('created_at', { ascending: false });
+  if (error) {
+    body.innerHTML = `<tr><td colspan="7" style="color:var(--red);padding:20px;">Impossible de charger les commandes : ${esc(error.message)}</td></tr>`;
+    stats.innerHTML = '';
+    return;
+  }
+
+  const orders = data || [];
+  const countNew = orders.filter(o => (o.status || 'Nouvelle') === 'Nouvelle').length;
+  const total = orders.reduce((sum, o) => sum + Number(o.total || 0), 0);
+  stats.innerHTML = `
+    <div class="stat-card"><div class="stat-val">${orders.length}</div><div class="stat-label">Commandes</div></div>
+    <div class="stat-card"><div class="stat-val">${countNew}</div><div class="stat-label">Nouvelles</div></div>
+    <div class="stat-card"><div class="stat-val">${total.toLocaleString('fr-DZ')} DA</div><div class="stat-label">Montant total</div></div>`;
+
+  if (!orders.length) {
+    body.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:28px;">Aucune commande reçue pour le moment.</td></tr>';
+    return;
+  }
+
+  const statuses = ['Nouvelle', 'Confirmée', 'Expédiée', 'Livrée', 'Annulée'];
+  body.innerHTML = orders.map(o => {
+    const date = o.created_at ? new Date(o.created_at).toLocaleString('fr-DZ') : '—';
+    const status = statuses.includes(o.status) ? o.status : 'Nouvelle';
+    return `<tr>
+      <td style="white-space:nowrap;">${esc(date)}</td>
+      <td><strong>${esc(o.customer_name)}</strong></td>
+      <td><a href="tel:${esc(o.phone)}">${esc(o.phone)}</a></td>
+      <td>${esc(o.wilaya)}<br><span style="color:var(--muted);">${esc(o.commune)}</span></td>
+      <td>${esc(o.product_name || 'Produit')}<br><span style="color:var(--muted);">${esc(o.pack_label)} · ${Number(o.quantity || 1)} unité(s)</span></td>
+      <td style="white-space:nowrap;font-weight:800;">${Number(o.total || 0).toLocaleString('fr-DZ')} DA</td>
+      <td style="min-width:150px;">
+        <select class="ai" style="margin:0;min-width:135px;" aria-label="Statut de la commande ${Number(o.id)}" onchange="updateOrderStatus(${Number(o.id)}, this.value)">
+          ${statuses.map(st => `<option value="${st}" ${st === status ? 'selected' : ''}>${st}</option>`).join('')}
+        </select>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+async function updateOrderStatus(id, status) {
+  const allowed = ['Nouvelle', 'Confirmée', 'Expédiée', 'Livrée', 'Annulée'];
+  if (!allowed.includes(status)) return;
+  const { error } = await sb.from('orders')
+    .update({ status, treated_by: currentUser || '' })
+    .eq('id', id);
+  if (error) {
+    showToast('❌ Statut non modifié : ' + error.message, 'var(--red)');
+    renderOrders();
+    return;
+  }
+  showToast('✅ Statut de la commande mis à jour');
+  renderOrders();
 }
 
 // PRODUCTS ADMIN
