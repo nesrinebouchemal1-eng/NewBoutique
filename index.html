@@ -482,7 +482,11 @@ tr:hover td{background:var(--bg2);}
         <div class="tbl-wrap">
           <div class="tbl-head">
             <h3>Liste des commandes</h3>
-            <button class="btn btn-ghost" onclick="renderOrders()">↻ Actualiser</button>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <button class="btn btn-ghost" onclick="renderOrders()">↻ Actualiser</button>
+              <button class="btn btn-primary" onclick="exportOrdersCsv()">⬇ CSV</button>
+              <button class="btn btn-success" onclick="exportOrdersExcel()">⬇ Excel</button>
+            </div>
           </div>
           <div style="overflow-x:auto;">
             <table>
@@ -1190,6 +1194,7 @@ async function renderOrders() {
   if (!USE_REMOTE) {
     body.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:24px;">Les commandes en ligne nécessitent la connexion Supabase.</td></tr>';
     stats.innerHTML = '';
+    window.currentOrdersData = [];
     return;
   }
 
@@ -1198,10 +1203,12 @@ async function renderOrders() {
   if (error) {
     body.innerHTML = `<tr><td colspan="7" style="color:var(--red);padding:20px;">Impossible de charger les commandes : ${esc(error.message)}</td></tr>`;
     stats.innerHTML = '';
+    window.currentOrdersData = [];
     return;
   }
 
   const orders = data || [];
+  window.currentOrdersData = orders;
   const countNew = orders.filter(o => (o.status || 'Nouvelle') === 'Nouvelle').length;
   const total = orders.reduce((sum, o) => sum + Number(o.total || 0), 0);
   stats.innerHTML = `
@@ -1232,6 +1239,86 @@ async function renderOrders() {
       </td>
     </tr>`;
   }).join('');
+}
+
+function escapeCsvValue(value) {
+  const s = value == null ? '' : String(value).replace(/\r?\n/g, ' ');
+  if (/[",]/.test(s) || s.includes('\n') || s.includes('\r')) {
+    return '"' + s.replace(/"/g, '""') + '"';
+  }
+  return s;
+}
+
+function downloadBlob(filename, content, type) {
+  const blob = new Blob([content], { type });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+function exportOrdersCsv() {
+  const orders = Array.isArray(window.currentOrdersData) ? window.currentOrdersData : [];
+  if (!orders.length) {
+    showToast('❌ Aucune commande à exporter', 'var(--red)');
+    return;
+  }
+  const headers = ['Date', 'Client', 'Téléphone', 'Wilaya', 'Commune', 'Produit', 'Pack', 'Quantité', 'Total', 'Statut'];
+  const rows = orders.map(o => [
+    o.created_at ? new Date(o.created_at).toLocaleString('fr-DZ') : '',
+    o.customer_name || '',
+    o.phone || '',
+    o.wilaya || '',
+    o.commune || '',
+    o.product_name || '',
+    o.pack_label || '',
+    Number(o.quantity || 1),
+    Number(o.total || 0),
+    o.status || 'Nouvelle'
+  ]);
+  const csv = [headers, ...rows].map(line => line.map(escapeCsvValue).join(',')).join('\n');
+  downloadBlob('commandes.csv', csv, 'text/csv;charset=utf-8;');
+  showToast('✅ Export CSV prêt');
+}
+
+function exportOrdersExcel() {
+  const orders = Array.isArray(window.currentOrdersData) ? window.currentOrdersData : [];
+  if (!orders.length) {
+    showToast('❌ Aucune commande à exporter', 'var(--red)');
+    return;
+  }
+  const headers = ['Date', 'Client', 'Téléphone', 'Wilaya', 'Commune', 'Produit', 'Pack', 'Quantité', 'Total', 'Statut'];
+  const rows = orders.map(o => [
+    o.created_at ? new Date(o.created_at).toLocaleString('fr-DZ') : '',
+    o.customer_name || '',
+    o.phone || '',
+    o.wilaya || '',
+    o.commune || '',
+    o.product_name || '',
+    o.pack_label || '',
+    Number(o.quantity || 1),
+    Number(o.total || 0),
+    o.status || 'Nouvelle'
+  ]);
+
+  let xml = '<?xml version="1.0"?>\n<?mso-application progid="Excel.Sheet"?>\n';
+  xml += '<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet" xmlns:html="http://www.w3.org/TR/xhtml1">';
+  xml += '<Worksheet ss:Name="Commandes"><Table>';
+  xml += '<Row>' + headers.map(h => `<Cell><Data ss:Type="String">${esc(h)}</Data></Cell>`).join('') + '</Row>';
+  for (const row of rows) {
+    xml += '<Row>' + row.map((cell, idx) => {
+      const value = String(cell ?? '');
+      const type = (typeof cell === 'number' || /^\d+[.,]?\d*$/.test(value)) ? 'Number' : 'String';
+      return `<Cell><Data ss:Type="${type}">${esc(value)}</Data></Cell>`;
+    }).join('') + '</Row>';
+  }
+  xml += '</Table></Worksheet></Workbook>';
+  downloadBlob('commandes.xls', xml, 'application/vnd.ms-excel;charset=utf-8;');
+  showToast('✅ Export Excel prêt');
 }
 
 async function updateOrderStatus(id, status) {
