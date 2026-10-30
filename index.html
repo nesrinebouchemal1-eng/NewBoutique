@@ -593,8 +593,8 @@ tr:hover td{background:var(--bg2);}
 // ════════════════════════════════
 // BASE DE DONNÉES (Supabase) — collez vos 2 valeurs ici
 // ════════════════════════════════
-const SUPABASE_URL = 'COLLEZ_ICI_VOTRE_URL';        // ex: https://abcdxyz.supabase.co
-const SUPABASE_KEY = 'COLLEZ_ICI_VOTRE_CLE_ANON';   // clé "anon public"
+const SUPABASE_URL = 'https://dsbqwzdyinsqfjuxkgqj.supabase.co';        // ex: https://abcdxyz.supabase.co
+const SUPABASE_KEY = 'sb_publishable_To1DuHMHt-TuY6zcaBZeug_H65bMJrm';   // clé "anon public"
 const USE_REMOTE = /^https:\/\/[a-z0-9-]+\.supabase\.co/.test(SUPABASE_URL) && typeof supabase !== 'undefined';
 const sb = USE_REMOTE ? supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
 const AUTH_DOMAIN = 'boutique-admin.com';  // le nom d'utilisateur 'sarah' devient sarah@boutique-admin.com dans Supabase
