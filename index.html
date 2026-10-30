@@ -479,6 +479,19 @@ tr:hover td{background:var(--bg2);}
         <div class="page-title">📦 Commandes</div>
         <div class="page-sub">Consultez les commandes reçues et mettez à jour leur statut</div>
         <div class="stats-row" id="orders-stats"></div>
+        <div class="section-card" style="margin-bottom:16px;">
+          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+            <button class="btn btn-ghost" data-order-filter="today" onclick="setOrdersDateFilter('today')">Aujourd'hui</button>
+            <button class="btn btn-ghost" data-order-filter="week" onclick="setOrdersDateFilter('week')">Cette semaine</button>
+            <button class="btn btn-ghost" data-order-filter="month" onclick="setOrdersDateFilter('month')">Ce mois</button>
+            <button class="btn btn-ghost" data-order-filter="all" onclick="setOrdersDateFilter('all')">Tout</button>
+            <label style="font-size:12px;color:var(--text2);font-weight:700;">Du</label>
+            <input class="filter-input" type="date" id="orders-date-from" onchange="applyOrdersDateFilter()" style="min-width:150px;">
+            <label style="font-size:12px;color:var(--text2);font-weight:700;">au</label>
+            <input class="filter-input" type="date" id="orders-date-to" onchange="applyOrdersDateFilter()" style="min-width:150px;">
+            <button class="btn btn-primary" onclick="applyOrdersDateFilter()">Filtrer</button>
+          </div>
+        </div>
         <div class="tbl-wrap">
           <div class="tbl-head">
             <h3>Liste des commandes</h3>
@@ -1209,20 +1222,21 @@ async function renderOrders() {
 
   const orders = data || [];
   window.currentOrdersData = orders;
-  const countNew = orders.filter(o => (o.status || 'Nouvelle') === 'Nouvelle').length;
-  const total = orders.reduce((sum, o) => sum + Number(o.total || 0), 0);
+  const filtered = getOrdersFilteredList();
+  const countNew = filtered.filter(o => (o.status || 'Nouvelle') === 'Nouvelle').length;
+  const total = filtered.reduce((sum, o) => sum + Number(o.total || 0), 0);
   stats.innerHTML = `
-    <div class="stat-card"><div class="stat-val">${orders.length}</div><div class="stat-label">Commandes</div></div>
+    <div class="stat-card"><div class="stat-val">${filtered.length}</div><div class="stat-label">Commandes</div></div>
     <div class="stat-card"><div class="stat-val">${countNew}</div><div class="stat-label">Nouvelles</div></div>
     <div class="stat-card"><div class="stat-val">${total.toLocaleString('fr-DZ')} DA</div><div class="stat-label">Montant total</div></div>`;
 
-  if (!orders.length) {
-    body.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:28px;">Aucune commande reçue pour le moment.</td></tr>';
+  if (!filtered.length) {
+    body.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:28px;">Aucune commande pour cette période.</td></tr>';
     return;
   }
 
   const statuses = ['Nouvelle', 'Confirmée', 'Expédiée', 'Livrée', 'Annulée'];
-  body.innerHTML = orders.map(o => {
+  body.innerHTML = filtered.map(o => {
     const date = o.created_at ? new Date(o.created_at).toLocaleString('fr-DZ') : '—';
     const status = statuses.includes(o.status) ? o.status : 'Nouvelle';
     return `<tr>
@@ -1239,6 +1253,111 @@ async function renderOrders() {
       </td>
     </tr>`;
   }).join('');
+}
+
+window.currentOrdersFilter = 'all';
+window.currentOrdersDateFrom = null;
+window.currentOrdersDateTo = null;
+
+function getOrdersDateValue(o) {
+  if (!o || !o.created_at) return null;
+  const d = new Date(o.created_at);
+  if (Number.isNaN(d.getTime())) return null;
+  return d;
+}
+
+function startOfDay(d) {
+  const x = new Date(d);
+  x.setHours(0, 0, 0, 0);
+  return x;
+}
+
+function endOfDay(d) {
+  const x = new Date(d);
+  x.setHours(23, 59, 59, 999);
+  return x;
+}
+
+function getOrdersFilteredList() {
+  const orders = Array.isArray(window.currentOrdersData) ? window.currentOrdersData : [];
+  if (!orders.length) return [];
+
+  const from = window.currentOrdersDateFrom ? new Date(window.currentOrdersDateFrom + 'T00:00:00') : null;
+  const to = window.currentOrdersDateTo ? new Date(window.currentOrdersDateTo + 'T23:59:59') : null;
+
+  return orders.filter(o => {
+    const d = getOrdersDateValue(o);
+    if (!d) return false;
+
+    if (window.currentOrdersFilter === 'today') {
+      const today = new Date();
+      return d >= startOfDay(today) && d <= endOfDay(today);
+    }
+    if (window.currentOrdersFilter === 'week') {
+      const now = new Date();
+      const start = new Date(now);
+      start.setDate(now.getDate() - 6);
+      start.setHours(0, 0, 0, 0);
+      return d >= start && d <= endOfDay(now);
+    }
+    if (window.currentOrdersFilter === 'month') {
+      const now = new Date();
+      const start = new Date(now.getFullYear(), now.getMonth(), 1);
+      return d >= start && d <= endOfDay(now);
+    }
+    if (from || to) {
+      if (from && d < from) return false;
+      if (to && d > to) return false;
+      return true;
+    }
+    return true;
+  });
+}
+
+function setOrdersDateFilter(key) {
+  window.currentOrdersFilter = key;
+  const btns = document.querySelectorAll('[data-order-filter]');
+  btns.forEach(btn => btn.classList.toggle('btn-primary', btn.getAttribute('data-order-filter') === key));
+  btns.forEach(btn => btn.classList.toggle('btn-ghost', btn.getAttribute('data-order-filter') !== key));
+
+  if (key === 'today') {
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const dd = String(today.getDate()).padStart(2, '0');
+    window.currentOrdersDateFrom = `${yyyy}-${mm}-${dd}`;
+    window.currentOrdersDateTo = `${yyyy}-${mm}-${dd}`;
+  } else if (key === 'week') {
+    const now = new Date();
+    const start = new Date(now);
+    start.setDate(now.getDate() - 6);
+    const toDate = now;
+    window.currentOrdersDateFrom = start.toISOString().slice(0, 10);
+    window.currentOrdersDateTo = toDate.toISOString().slice(0, 10);
+  } else if (key === 'month') {
+    const now = new Date();
+    const start = new Date(now.getFullYear(), now.getMonth(), 1);
+    window.currentOrdersDateFrom = start.toISOString().slice(0, 10);
+    window.currentOrdersDateTo = now.toISOString().slice(0, 10);
+  } else if (key === 'all') {
+    window.currentOrdersDateFrom = null;
+    window.currentOrdersDateTo = null;
+  }
+
+  const fromEl = document.getElementById('orders-date-from');
+  const toEl = document.getElementById('orders-date-to');
+  if (fromEl) fromEl.value = window.currentOrdersDateFrom || '';
+  if (toEl) toEl.value = window.currentOrdersDateTo || '';
+  renderOrders();
+}
+
+function applyOrdersDateFilter() {
+  const fromEl = document.getElementById('orders-date-from');
+  const toEl = document.getElementById('orders-date-to');
+  window.currentOrdersDateFrom = fromEl ? fromEl.value || null : null;
+  window.currentOrdersDateTo = toEl ? toEl.value || null : null;
+  window.currentOrdersFilter = (window.currentOrdersDateFrom || window.currentOrdersDateTo) ? 'custom' : 'all';
+  renderOrders();
 }
 
 function escapeCsvValue(value) {
@@ -1262,7 +1381,7 @@ function downloadBlob(filename, content, type) {
 }
 
 function exportOrdersCsv() {
-  const orders = Array.isArray(window.currentOrdersData) ? window.currentOrdersData : [];
+  const orders = getOrdersFilteredList();
   if (!orders.length) {
     showToast('❌ Aucune commande à exporter', 'var(--red)');
     return;
@@ -1286,7 +1405,7 @@ function exportOrdersCsv() {
 }
 
 function exportOrdersExcel() {
-  const orders = Array.isArray(window.currentOrdersData) ? window.currentOrdersData : [];
+  const orders = getOrdersFilteredList();
   if (!orders.length) {
     showToast('❌ Aucune commande à exporter', 'var(--red)');
     return;
